@@ -48,8 +48,17 @@ public class LessonService {
     public LessonResponseDTO getTimetableDetails(Long id) {
         Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
 
+        return createDTO(lesson);
+    }
+
+    public List<LessonResponseDTO> getAllLesson() {
+        List<Lesson> all = lessonRepository.findAll();
+        return all.stream().map(this::createDTO).toList();
+    }
+
+    private LessonResponseDTO createDTO(Lesson lesson) {
         LessonResponseDTO dto = new LessonResponseDTO();
-        dto.setId(id);
+        dto.setId(lesson.getId());
         dto.setCoaches(lesson.getCoaches().stream().map(coach -> coach.getCoach().getName()).toList());
         dto.setStudents(lesson.getStudents().stream().map(student -> student.getStudent().getName()).toList());
         dto.setLocation(lesson.getTimetable().getLocation().getName());

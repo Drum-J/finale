@@ -7,6 +7,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Slf4j
 @RestController
 @RequiredArgsConstructor
@@ -23,5 +25,10 @@ public class LessonController {
     @GetMapping("/{id}")
     public LessonResponseDTO getTimetableDetails(@PathVariable(name = "id") Long id) {
         return lessonService.getTimetableDetails(id);
+    }
+
+    @GetMapping("/list")
+    public List<LessonResponseDTO> getAllLesson() {
+        return lessonService.getAllLesson();
     }
 }
