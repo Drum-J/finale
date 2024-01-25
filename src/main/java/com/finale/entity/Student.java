@@ -15,7 +15,6 @@ public class Student extends TimeStamped {
     @Column(name = "student_id")
     private Long id;
 
-    @Setter
     private String name;
     private String email;
     private String phoneNumber;
