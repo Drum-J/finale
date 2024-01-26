@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/timetable")
+@RequestMapping("/api/lesson")
 public class LessonController {
 
     private final LessonService lessonService;
@@ -23,8 +23,8 @@ public class LessonController {
     }
 
     @GetMapping("/{id}")
-    public LessonResponseDTO getTimetableDetails(@PathVariable(name = "id") Long id) {
-        return lessonService.getTimetableDetails(id);
+    public LessonResponseDTO getLessonDetails(@PathVariable(name = "id") Long id) {
+        return lessonService.getLessonDetails(id);
     }
 
     @GetMapping("/list")

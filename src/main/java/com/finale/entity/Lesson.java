@@ -1,7 +1,6 @@
 package com.finale.entity;
 
 import jakarta.persistence.*;
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -32,14 +31,17 @@ public class Lesson extends TimeStamped{
     @OneToMany(mappedBy = "lesson",cascade = ALL)
     private List<LessonStudent> students = new ArrayList<>();
 
-    private int totalClassSize;
+    private int currentEnrolment; // 현재 수강 신청 인원
+
+    private int enrolment; // 총 수강 신청 가능 인원
+
     public Lesson(Timetable timetable) {
         this.timetable = timetable;
-        this.totalClassSize = timetable.getTotalClassSize(); //dto 사용시 자동 설정 됨
+        this.enrolment = timetable.getTotalClassSize(); //dto 사용시 자동 설정 됨
     }
 
     public void setTotalClassSize() {
-        this.totalClassSize = timetable.getClassSize() * coaches.size(); // test 에서는 set 사용해 주고 있음
+        this.enrolment = timetable.getClassSize() * coaches.size(); // test 에서는 set 사용해 주고 있음
     }
 
     //연관관계 메서드
@@ -50,17 +52,15 @@ public class Lesson extends TimeStamped{
 
     // 연관관계 메서드 및 비즈니스 로직
     public void addStudent(LessonStudent student) {
-        if (this.totalClassSize > 0) {
+        if (this.currentEnrolment < this.enrolment) {
             if (this.students.contains(student)) {
                 throw new IllegalStateException("이미 수강 신청 한 강의입니다.");
             }
             this.students.add(student);
             student.setLesson(this);
-            this.totalClassSize -= 1;
+            this.currentEnrolment += 1;
         } else {
             throw new IllegalStateException("수강 인원을 초과하여 신청할 수 없습니다.");
         }
-
-
     }
 }

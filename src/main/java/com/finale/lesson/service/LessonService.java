@@ -2,6 +2,7 @@ package com.finale.lesson.service;
 
 import com.finale.entity.*;
 import com.finale.coach.repository.CoachRepository;
+import com.finale.lesson.dto.LessonStudentResponseDTO;
 import com.finale.location.repository.LocationRepository;
 import com.finale.lesson.dto.TimetableCreateDTO;
 import com.finale.lesson.dto.LessonResponseDTO;
@@ -45,25 +46,27 @@ public class LessonService {
         lessonRepository.save(lesson);
     }
 
-    public LessonResponseDTO getTimetableDetails(Long id) {
+    public LessonResponseDTO getLessonDetails(Long id) {
         Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
 
-        return createDTO(lesson);
+        return LessonResponseDTO.createDTO(lesson);
     }
 
     public List<LessonResponseDTO> getAllLesson() {
         List<Lesson> all = lessonRepository.findAll();
-        return all.stream().map(this::createDTO).toList();
+
+        return all.stream().map(LessonResponseDTO::createDTO).toList();
     }
 
-    private LessonResponseDTO createDTO(Lesson lesson) {
-        LessonResponseDTO dto = new LessonResponseDTO();
-        dto.setId(lesson.getId());
-        dto.setCoaches(lesson.getCoaches().stream().map(coach -> coach.getCoach().getName()).toList());
-        dto.setStudents(lesson.getStudents().stream().map(student -> student.getStudent().getName()).toList());
-        dto.setLocation(lesson.getTimetable().getLocation().getName());
-        dto.setDay(lesson.getTimetable().getDays());
+    public LessonStudentResponseDTO getLessonStudentDetails(Long id) {
+        Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
 
-        return dto;
+        return LessonStudentResponseDTO.createDTO(lesson);
+    }
+
+    public List<LessonStudentResponseDTO> getAllLessonStudents() {
+        List<Lesson> all = lessonRepository.findAll();
+
+        return all.stream().map(LessonStudentResponseDTO::createDTO).toList();
     }
 }
