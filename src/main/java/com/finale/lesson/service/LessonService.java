@@ -23,17 +23,11 @@ public class LessonService {
 
     private final TimetableRepository timetableRepository;
     private final CoachRepository coachRepository;
-    private final LocationRepository locationRepository;
     private final LessonRepository lessonRepository;
 
     @Transactional
     public void createTimetable(TimetableCreateDTO dto) {
         Timetable timetable = dto.convertToEntity();
-
-        Long locationId = dto.getLocationId();
-        Location location = locationRepository.findById(locationId)
-                .orElseThrow(()->new IllegalArgumentException("해당 장소를 찾을 수 없습니다."));
-        timetable.addLocation(location);
 
         Lesson lesson = new Lesson(timetable);
 

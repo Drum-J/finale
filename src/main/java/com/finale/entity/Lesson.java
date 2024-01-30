@@ -21,6 +21,8 @@ public class Lesson extends TimeStamped{
     @Column(name = "lesson_history_id")
     private Long id;
 
+    private String title;
+
     @ManyToOne(fetch = LAZY)
     @JoinColumn(name = "timetable_id")
     private Timetable timetable;
@@ -38,6 +40,7 @@ public class Lesson extends TimeStamped{
     public Lesson(Timetable timetable) {
         this.timetable = timetable;
         this.enrolment = timetable.getTotalClassSize(); //dto 사용시 자동 설정 됨
+        this.title = timetable.getTitle();
     }
 
     public void setTotalClassSize() {

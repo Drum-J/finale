@@ -20,7 +20,7 @@ public class LessonStudentResponseDTO {
         LessonStudentResponseDTO dto = new LessonStudentResponseDTO();
 
         dto.id = lesson.getId();
-        dto.location = lesson.getTimetable().getLocation().getName();
+        dto.location = lesson.getTimetable().getLocation();
         dto.day = lesson.getTimetable().getDays();
         dto.coaches = lesson.getCoaches().stream().map(c->c.getCoach().getName()).toList();
 
