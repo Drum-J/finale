@@ -5,7 +5,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import static jakarta.persistence.FetchType.LAZY;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
 
@@ -18,9 +17,8 @@ public class Timetable extends TimeStamped {
     @Column(name = "timetable_id")
     private Long id;
 
-    @ManyToOne(fetch = LAZY)
-    @JoinColumn(name = "location_id")
-    private Location location; // 레슨 장소
+    private String title; // 레슨 제목
+    private String location; // 레슨 장소
 
     private String days; // 레슨 요일
 
@@ -44,18 +42,14 @@ public class Timetable extends TimeStamped {
     private int classSize; // 1:8 수업
     private int totalClassSize; // 코치 수 x 클래스 사이즈
 
-    // 연관 관계 메서드
-    public void addLocation(Location location) {
-        this.location = location;
-    }
-
     @Builder
-    public Timetable(Location location, String days,
+    public Timetable(String title,String location, String days,
                      String date, String startTime, String endTime,
                      String secondDate, String secondStartTime, String secondEndTime,
                      String thirdDate, String thirdStartTime, String thirdEndTime,
                      String fourthDate, String fourthStartTime, String fourthEndTime,
                      String cost, int classSize, int totalClassSize) {
+        this.title = title;
         this.location = location;
         this.days = days;
 

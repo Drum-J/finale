@@ -7,7 +7,9 @@ import java.util.List;
 
 @Data
 public class TimetableCreateDTO {
-    private Long locationId; //장소 id
+    private String title; // 수업 제목 2024년 1월 월요일 고려대학교
+
+    private String location; //장소 id
     private List<Long> coachId; //코치 id
 
     private String days; //레슨 요일
@@ -35,6 +37,8 @@ public class TimetableCreateDTO {
 
     public Timetable convertToEntity() {
         return Timetable.builder()
+                .title(this.title)
+                .location(this.location)
                 .days(this.days)
                 .date(this.date)
                 .startTime(this.startTime)

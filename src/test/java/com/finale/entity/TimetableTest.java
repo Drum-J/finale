@@ -84,7 +84,8 @@ public class TimetableTest {
 
     private static Lesson createLesson(int classSize) {
         Timetable timetable = Timetable.builder()
-                .location(new Location("고려대학교"))
+                .title("2024년 2월 월요일 고려대학교")
+                .location("고려대학교")
                 .classSize(classSize)
                 .cost("4회 15만원")
                 .days("월요일")
