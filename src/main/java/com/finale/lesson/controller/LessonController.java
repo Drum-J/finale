@@ -1,5 +1,6 @@
 package com.finale.lesson.controller;
 
+import com.finale.lesson.dto.LessonDetailResponseDTO;
 import com.finale.lesson.dto.TimetableCreateDTO;
 import com.finale.lesson.dto.LessonResponseDTO;
 import com.finale.lesson.service.LessonService;
@@ -23,7 +24,7 @@ public class LessonController {
     }
 
     @GetMapping("/{id}")
-    public LessonResponseDTO getLessonDetails(@PathVariable(name = "id") Long id) {
+    public LessonDetailResponseDTO getLessonDetails(@PathVariable(name = "id") Long id) {
         return lessonService.getLessonDetails(id);
     }
 

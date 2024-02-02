@@ -2,10 +2,7 @@ package com.finale.lesson.service;
 
 import com.finale.entity.*;
 import com.finale.coach.repository.CoachRepository;
-import com.finale.lesson.dto.LessonStudentResponseDTO;
-import com.finale.location.repository.LocationRepository;
-import com.finale.lesson.dto.TimetableCreateDTO;
-import com.finale.lesson.dto.LessonResponseDTO;
+import com.finale.lesson.dto.*;
 import com.finale.lesson.repository.LessonRepository;
 import com.finale.lesson.repository.TimetableRepository;
 import lombok.RequiredArgsConstructor;
@@ -40,27 +37,27 @@ public class LessonService {
         lessonRepository.save(lesson);
     }
 
-    public LessonResponseDTO getLessonDetails(Long id) {
+    public LessonDetailResponseDTO getLessonDetails(Long id) {
         Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
 
-        return LessonResponseDTO.createDTO(lesson);
+        return new LessonDetailResponseDTO(lesson);
     }
 
     public List<LessonResponseDTO> getAllLesson() {
         List<Lesson> all = lessonRepository.findAll();
 
-        return all.stream().map(LessonResponseDTO::createDTO).toList();
+        return all.stream().map(LessonResponseDTO::new).toList();
     }
 
-    public LessonStudentResponseDTO getLessonStudentDetails(Long id) {
+    public LessonDetailBasicDTO getLessonStudentDetails(Long id) {
         Lesson lesson = lessonRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
 
-        return LessonStudentResponseDTO.createDTO(lesson);
+        return new LessonDetailBasicDTO(lesson);
     }
 
-    public List<LessonStudentResponseDTO> getAllLessonStudents() {
+    public List<LessonBasicDTO> getAllLessonStudents() {
         List<Lesson> all = lessonRepository.findAll();
 
-        return all.stream().map(LessonStudentResponseDTO::createDTO).toList();
+        return all.stream().map(LessonBasicDTO::new).toList();
     }
 }

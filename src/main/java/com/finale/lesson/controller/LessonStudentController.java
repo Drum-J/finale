@@ -1,6 +1,7 @@
 package com.finale.lesson.controller;
 
-import com.finale.lesson.dto.LessonStudentResponseDTO;
+import com.finale.lesson.dto.LessonBasicDTO;
+import com.finale.lesson.dto.LessonDetailBasicDTO;
 import com.finale.lesson.service.LessonService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,12 +21,12 @@ public class LessonStudentController {
     private final LessonService lessonService;
 
     @GetMapping("/{id}")
-    public LessonStudentResponseDTO getLessonStudentDetails(@PathVariable(name = "id") Long id) {
+    public LessonDetailBasicDTO getLessonStudentDetails(@PathVariable(name = "id") Long id) {
         return lessonService.getLessonStudentDetails(id);
     }
 
     @GetMapping("/list")
-    public List<LessonStudentResponseDTO> getAllLessonStudents() {
+    public List<LessonBasicDTO> getAllLessonStudents() {
         return lessonService.getAllLessonStudents();
     }
 }
