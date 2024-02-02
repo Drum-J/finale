@@ -18,7 +18,6 @@ public class TimetableCreateDTO {
     private String startTime; //07:10
     private String endTime; //08:30
 
-    /*
     private String secondDate; //2024-01-15
     private String secondStartTime; //07:10
     private String secondEndTime; //08:30
@@ -30,7 +29,6 @@ public class TimetableCreateDTO {
     private String fourthDate; //2024-01-29
     private String fourthStartTime; //07:40
     private String fourthEndTime; //09:00
-    */
 
     private String cost; // 4회 18만원
     private int classSize; // 1:8 수업
@@ -43,6 +41,15 @@ public class TimetableCreateDTO {
                 .date(this.date)
                 .startTime(this.startTime)
                 .endTime(this.endTime)
+                .secondDate(this.secondDate)
+                .secondStartTime(this.secondStartTime)
+                .secondEndTime(this.secondEndTime)
+                .thirdDate(this.thirdDate)
+                .thirdStartTime(this.thirdStartTime)
+                .thirdEndTime(this.thirdEndTime)
+                .fourthDate(this.fourthDate)
+                .fourthStartTime(this.fourthStartTime)
+                .fourthEndTime(this.fourthEndTime)
                 .cost(this.cost)
                 .classSize(this.classSize)
                 .totalClassSize(this.classSize * this.coachId.size())
