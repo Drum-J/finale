@@ -29,7 +29,7 @@ public class LocationService {
         List<Location> all = locationRepository.findAll();
 
         List<LocationResponseDTO> locations = all.stream().map(
-                location -> new LocationResponseDTO(location.getName())).toList();
+                location -> new LocationResponseDTO(location.getId(),location.getName())).toList();
 
         return locations;
     }
