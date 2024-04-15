@@ -18,7 +18,7 @@ import static lombok.AccessLevel.PROTECTED;
 public class Lesson extends TimeStamped{
 
     @Id @GeneratedValue(strategy = IDENTITY)
-    @Column(name = "lesson_history_id")
+    @Column(name = "lesson_id")
     private Long id;
 
     private String title;
