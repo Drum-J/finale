@@ -31,8 +31,8 @@ public class LocationController {
     @GetMapping("/list")
     @Operation(
             method = "GET",
-            summary = "getLocationsList()",
-            description = "레슨 장소 리스트 API"
+            summary = "레슨 장소 리스트 API",
+            description = "getLocationsList()"
     )
     public List<LocationResponseDTO> getLocationList() {
         return locationService.getLocationList();

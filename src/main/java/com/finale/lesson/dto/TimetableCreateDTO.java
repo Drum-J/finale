@@ -1,37 +1,57 @@
 package com.finale.lesson.dto;
 
 import com.finale.entity.Timetable;
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
 public class TimetableCreateDTO {
-    private String title; // 수업 제목 2024년 1월 월요일 고려대학교
+    @Schema(description = "수업 제목", example = "2024년 1월 월요일 계명대학교")
+    private String title;
 
-    private String location; //장소 id
-    private List<Long> coachId; //코치 id
+    @Schema(description = "장소", example = "계명대학교")
+    private String location;
 
-    private String days; //레슨 요일
+    @Schema(description = "코치 ID List", example = "[1,2]")
+    private List<Long> coachId;
 
-    private String date; //2024-01-08
-    private String startTime; //07:10
-    private String endTime; //08:30
+    @Schema(description = "레슨 요일", example = "월요일")
+    private String days;
 
-    private String secondDate; //2024-01-15
-    private String secondStartTime; //07:10
-    private String secondEndTime; //08:30
+    @Schema(description = "첫 번째 수업 날짜", example = "2024-01-08")
+    private String date;
+    @Schema(description = "첫 번째 수업 시작 시간", example = "07:10")
+    private String startTime;
+    @Schema(description = "첫 번째 수업 종료 시간", example = "08:30")
+    private String endTime;
 
-    private String thirdDate; //2024-01-22
-    private String thirdStartTime; //07:10
-    private String thirdEndTime; //08:30
+    @Schema(description = "두 번째 수업 날짜", example = "2024-01-15")
+    private String secondDate;
+    @Schema(description = "두 번째 수업 시작 시간", example = "07:10")
+    private String secondStartTime;
+    @Schema(description = "두 번째 수업 종료 시간", example = "08:30")
+    private String secondEndTime;
 
-    private String fourthDate; //2024-01-29
-    private String fourthStartTime; //07:40
-    private String fourthEndTime; //09:00
+    @Schema(description = "세 번째 수업 날짜", example = "2024-01-22")
+    private String thirdDate;
+    @Schema(description = "세 번째 수업 시작 시간", example = "07:10")
+    private String thirdStartTime;
+    @Schema(description = "세 번째 수업 종료 시간", example = "08:30")
+    private String thirdEndTime;
 
-    private String cost; // 4회 18만원
-    private int classSize; // 1:8 수업
+    @Schema(description = "네 번째 수업 날짜", example = "2024-01-29")
+    private String fourthDate;
+    @Schema(description = "네 번째 수업 시작 시간", example = "07:40")
+    private String fourthStartTime;
+    @Schema(description = "네 번째 수업 종료 시간", example = "09:00")
+    private String fourthEndTime;
+
+    @Schema(description = "수업 횟수 및 비용", example = "4회 18만원")
+    private String cost;
+    @Schema(description = "(코치 1명 당) 수업 정원", example = "8")
+    private int classSize;
 
     public Timetable convertToEntity() {
         return Timetable.builder()

@@ -32,13 +32,13 @@ public class InitDB {
         public void initStudent() {
             Student student1 = Student.builder()
                     .email("test@email.com")
-                    .name("황승호")
+                    .name("학생1")
                     .phoneNumber("010-1122-3344")
                     .build();
 
             Student student2 = Student.builder()
                     .email("test@email.com")
-                    .name("우주형")
+                    .name("학생2")
                     .phoneNumber("010-1122-3344")
                     .build();
 

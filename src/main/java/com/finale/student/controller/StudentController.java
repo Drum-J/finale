@@ -21,8 +21,8 @@ public class StudentController {
     @PostMapping("/enrolment")
     @Operation(
             method = "POST",
-            summary = "enrolment()",
-            description = "수강생 레슨 신청 API"
+            summary = "수강생 레슨 신청 API",
+            description = "enrolment()"
     )
     public String enrolment(@RequestBody EnrolmentDTO dto) {
         return studentService.enrolment(dto);

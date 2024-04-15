@@ -22,8 +22,8 @@ public class CoachController {
     @GetMapping("/list")
     @Operation(
             method = "GET",
-            summary = "getCoachList()",
-            description = "코치 리스트 API"
+            summary = "코치 리스트 API",
+            description = "getCoachList()"
     )
     public List<CoachResponseDTO> getCoachList() {
         return coachService.getCoachList();
