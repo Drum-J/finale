@@ -5,6 +5,7 @@ import com.finale.coach.repository.CoachRepository;
 import com.finale.lesson.dto.*;
 import com.finale.lesson.repository.LessonRepository;
 import com.finale.lesson.repository.TimetableRepository;
+import com.finale.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,9 +22,15 @@ public class LessonService {
     private final TimetableRepository timetableRepository;
     private final CoachRepository coachRepository;
     private final LessonRepository lessonRepository;
+    private final LocationRepository locationRepository;
 
     @Transactional
     public void createTimetable(TimetableCreateDTO dto) {
+        Location findLocation = locationRepository.findByName(dto.getLocation());
+        if (findLocation == null) {
+            throw new IllegalArgumentException("해당 장소를 찾을 수 없습니다.");
+        }
+
         Timetable timetable = dto.convertToEntity();
 
         Lesson lesson = new Lesson(timetable);
