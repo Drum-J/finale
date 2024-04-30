@@ -26,13 +26,16 @@ public class Coach extends TimeStamped {
 
     private String name;
 
+    private String phoneNumber;
+
     @Enumerated(value = STRING)
     private CoachRole coachRole;
 
     @Builder
-    public Coach(String email,String name, CoachRole coachRole) {
+    public Coach(String email,String name,String phoneNumber, CoachRole coachRole) {
         this.email = email;
         this.name = name;
+        this.phoneNumber = phoneNumber;
         this.coachRole = coachRole;
     }
 }
