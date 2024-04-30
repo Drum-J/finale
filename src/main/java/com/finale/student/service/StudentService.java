@@ -4,6 +4,7 @@ import com.finale.entity.Lesson;
 import com.finale.entity.LessonStudent;
 import com.finale.student.dto.EnrolmentDTO;
 import com.finale.entity.Student;
+import com.finale.student.dto.StudentCreateDTO;
 import com.finale.student.repository.StudentRepository;
 import com.finale.lesson.repository.LessonRepository;
 import lombok.RequiredArgsConstructor;
@@ -23,20 +24,27 @@ public class StudentService {
     @Transactional
     public String enrolment(EnrolmentDTO dto) {
 
-        Lesson lesson = lessonRepository.findById(dto.getLessonId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
-
-        Student student = studentRepository.findById(dto.getStudentId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 학생을 찾을 수 없습니다."));
-
-        LessonStudent lessonStudent = new LessonStudent(lesson, student);
-
         try {
+            Lesson lesson = lessonRepository.findById(dto.getLessonId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
+
+            Student student = studentRepository.findById(dto.getStudentId())
+                    .orElseThrow(() -> new IllegalArgumentException("해당 학생을 찾을 수 없습니다."));
+
+            LessonStudent lessonStudent = new LessonStudent(lesson, student);
+
             lesson.addStudent(lessonStudent);
-        } catch (IllegalStateException e) {
+        } catch (RuntimeException e) {
             return e.getMessage();
         }
 
         return "수강신청이 정상적으로 완료 되었습니다.";
+    }
+
+    @Transactional
+    public String create(StudentCreateDTO dto) {
+        studentRepository.save(dto.toEntity());
+
+        return "수강생 등록이 완료되었습니다.";
     }
 }
