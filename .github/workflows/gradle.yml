@@ -28,6 +28,15 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
 
+    - name: yml 값 세팅
+      uses: microsoft/variable-substitution@v1
+      with:
+        files: ./src/main/resources/application.yml 
+      env:
+        spring.datasource.url: ${{ secrets.FINALE_DB_URL }} 
+        spring.datasource.username: ${{ secrets.FINALE_DB_USERNAME }} 
+        spring.datasource.password: ${{ secrets.FINALE_DB_PASSWORD }} 
+
     - name: Gradle 명령 실행을 위한 권한을 부여합니다
       run: chmod +x gradlew
     
