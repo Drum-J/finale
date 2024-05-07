@@ -3,6 +3,7 @@ package com.finale.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 
@@ -24,6 +25,10 @@ public class WebSecurityConfig {
 
                     return corsConfig;
                 })) // cors 설정 끝
+                .csrf(AbstractHttpConfigurer::disable) // csrf disable
+                .formLogin(AbstractHttpConfigurer::disable) // formLogin disable
+                .authorizeHttpRequests(request ->
+                        request.anyRequest().permitAll()) // 우선 모든 접근 허용으로 설정
                 .build();
     }
 }
