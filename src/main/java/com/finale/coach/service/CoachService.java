@@ -19,8 +19,8 @@ public class CoachService {
     private final CoachRepository coachRepository;
 
     public List<CoachResponseDTO> getCoachList() {
-        return coachRepository.findAll().stream().map(
-                coach -> new CoachResponseDTO(coach.getId(), coach.getName())).toList();
+        return coachRepository.findAll().stream()
+                .map(CoachResponseDTO::new).toList();
     }
 
     @Transactional
