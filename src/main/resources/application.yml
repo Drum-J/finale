@@ -17,3 +17,18 @@ app:
   swagger:
     version : "V 1.0.2"
     description : "피날레 백엔드 API 문서 입니다."
+
+# Kakao Login Properties
+kakao:
+  client-id: yourClientId
+  client-secret: yourClientSecret
+  redirect-uri:
+    student: yourRedirectUri1
+    coach: yourRedirectUri2
+  content-type: application/x-www-form-urlencoded;charset=utf-8
+  authorization-grant-type: authorization_code
+  #Get
+  authorization-uri: https://kauth.kakao.com/oauth/authorize
+  user-info-uri: https://kapi.kakao.com/v2/user/me
+  #Post
+  token-uri: https://kauth.kakao.com/oauth/token
