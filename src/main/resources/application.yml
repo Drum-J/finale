@@ -8,12 +8,12 @@ spring:
       enabled: true
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
     properties:
       hibernate:
         format_sql: true
 
 app:
   swagger:
-    version : "V 1.0.0"
+    version : "V 1.0.1"
     description : "피날레 백엔드 API 문서 입니다."
