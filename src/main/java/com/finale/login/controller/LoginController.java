@@ -1,6 +1,7 @@
 package com.finale.login.controller;
 
 import com.finale.login.dto.KakaoUserInfo;
+import com.finale.login.service.KakaoAPIService;
 import com.finale.login.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -19,6 +20,7 @@ import java.io.IOException;
 @RequestMapping("/login")
 public class LoginController {
 
+    private final KakaoAPIService kakaoAPIService;
     private final LoginService loginService;
 
     private static final String STUDENT = "student";
@@ -26,13 +28,13 @@ public class LoginController {
 
     @GetMapping("/student")
     public void studentLogin(HttpServletResponse response) throws IOException {
-        String uri = loginService.redirectUri(STUDENT);
+        String uri = kakaoAPIService.redirectUri(STUDENT);
         response.sendRedirect(uri);
     }
 
     @GetMapping("/coach")
     public void coachLogin(HttpServletResponse response) throws IOException {
-        String uri = loginService.redirectUri(COACH);
+        String uri = kakaoAPIService.redirectUri(COACH);
         response.sendRedirect(uri);
     }
 
@@ -40,7 +42,7 @@ public class LoginController {
     @GetMapping("/callback/student")
     public String studentCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
         try {
-            KakaoUserInfo studentInfo = loginService.getAccessToken(code, response, STUDENT);
+            KakaoUserInfo studentInfo = kakaoAPIService.getAccessToken(code, response, STUDENT);
             Long studentId = loginService.loginStudent(studentInfo);
             return "SUCCESS : " + studentId;
         } catch (IOException e) {
@@ -52,7 +54,7 @@ public class LoginController {
     @GetMapping("/callback/coach")
     public String coachCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
         try {
-            KakaoUserInfo coachInfo = loginService.getAccessToken(code, response, COACH);
+            KakaoUserInfo coachInfo = kakaoAPIService.getAccessToken(code, response, COACH);
             Long coachId = loginService.loginCoach(coachInfo);
             return "SUCCESS : " + coachId;
         } catch (IOException e) {
