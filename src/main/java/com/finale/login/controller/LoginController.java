@@ -1,5 +1,6 @@
 package com.finale.login.controller;
 
+import com.finale.login.dto.KakaoUserInfo;
 import com.finale.login.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.io.IOException;
 
@@ -34,13 +36,27 @@ public class LoginController {
         response.sendRedirect(uri);
     }
 
+    @ResponseBody
     @GetMapping("/callback/student")
-    public void studentCallback(@RequestParam(name = "code") String code, HttpServletResponse response) {
-        loginService.getAccessToken(code, response, STUDENT);
+    public String studentCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
+        try {
+            KakaoUserInfo studentInfo = loginService.getAccessToken(code, response, STUDENT);
+            Long studentId = loginService.loginStudent(studentInfo);
+            return "SUCCESS : " + studentId;
+        } catch (IOException e) {
+            return e.getMessage();
+        }
     }
 
+    @ResponseBody
     @GetMapping("/callback/coach")
-    public void coachCallback(@RequestParam(name = "code") String code, HttpServletResponse response) {
-        loginService.getAccessToken(code, response, COACH);
+    public String coachCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
+        try {
+            KakaoUserInfo coachInfo = loginService.getAccessToken(code, response, COACH);
+            Long coachId = loginService.loginCoach(coachInfo);
+            return "SUCCESS : " + coachId;
+        } catch (IOException e) {
+            return e.getMessage();
+        }
     }
 }

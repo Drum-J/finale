@@ -1,16 +1,23 @@
 package com.finale.login.service;
 
+import com.finale.coach.repository.CoachRepository;
+import com.finale.entity.Coach;
+import com.finale.entity.CoachRole;
+import com.finale.entity.Student;
+import com.finale.login.dto.KakaoUserInfo;
+import com.finale.student.repository.StudentRepository;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
+
+import java.io.IOException;
 
 import static java.net.URLEncoder.encode;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -48,6 +55,9 @@ public class LoginService {
     @Value("${kakao.token-uri}")
     private String tokenUri;
 
+    private final CoachRepository coachRepository;
+    private final StudentRepository studentRepository;
+
     public String redirectUri(String type) {
         String redirectUri;
         if (type.equals("student")) {
@@ -65,7 +75,7 @@ public class LoginService {
                 .toString();
     }
 
-    public void getAccessToken(String code, HttpServletResponse response, String type) {
+    public KakaoUserInfo getAccessToken(String code, HttpServletResponse response, String type) throws IOException {
         String redirectUri;
         if (type.equals("student")) {
             redirectUri = redirectStudent;
@@ -83,62 +93,95 @@ public class LoginService {
                 .build()
                 .toString();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(CONTENT_TYPE, contentType);
+        RestClient restClient = RestClient.builder()
+                .baseUrl(uri)
+                .defaultHeader(CONTENT_TYPE, contentType)
+                .build();
 
-        // RestTemplate 대신 RestClient 로 바꿔보기
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        String body = restClient.post()
+                .retrieve()
+                .onStatus(HttpStatusCode::isError,((request, resp) -> {
+                    throw new IOException("카카오 서버와 통신 중 에러가 발생했습니다.");
+                }))
+                .body(String.class);
 
-        String token = restTemplate
-                .exchange(
-                        uri,
-                        HttpMethod.POST,
-                        httpEntity,
-                        String.class)
-                .getBody();
+        log.info("RestClient Body = {}",body);
 
-        JSONObject json = new JSONObject(token);
-
+        JSONObject json = new JSONObject(body);
         String accessToken = json.getString("access_token");
 
         log.info("카카오 AccessToken = {}", accessToken);
 
-        getUserInfo(accessToken, response);
-        //이걸 공통 KakaoUserInfo 객체로 만들어서 리턴 후 type 값 활용해서 로그인 처리 하는게 좋을 듯
+        KakaoUserInfo userInfo = getUserInfo(accessToken);
+        log.info("카카오 유저 정보 = {}", userInfo);
+
+        return userInfo;
     }
 
-    private void getUserInfo(String accessToken, HttpServletResponse response) {
+    private KakaoUserInfo getUserInfo(String accessToken) throws IOException {
 
         String uri = UriComponentsBuilder
                 .fromUriString(userInfoUri)
-                .queryParam("property_keys", "[\"kakao_account.profile\",\"kakao_account.email\"]")
+                .queryParam("property_keys", "[\"kakao_account.email\",\"kakao_account.name\",\"kakao_account.phone_number\"]")
                 .build()
                 .toString();
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add(CONTENT_TYPE, contentType);
-        headers.add(AUTHORIZATION, "Bearer " + accessToken);
-        RestTemplate restTemplate = new RestTemplate();
-        HttpEntity<String> httpEntity = new HttpEntity<>(headers);
+        RestClient restClient = RestClient.builder()
+                .baseUrl(uri)
+                .defaultHeader(CONTENT_TYPE,contentType)
+                .defaultHeader(AUTHORIZATION, "Bearer " + accessToken)
+                .build();
 
-        String userInfo = restTemplate
-                .exchange(
-                        uri,
-                        HttpMethod.GET,
-                        httpEntity,
-                        String.class)
-                .getBody();
+        String body = restClient.get()
+                .retrieve()
+                .onStatus(HttpStatusCode::isError,((request, response) -> {
+                    throw new IOException("카카오 서버와 통신 중 에러가 발생했습니다.");
+                }))
+                .body(String.class);
 
-        JSONObject json = new JSONObject(userInfo);
+        log.info("RestClient Body.UserInfo = {}",body);
+
+        JSONObject json = new JSONObject(body);
         String email = json.getJSONObject("kakao_account").getString("email");
+        String name = json.getJSONObject("kakao_account").getString("name");
+        String phoneNumber = json.getJSONObject("kakao_account").getString("phone_number");
 
-        JSONObject profile = json.getJSONObject("kakao_account").getJSONObject("profile");
-        String nickname = profile.getString("nickname");
-        String profileImageUrl = profile.getString("profile_image_url");
+        return new KakaoUserInfo(name, email, phoneNumber);
+    }
 
-        log.info("카카오 유저 정보 = {} / {} / {}", email, nickname, profileImageUrl);
+    @Transactional
+    public Long loginCoach(KakaoUserInfo coachInfo) {
+        Coach coach = coachRepository.findByNameAndEmailAndPhoneNumber(
+                coachInfo.name(), coachInfo.email(), coachInfo.phoneNumber()).orElse(null);
 
-        // 카카오 유저 정보 객체로 만들어서 return;
+        if (coach == null) {
+            Coach saveCoach = Coach.builder()
+                    .name(coachInfo.name())
+                    .email(coachInfo.email())
+                    .phoneNumber(coachInfo.phoneNumber())
+                    .coachRole(CoachRole.SUB)
+                    .build();
+
+            coach = coachRepository.save(saveCoach);
+        }
+
+        return coach.getId();
+    }
+
+    @Transactional
+    public Long loginStudent(KakaoUserInfo studentInfo) {
+        Student student = studentRepository.findByNameAndEmailAndPhoneNumber(
+                studentInfo.name(), studentInfo.email(), studentInfo.phoneNumber()).orElse(null);
+
+        if (student == null) {
+            Student saveStudent = Student.builder()
+                    .name(studentInfo.name())
+                    .email(studentInfo.email())
+                    .phoneNumber(studentInfo.phoneNumber())
+                    .build();
+            student = studentRepository.save(saveStudent);
+        }
+
+        return student.getId();
     }
 }
