@@ -35,7 +35,11 @@ jobs:
       env:
         spring.datasource.url: ${{ secrets.FINALE_DB_URL }} 
         spring.datasource.username: ${{ secrets.FINALE_DB_USERNAME }} 
-        spring.datasource.password: ${{ secrets.FINALE_DB_PASSWORD }} 
+        spring.datasource.password: ${{ secrets.FINALE_DB_PASSWORD }}
+        kakao.client-id : ${{secrets.KAKAO_CLIENT_ID}}
+        kakao.client-secret : ${{secrets.KAKAO_CLIENT_SECRET}}
+        kakao.redirect-uri.student : ${{secrets.KAKAO_REDIRECT_STUDENT}}
+        kakao.redirect-uri.coach : ${{secrets.KAKAO_REDIRECT_COACH}}
 
     - name: Gradle 명령 실행을 위한 권한을 부여합니다
       run: chmod +x gradlew

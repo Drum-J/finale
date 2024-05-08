@@ -15,16 +15,16 @@ spring:
 
 app:
   swagger:
-    version : "V 1.0.2"
+    version : "V 1.0.3"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties
 kakao:
-  client-id: yourClientId
-  client-secret: yourClientSecret
+  client-id: ${KAKAO_CLIENT_ID}
+  client-secret: ${KAKAO_CLIENT_SECRET}
   redirect-uri:
-    student: yourRedirectUri1
-    coach: yourRedirectUri2
+    student: ${KAKAO_REDIRECT_STUDENT}
+    coach: ${KAKAO_REDIRECT_COACH}
   content-type: application/x-www-form-urlencoded;charset=utf-8
   authorization-grant-type: authorization_code
   #Get
