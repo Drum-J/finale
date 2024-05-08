@@ -32,6 +32,9 @@ public class KakaoAPIService {
     @Value("${kakao.redirect-uri.coach}")
     private String redirectCoach;
 
+    @Value("${kakao.redirect-uri.logout}")
+    private String redirectLogout;
+
     @Value("${kakao.content-type}")
     private String contentType;
 
@@ -46,6 +49,9 @@ public class KakaoAPIService {
 
     @Value("${kakao.token-uri}")
     private String tokenUri;
+
+    @Value("${kakao.logout-uri}")
+    private String logoutUri;
 
     public String redirectUri(String type) {
         String redirectUri;
@@ -136,5 +142,14 @@ public class KakaoAPIService {
         String phoneNumber = json.getJSONObject("kakao_account").getString("phone_number");
 
         return new KakaoUserInfo(name, email, phoneNumber);
+    }
+
+    public String logoutWithKakao() {
+        return UriComponentsBuilder
+                .fromUriString(logoutUri)
+                .queryParam("client_id", clientId)
+                .queryParam("logout_redirect_uri", redirectLogout)
+                .build()
+                .toString();
     }
 }

@@ -25,10 +25,12 @@ kakao:
   redirect-uri:
     student: ${KAKAO_REDIRECT_STUDENT}
     coach: ${KAKAO_REDIRECT_COACH}
+    logout : ${KAKAO_REDIRECT_LOGOUT}
   content-type: application/x-www-form-urlencoded;charset=utf-8
   authorization-grant-type: authorization_code
   #Get
   authorization-uri: https://kauth.kakao.com/oauth/authorize
   user-info-uri: https://kapi.kakao.com/v2/user/me
+  logout-uri : https://kauth.kakao.com/oauth/logout
   #Post
   token-uri: https://kauth.kakao.com/oauth/token

@@ -40,6 +40,7 @@ jobs:
         kakao.client-secret : ${{secrets.KAKAO_CLIENT_SECRET}}
         kakao.redirect-uri.student : ${{secrets.KAKAO_REDIRECT_STUDENT}}
         kakao.redirect-uri.coach : ${{secrets.KAKAO_REDIRECT_COACH}}
+        kakao.redirect-uri.logout : ${{secrets.KAKAO_REDIRECT_LOGOUT}}
 
     - name: Gradle 명령 실행을 위한 권한을 부여합니다
       run: chmod +x gradlew
