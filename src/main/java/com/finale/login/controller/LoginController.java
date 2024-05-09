@@ -6,6 +6,7 @@ import com.finale.login.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -43,8 +44,9 @@ public class LoginController {
     public String studentCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
         try {
             KakaoUserInfo studentInfo = kakaoAPIService.getAccessToken(code, response, STUDENT);
-            Long studentId = loginService.loginStudent(studentInfo);
-            return "SUCCESS : " + studentId;
+            String token = loginService.loginStudent(studentInfo);
+            response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+            return "SUCCESS : " + token;
         } catch (IOException e) {
             return e.getMessage();
         }
@@ -55,8 +57,9 @@ public class LoginController {
     public String coachCallback(@RequestParam(name = "code") String code, HttpServletResponse response) throws IOException {
         try {
             KakaoUserInfo coachInfo = kakaoAPIService.getAccessToken(code, response, COACH);
-            Long coachId = loginService.loginCoach(coachInfo);
-            return "SUCCESS : " + coachId;
+            String token = loginService.loginCoach(coachInfo);
+            response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+            return "SUCCESS : " + token;
         } catch (IOException e) {
             return e.getMessage();
         }

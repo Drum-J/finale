@@ -4,6 +4,7 @@ import com.finale.coach.repository.CoachRepository;
 import com.finale.entity.Coach;
 import com.finale.entity.CoachRole;
 import com.finale.entity.Student;
+import com.finale.jwt.JwtProvider;
 import com.finale.login.dto.KakaoUserInfo;
 import com.finale.student.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -17,8 +18,9 @@ public class LoginService {
 
     private final CoachRepository coachRepository;
     private final StudentRepository studentRepository;
+    private final JwtProvider jwtProvider;
 
-    public Long loginCoach(KakaoUserInfo coachInfo) {
+    public String loginCoach(KakaoUserInfo coachInfo) {
         Coach coach = coachRepository.findByNameAndEmailAndPhoneNumber(
                 coachInfo.name(), coachInfo.email(), coachInfo.phoneNumber()).orElse(null);
 
@@ -33,10 +35,10 @@ public class LoginService {
             coach = coachRepository.save(saveCoach);
         }
 
-        return coach.getId();
+        return jwtProvider.createAccessToken(coach.getId(), coach.getName(), coach.getCoachRole().toString());
     }
 
-    public Long loginStudent(KakaoUserInfo studentInfo) {
+    public String loginStudent(KakaoUserInfo studentInfo) {
         Student student = studentRepository.findByNameAndEmailAndPhoneNumber(
                 studentInfo.name(), studentInfo.email(), studentInfo.phoneNumber()).orElse(null);
 
@@ -49,6 +51,6 @@ public class LoginService {
             student = studentRepository.save(saveStudent);
         }
 
-        return student.getId();
+        return jwtProvider.createAccessToken(student.getId(), student.getName(), "STUDENT");
     }
 }

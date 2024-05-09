@@ -1,16 +1,24 @@
 package com.finale.config;
 
+import com.finale.jwt.JwtFilter;
+import com.finale.jwt.JwtProvider;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collections;
 
 @Configuration
+@RequiredArgsConstructor
 public class WebSecurityConfig {
+
+    private final JwtProvider jwtProvider;
 
     @Bean
     SecurityFilterChain securityConfig(HttpSecurity http) throws Exception {
@@ -27,8 +35,12 @@ public class WebSecurityConfig {
                 })) // cors 설정 끝
                 .csrf(AbstractHttpConfigurer::disable) // csrf disable
                 .formLogin(AbstractHttpConfigurer::disable) // formLogin disable
-                .authorizeHttpRequests(request ->
-                        request.anyRequest().permitAll()) // 우선 모든 접근 허용으로 설정
+                .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세선 상태 변경
+                .authorizeHttpRequests(request -> request
+                        .requestMatchers("/api/coach/list").hasAnyAuthority("MASTER","SUB")
+                        .anyRequest().permitAll() // 우선 모든 접근 허용으로 설정
+                )
+                .addFilterBefore(new JwtFilter(jwtProvider), BasicAuthenticationFilter.class)
                 .build();
     }
 }
