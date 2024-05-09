@@ -13,6 +13,9 @@ import org.springframework.security.web.authentication.www.BasicAuthenticationFi
 import org.springframework.web.cors.CorsConfiguration;
 
 import java.util.Collections;
+import java.util.List;
+
+import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 
 @Configuration
 @RequiredArgsConstructor
@@ -30,6 +33,7 @@ public class WebSecurityConfig {
                     corsConfig.setAllowedMethods(Collections.singletonList("*"));
                     corsConfig.setAllowCredentials(true);
                     corsConfig.setMaxAge(3600L);
+                    corsConfig.setExposedHeaders(List.of(AUTHORIZATION));
 
                     return corsConfig;
                 })) // cors 설정 끝
