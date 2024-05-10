@@ -25,8 +25,14 @@ public class LessonController {
             description = "createTimetable()"
     )
     @PostMapping("/create")
-    public void createTimetable(@RequestBody TimetableCreateDTO dto) {
-        lessonService.createTimetable(dto);
+    public String createTimetable(@RequestBody TimetableCreateDTO dto) {
+        try {
+            lessonService.createTimetable(dto);
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+
+        return "레슨 생성을 완료했습니다.";
     }
 
     @Operation(

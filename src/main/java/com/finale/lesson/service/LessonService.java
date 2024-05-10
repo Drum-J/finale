@@ -24,9 +24,10 @@ public class LessonService {
     private final CoachRepository coachRepository;
     private final LessonRepository lessonRepository;
     private final LocationRepository locationRepository;
+    private final LessonStudentRepository lessonStudentRepository;
 
     @Transactional
-    public void createTimetable(TimetableCreateDTO dto) {
+    public void createTimetable(TimetableCreateDTO dto) throws IllegalArgumentException {
         Location findLocation = locationRepository.findByName(dto.getLocation());
         if (findLocation == null) {
             throw new IllegalArgumentException("해당 장소를 찾을 수 없습니다.");
@@ -36,10 +37,12 @@ public class LessonService {
 
         Lesson lesson = new Lesson(timetable);
 
-        List<Long> coachId = dto.getCoachId();
+        /* 레슨 생성 단계에서 코치 정해지지 않음. 단순히 몇 명인지만 정함
+        List<Long> coachId = dto.getCoaches();
         coachId.stream().map(id -> coachRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 코치를 찾을 수 없습니다.")))
                 .map(coach -> new LessonCoach(lesson,coach)).forEach(lesson::addCoaches);
+        */
 
         timetableRepository.save(timetable);
         lessonRepository.save(lesson);

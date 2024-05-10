@@ -100,17 +100,10 @@ public class KakaoAPIService {
                 }))
                 .body(String.class);
 
-        log.info("RestClient Body = {}",body);
-
         JSONObject json = new JSONObject(body);
         String accessToken = json.getString("access_token");
 
-        log.info("카카오 AccessToken = {}", accessToken);
-
-        KakaoUserInfo userInfo = getUserInfo(accessToken);
-        log.info("카카오 유저 정보 = {}", userInfo);
-
-        return userInfo;
+        return getUserInfo(accessToken);
     }
 
     private KakaoUserInfo getUserInfo(String accessToken) throws IOException {
@@ -133,8 +126,6 @@ public class KakaoAPIService {
                     throw new IOException("카카오 서버와 통신 중 에러가 발생했습니다.");
                 }))
                 .body(String.class);
-
-        log.info("RestClient Body.UserInfo = {}",body);
 
         JSONObject json = new JSONObject(body);
         String email = json.getJSONObject("kakao_account").getString("email");

@@ -44,7 +44,7 @@ public class JwtProvider {
         Date expirationDate = new Date(currentDate.getTime() + EXPIRATION);
 
         // 스프링에 인증 추가
-        setAuthentication(name, role);
+        setAuthentication(claims);
 
         return Jwts.builder()
                 .claims(claims)
@@ -93,22 +93,20 @@ public class JwtProvider {
     }
 
 
-    public void getTokenInfo(String token) {
-        Claims payload = Jwts
+    public Claims getTokenInfo(String token) {
+        return Jwts
                 .parser()
                 .verifyWith(SECRET_KEY)
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-
-        String name = payload.get("name").toString();
-        String role = payload.get("role").toString();
-
-        setAuthentication(name, role);
     }
 
-    private void setAuthentication(String name, String role) {
+    public void setAuthentication(Claims claims) {
         log.info("==== 스프링 시큐리티 컨텍스트 세팅 ====");
+
+        String name = claims.get("name").toString();
+        String role = claims.get("role").toString();
 
         UsernamePasswordAuthenticationToken auth =
                 new UsernamePasswordAuthenticationToken(name, null, AuthorityUtils.createAuthorityList(role));
