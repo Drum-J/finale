@@ -1,7 +1,6 @@
 package com.finale.login.service;
 
 import com.finale.login.dto.KakaoUserInfo;
-import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,11 +25,8 @@ public class KakaoAPIService {
     @Value("${kakao.client-secret}")
     private String clientSecret;
 
-    @Value("${kakao.redirect-uri.student}")
-    private String redirectStudent;
-
-    @Value("${kakao.redirect-uri.coach}")
-    private String redirectCoach;
+    @Value("${kakao.redirect-uri.login}")
+    private String redirectLogin;
 
     @Value("${kakao.redirect-uri.logout}")
     private String redirectLogout;
@@ -54,35 +50,24 @@ public class KakaoAPIService {
     private String logoutUri;
 
     public String redirectUri(String type) {
-        String redirectUri;
-        if (type.equals("student")) {
-            redirectUri = redirectStudent;
-        } else {
-            redirectUri = redirectCoach;
-        }
 
         return UriComponentsBuilder
                 .fromUriString(authorizationUri)
                 .queryParam("response_type", "code")
                 .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", encode(redirectUri, UTF_8))
+                .queryParam("redirect_uri", encode(redirectLogin, UTF_8))
+                .queryParam("state", type)
                 .build()
                 .toString();
     }
 
-    public KakaoUserInfo getAccessToken(String code, HttpServletResponse response, String type) throws IOException {
-        String redirectUri;
-        if (type.equals("student")) {
-            redirectUri = redirectStudent;
-        } else {
-            redirectUri = redirectCoach;
-        }
+    public KakaoUserInfo getAccessToken(String code) throws IOException {
 
         String uri = UriComponentsBuilder
                 .fromUriString(tokenUri)
                 .queryParam("grant_type", grantType)
                 .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectUri)
+                .queryParam("redirect_uri", redirectLogin)
                 .queryParam("code", code)
                 .queryParam("client_secret", clientSecret)
                 .build()
