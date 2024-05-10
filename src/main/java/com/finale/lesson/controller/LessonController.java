@@ -48,4 +48,9 @@ public class LessonController {
     public List<LessonResponseDTO> getAllLesson() {
         return lessonService.getAllLesson();
     }
+
+    @PostMapping("/depositConfirm/{id}")
+    public String depositConfirm(@PathVariable("id") Long id) {
+        return lessonService.updateDeposit(id);
+    }
 }

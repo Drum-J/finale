@@ -4,6 +4,7 @@ import com.finale.entity.*;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.lesson.dto.*;
 import com.finale.lesson.repository.LessonRepository;
+import com.finale.lesson.repository.LessonStudentRepository;
 import com.finale.lesson.repository.TimetableRepository;
 import com.finale.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
@@ -66,5 +67,18 @@ public class LessonService {
         List<Lesson> all = lessonRepository.findAll();
 
         return all.stream().map(LessonBasicDTO::new).toList();
+    }
+
+    @Transactional
+    public String updateDeposit(Long id) {
+        try {
+            LessonStudent findStudent = lessonStudentRepository.findById(id)
+                    .orElseThrow(() -> new IllegalArgumentException("해당 수강생을 찾을 수 없습니다."));
+            findStudent.depositConfirm();
+        } catch (IllegalArgumentException e) {
+            return e.getMessage();
+        }
+
+        return "입금 확인이 완료 되었습니다.";
     }
 }
