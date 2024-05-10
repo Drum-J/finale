@@ -29,4 +29,10 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(request,response);
     }
+
+    @Override
+    protected boolean shouldNotFilter(HttpServletRequest request) {
+        return request.getServletPath().startsWith("/login") ||
+                request.getServletPath().startsWith("/logout");
+    }
 }
