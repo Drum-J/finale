@@ -21,16 +21,12 @@ public class LocationService {
 
     @Transactional
     public void createLocation(LocationCreateDTO dto) {
-        Location location = new Location(dto.getName());
+        Location location = dto.convertToEntity();
         locationRepository.save(location);
     }
 
     public List<LocationResponseDTO> getLocationList() {
-        List<Location> all = locationRepository.findAll();
-
-        List<LocationResponseDTO> locations = all.stream().map(
-                location -> new LocationResponseDTO(location.getId(),location.getName())).toList();
-
-        return locations;
+        return locationRepository.findAll().stream()
+                .map(LocationResponseDTO::new).toList();
     }
 }
