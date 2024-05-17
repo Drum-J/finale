@@ -15,7 +15,7 @@ spring:
 
 app:
   swagger:
-    version : "V 1.0.6"
+    version : "V 1.0.7"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties
