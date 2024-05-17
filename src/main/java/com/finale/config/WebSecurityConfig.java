@@ -41,7 +41,9 @@ public class WebSecurityConfig {
                 .formLogin(AbstractHttpConfigurer::disable) // formLogin disable
                 .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세선 상태 변경
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/lesson/depositConfirm/**").hasAnyAuthority("MASTER")
+                        .requestMatchers(
+                                "/api/lesson/depositConfirm/**",
+                                "/api/coach/updateRole/**").hasAnyAuthority("MASTER")
                         .requestMatchers("/api/lesson/**").hasAnyAuthority("MASTER","SUB")
                         .anyRequest().permitAll() // 우선 모든 접근 허용으로 설정
                 )

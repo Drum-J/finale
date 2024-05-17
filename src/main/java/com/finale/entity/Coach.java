@@ -38,4 +38,8 @@ public class Coach extends TimeStamped {
         this.phoneNumber = phoneNumber;
         this.coachRole = coachRole;
     }
+
+    public void updateRole() {
+        this.coachRole = CoachRole.MASTER;
+    }
 }

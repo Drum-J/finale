@@ -3,6 +3,7 @@ package com.finale.coach.service;
 import com.finale.coach.dto.CoachCreateDTO;
 import com.finale.coach.dto.CoachResponseDTO;
 import com.finale.coach.repository.CoachRepository;
+import com.finale.entity.Coach;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -27,5 +28,13 @@ public class CoachService {
     public String create(CoachCreateDTO dto) {
         coachRepository.save(dto.toEntity());
         return "코치 등록이 완료되었습니다.";
+    }
+
+    @Transactional
+    public void updateRole(Long id) {
+        Coach find = coachRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 코치를 찾을 수 없습니다."));
+
+        find.updateRole();
     }
 }
