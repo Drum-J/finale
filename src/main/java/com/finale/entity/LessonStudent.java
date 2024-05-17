@@ -35,9 +35,9 @@ public class LessonStudent {
         this.student = student;
     }
 
-    public void depositConfirm() throws IllegalArgumentException {
+    public void depositConfirm() throws IllegalStateException {
         if (this.deposit) {
-            throw new IllegalArgumentException("이미 입금 확인을 완료했습니다.");
+            throw new IllegalStateException("이미 입금 확인을 완료했습니다.");
         }
         this.deposit = true;
     }

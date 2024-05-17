@@ -1,7 +1,9 @@
 package com.finale.student.service;
 
+import com.finale.common.ApiResponse;
 import com.finale.entity.Lesson;
 import com.finale.entity.LessonStudent;
+import com.finale.exception.ResourceNotFoundException;
 import com.finale.student.dto.EnrolmentDTO;
 import com.finale.entity.Student;
 import com.finale.student.dto.StudentCreateDTO;
@@ -22,29 +24,24 @@ public class StudentService {
     private final LessonRepository lessonRepository;
 
     @Transactional
-    public String enrolment(EnrolmentDTO dto) {
+    public ApiResponse enrolment(EnrolmentDTO dto) {
+        Lesson lesson = lessonRepository.findById(dto.getLessonId())
+                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
-        try {
-            Lesson lesson = lessonRepository.findById(dto.getLessonId())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 레슨을 찾을 수 없습니다."));
+        Student student = studentRepository.findById(dto.getStudentId())
+                .orElseThrow(() -> new ResourceNotFoundException("해당 학생을 찾을 수 없습니다."));
 
-            Student student = studentRepository.findById(dto.getStudentId())
-                    .orElseThrow(() -> new IllegalArgumentException("해당 학생을 찾을 수 없습니다."));
+        LessonStudent lessonStudent = new LessonStudent(lesson, student);
 
-            LessonStudent lessonStudent = new LessonStudent(lesson, student);
+        lesson.addStudent(lessonStudent);
 
-            lesson.addStudent(lessonStudent);
-        } catch (RuntimeException e) {
-            return e.getMessage();
-        }
-
-        return "수강신청이 정상적으로 완료 되었습니다.";
+        return ApiResponse.successResponse("수강신청이 정상적으로 완료 되었습니다.");
     }
 
     @Transactional
-    public String create(StudentCreateDTO dto) {
+    public ApiResponse create(StudentCreateDTO dto) {
         studentRepository.save(dto.toEntity());
 
-        return "수강생 등록이 완료되었습니다.";
+        return ApiResponse.successResponse("수강생 등록이 완료되었습니다.");
     }
 }

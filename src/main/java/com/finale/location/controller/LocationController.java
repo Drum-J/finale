@@ -1,14 +1,12 @@
 package com.finale.location.controller;
 
+import com.finale.common.ApiResponse;
 import com.finale.location.dto.LocationCreateDTO;
-import com.finale.location.dto.LocationResponseDTO;
 import com.finale.location.service.LocationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -19,22 +17,14 @@ public class LocationController {
     private final LocationService locationService;
 
     @PostMapping("/create")
-    @Operation(
-            method = "POST",
-            summary = "레슨 장소 생성 API",
-            description = "LocationController.createLocation()"
-    )
-    public void createLocation(@RequestBody LocationCreateDTO dto) {
-        locationService.createLocation(dto);
+    @Operation(summary = "레슨 장소 생성 API", description = "createLocation()")
+    public ApiResponse createLocation(@RequestBody LocationCreateDTO dto) {
+        return locationService.createLocation(dto);
     }
 
     @GetMapping("/list")
-    @Operation(
-            method = "GET",
-            summary = "레슨 장소 리스트 API",
-            description = "getLocationsList()"
-    )
-    public List<LocationResponseDTO> getLocationList() {
+    @Operation(summary = "레슨 장소 리스트 API", description = "getLocationsList()")
+    public ApiResponse getLocationList() {
         return locationService.getLocationList();
     }
 }

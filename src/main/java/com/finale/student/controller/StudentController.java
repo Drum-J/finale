@@ -1,5 +1,6 @@
 package com.finale.student.controller;
 
+import com.finale.common.ApiResponse;
 import com.finale.student.dto.EnrolmentDTO;
 import com.finale.student.dto.StudentCreateDTO;
 import com.finale.student.service.StudentService;
@@ -21,13 +22,13 @@ public class StudentController {
 
     @PostMapping("/enrolment")
     @Operation(summary = "수강생 레슨 신청 API", description = "enrolment()")
-    public String enrolment(@RequestBody EnrolmentDTO dto) {
+    public ApiResponse enrolment(@RequestBody EnrolmentDTO dto) {
         return studentService.enrolment(dto);
     }
 
     @PostMapping("/create")
     @Operation(summary = "수강생 생성 API", description = "createStudent()")
-    public String createStudent(@RequestBody StudentCreateDTO dto) {
+    public ApiResponse createStudent(@RequestBody StudentCreateDTO dto) {
         return studentService.create(dto);
     }
 }

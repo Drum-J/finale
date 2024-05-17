@@ -1,7 +1,6 @@
 package com.finale.lesson.controller;
 
-import com.finale.lesson.dto.LessonBasicDTO;
-import com.finale.lesson.dto.LessonDetailBasicDTO;
+import com.finale.common.ApiResponse;
 import com.finale.lesson.service.LessonService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -10,8 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
 
 @Slf4j
 @RestController
@@ -27,7 +24,7 @@ public class LessonStudentController {
             description = "getLessonStudentDetails()"
     )
     @GetMapping("/{id}")
-    public LessonDetailBasicDTO getLessonStudentDetails(@PathVariable(name = "id") Long id) {
+    public ApiResponse getLessonStudentDetails(@PathVariable(name = "id") Long id) {
         return lessonService.getLessonStudentDetails(id);
     }
 
@@ -37,7 +34,7 @@ public class LessonStudentController {
             description = "getAllLessonStudents()"
     )
     @GetMapping("/list")
-    public List<LessonBasicDTO> getAllLessonStudents() {
+    public ApiResponse getAllLessonStudents() {
         return lessonService.getAllLessonStudents();
     }
 }

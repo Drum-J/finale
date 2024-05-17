@@ -1,15 +1,17 @@
 package com.finale.lesson.controller;
 
-import com.finale.lesson.dto.LessonDetailResponseDTO;
+import com.finale.common.ApiResponse;
 import com.finale.lesson.dto.TimetableCreateDTO;
-import com.finale.lesson.dto.LessonResponseDTO;
 import com.finale.lesson.service.LessonService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
 @RestController
@@ -19,44 +21,27 @@ public class LessonController {
 
     private final LessonService lessonService;
 
-    @Operation(
-            method = "POST",
-            summary = "레슨 생성 API",
-            description = "createTimetable()"
-    )
+    @Operation(summary = "레슨 생성 API", description = "createTimetable()")
     @PostMapping("/create")
-    public String createTimetable(@RequestBody TimetableCreateDTO dto) {
-        try {
-            lessonService.createTimetable(dto);
-        } catch (IllegalArgumentException e) {
-            return e.getMessage();
-        }
-
-        return "레슨 생성을 완료했습니다.";
+    public ApiResponse createTimetable(@RequestBody TimetableCreateDTO dto) {
+        return lessonService.createTimetable(dto);
     }
 
-    @Operation(
-            method = "GET",
-            summary = "[코치] 레슨 디테일 조회 API",
-            description = "getLessonDetails()"
-    )
+    @Operation(summary = "[코치] 레슨 디테일 조회 API", description = "getLessonDetails()")
     @GetMapping("/{id}")
-    public LessonDetailResponseDTO getLessonDetails(@PathVariable(name = "id") Long id) {
+    public ApiResponse getLessonDetails(@PathVariable(name = "id") Long id) {
         return lessonService.getLessonDetails(id);
     }
 
-    @Operation(
-            method = "GET",
-            summary = "[코치] 모든 레슨 조회 API",
-            description = "getAllLesson()"
-    )
+    @Operation(summary = "[코치] 모든 레슨 조회 API", description = "getAllLesson()")
     @GetMapping("/list")
-    public List<LessonResponseDTO> getAllLesson() {
+    public ApiResponse getAllLesson() {
         return lessonService.getAllLesson();
     }
 
+    @Operation(summary = "[코치] 입금 확인 API" ,description = "코치 권한이 [MASTER]인 경우만 가능합니다.")
     @PostMapping("/depositConfirm/{id}")
-    public String depositConfirm(@PathVariable("id") Long id) {
+    public ApiResponse depositConfirm(@PathVariable("id") Long id) {
         return lessonService.updateDeposit(id);
     }
 }
