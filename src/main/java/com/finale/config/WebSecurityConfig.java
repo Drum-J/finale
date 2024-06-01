@@ -16,6 +16,7 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.springframework.http.HttpHeaders.AUTHORIZATION;
+import static org.springframework.http.HttpHeaders.SET_COOKIE;
 
 @Configuration
 @RequiredArgsConstructor
@@ -33,7 +34,7 @@ public class WebSecurityConfig {
                     corsConfig.setAllowedMethods(Collections.singletonList("*"));
                     corsConfig.setAllowCredentials(true);
                     corsConfig.setMaxAge(3600L);
-                    corsConfig.setExposedHeaders(List.of(AUTHORIZATION));
+                    corsConfig.setExposedHeaders(List.of(SET_COOKIE));
 
                     return corsConfig;
                 })) // cors 설정 끝

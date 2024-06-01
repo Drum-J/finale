@@ -1,13 +1,13 @@
 package com.finale.login.controller;
 
 import com.finale.common.ApiResponse;
+import com.finale.common.CookieUtil;
 import com.finale.login.dto.KakaoUserInfo;
 import com.finale.login.service.KakaoAPIService;
 import com.finale.login.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -50,7 +50,7 @@ public class LoginController {
                 return ApiResponse.errorResponse("Type 값이 올바르지 않습니다.");
             }
 
-            response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
+            CookieUtil.addCookie(response, token);
             return ApiResponse.successResponse(token);
         } catch (IOException e) {
             return ApiResponse.badRequestResponse(e.getMessage());
