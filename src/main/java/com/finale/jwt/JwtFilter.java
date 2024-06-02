@@ -25,7 +25,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if (StringUtils.hasText(token) && jwtProvider.validateToken(token)) {
             log.info("JwtFilter 조건 통과");
             jwtProvider.setAuthentication(jwtProvider.getTokenInfo(token));
-            response.setHeader(HttpHeaders.AUTHORIZATION,"Bearer " + token);
         }
         filterChain.doFilter(request,response);
     }

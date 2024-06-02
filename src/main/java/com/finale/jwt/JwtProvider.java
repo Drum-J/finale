@@ -6,6 +6,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -55,22 +56,18 @@ public class JwtProvider {
                 .compact();
     }
 
-    // JWT 헤더에서 가져오기
+    // JWT 쿠키에서 가져오기
     public String resolveToken(HttpServletRequest request) {
-        String headerValue = request.getHeader(AUTHORIZATION);
-
-        if (headerValue == null) {
-            log.info("======== 헤더가 비어있습니다. ========");
-            return null;
+        Cookie[] cookies = request.getCookies();
+        if (cookies != null) {
+            for (Cookie cookie : cookies) {
+                if (cookie.getName().equals("accessToken")) {
+                    return cookie.getValue();
+                }
+            }
         }
 
-        if (!headerValue.startsWith(BEARER)) {
-            log.info("잘못된 토큰 정보입니다.");
-            return null;
-        }
-
-        // 'Authorization Bearer '에 담겨있는 토큰을 가져온다
-        return headerValue.substring(BEARER.length());
+        return null;
     }
 
     // JWT 예외 검사

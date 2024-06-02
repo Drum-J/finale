@@ -8,14 +8,14 @@ spring:
       enabled: true
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
 
 app:
   swagger:
-    version : "V 1.0.8"
+    version : "V 1.0.9"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties
