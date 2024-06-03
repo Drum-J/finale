@@ -12,7 +12,7 @@ public class CookieUtil {
                 .path("/")
                 .sameSite("None")
                 .httpOnly(true)
-                //.secure(true) https 에서만 쿠키를 사용하도록 설정
+                .secure(true) //https 에서만 쿠키를 사용하도록 설정
                 .domain("localhost")
                 .maxAge(60 * 60 * 6) // 6시간
                 .build();
