@@ -29,7 +29,7 @@ public class WebSecurityConfig {
         return http
                 .cors(corsCustom -> corsCustom.configurationSource(request ->{
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(Collections.singletonList("http://localhost:3000")); //React Server
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000","https://localhost:3000")); //React Server
                     corsConfig.setAllowedHeaders(Collections.singletonList("*"));
                     corsConfig.setAllowedMethods(Collections.singletonList("*"));
                     corsConfig.setAllowCredentials(true);
