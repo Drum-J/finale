@@ -38,22 +38,19 @@ public class LoginController {
     @GetMapping("/callback")
     public ApiResponse studentCallback(@RequestParam(name = "code") String code,
                                   @RequestParam(name = "state") String type,
-                                  HttpServletResponse response) {
-        try {
-            KakaoUserInfo userInfo = kakaoAPIService.getAccessToken(code);
-            String token;
-            if (type.equals(STUDENT)) {
-                token = loginService.loginStudent(userInfo);
-            } else if (type.equals(COACH)) {
-                token = loginService.loginCoach(userInfo);
-            } else {
-                return ApiResponse.errorResponse("Type 값이 올바르지 않습니다.");
-            }
-
-            CookieUtil.addCookie(response, token);
-            return ApiResponse.successResponse(token);
-        } catch (IOException e) {
-            return ApiResponse.badRequestResponse(e.getMessage());
+                                  HttpServletResponse response) throws Exception {
+        KakaoUserInfo userInfo = kakaoAPIService.getAccessToken(code);
+        String token;
+        if (type.equals(STUDENT)) {
+            token = loginService.loginStudent(userInfo);
+        } else if (type.equals(COACH)) {
+            token = loginService.loginCoach(userInfo);
+        } else {
+            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
+            return ApiResponse.errorResponse("Type 값이 올바르지 않습니다.");
         }
+
+        CookieUtil.addCookie(response, token);
+        return ApiResponse.successResponse(token);
     }
 }

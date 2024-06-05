@@ -35,4 +35,7 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### custom ###
 src/main/resources/finale.p12
+logs/

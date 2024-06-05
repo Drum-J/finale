@@ -4,12 +4,9 @@ import com.finale.login.dto.KakaoUserInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.io.IOException;
 
 import static java.net.URLEncoder.encode;
 import static java.nio.charset.StandardCharsets.UTF_8;
@@ -61,7 +58,7 @@ public class KakaoAPIService {
                 .toString();
     }
 
-    public KakaoUserInfo getAccessToken(String code) throws IOException {
+    public KakaoUserInfo getAccessToken(String code) throws Exception {
 
         String uri = UriComponentsBuilder
                 .fromUriString(tokenUri)
@@ -78,20 +75,21 @@ public class KakaoAPIService {
                 .defaultHeader(CONTENT_TYPE, contentType)
                 .build();
 
-        String body = restClient.post()
-                .retrieve()
-                .onStatus(HttpStatusCode::isError,((request, resp) -> {
-                    throw new IOException("카카오 서버와 통신 중 에러가 발생했습니다.");
-                }))
-                .body(String.class);
+        try {
+            String body = restClient.post()
+                    .retrieve()
+                    .body(String.class);
 
-        JSONObject json = new JSONObject(body);
-        String accessToken = json.getString("access_token");
+            JSONObject json = new JSONObject(body);
+            String accessToken = json.getString("access_token");
 
-        return getUserInfo(accessToken);
+            return getUserInfo(accessToken);
+        } catch (Exception e) {
+            throw new Exception("카카오 서버와 통신 중 에러가 발생했습니다.");
+        }
     }
 
-    private KakaoUserInfo getUserInfo(String accessToken) throws IOException {
+    private KakaoUserInfo getUserInfo(String accessToken) throws Exception {
 
         String uri = UriComponentsBuilder
                 .fromUriString(userInfoUri)
@@ -105,19 +103,20 @@ public class KakaoAPIService {
                 .defaultHeader(AUTHORIZATION, "Bearer " + accessToken)
                 .build();
 
-        String body = restClient.get()
-                .retrieve()
-                .onStatus(HttpStatusCode::isError,((request, response) -> {
-                    throw new IOException("카카오 서버와 통신 중 에러가 발생했습니다.");
-                }))
-                .body(String.class);
+        try {
+            String body = restClient.get()
+                    .retrieve()
+                    .body(String.class);
 
-        JSONObject json = new JSONObject(body);
-        String email = json.getJSONObject("kakao_account").getString("email");
-        String name = json.getJSONObject("kakao_account").getString("name");
-        String phoneNumber = json.getJSONObject("kakao_account").getString("phone_number");
+            JSONObject json = new JSONObject(body);
+            String email = json.getJSONObject("kakao_account").getString("email");
+            String name = json.getJSONObject("kakao_account").getString("name");
+            String phoneNumber = json.getJSONObject("kakao_account").getString("phone_number");
 
-        return new KakaoUserInfo(name, email, phoneNumber);
+            return new KakaoUserInfo(name, email, phoneNumber);
+        } catch (Exception e) {
+            throw new Exception("카카오 서버와 통신 중 에러가 발생했습니다.");
+        }
     }
 
     public String logoutWithKakao() {
