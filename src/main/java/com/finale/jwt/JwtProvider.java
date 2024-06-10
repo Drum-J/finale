@@ -70,6 +70,24 @@ public class JwtProvider {
         return null;
     }
 
+    // Cookie 설정 완료 전까지 header 토큰 사용
+    public String getTokenFromHeader(HttpServletRequest request) {
+        String headerValue = request.getHeader(AUTHORIZATION);
+
+        if (headerValue == null) {
+            log.info("======== 헤더가 비어있습니다. ========");
+            return null;
+        }
+
+        if (!headerValue.startsWith(BEARER)) {
+            log.info("잘못된 토큰 정보입니다.");
+            return null;
+        }
+
+        // 'Authorization Bearer '에 담겨있는 토큰을 가져온다
+        return headerValue.substring(BEARER.length());
+    }
+
     // JWT 예외 검사
     public boolean validateToken(String token) {
         try {

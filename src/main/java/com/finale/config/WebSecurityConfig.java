@@ -29,12 +29,12 @@ public class WebSecurityConfig {
         return http
                 .cors(corsCustom -> corsCustom.configurationSource(request ->{
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000","https://localhost:3000")); //React Server
+                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000","https://localhost:3000","https://finale-web.vercel.app")); //React Server
                     corsConfig.setAllowedHeaders(Collections.singletonList("*"));
                     corsConfig.setAllowedMethods(Collections.singletonList("*"));
                     corsConfig.setAllowCredentials(true);
                     corsConfig.setMaxAge(3600L);
-                    corsConfig.setExposedHeaders(List.of(SET_COOKIE));
+                    corsConfig.setExposedHeaders(List.of(SET_COOKIE,AUTHORIZATION));
 
                     return corsConfig;
                 })) // cors 설정 끝

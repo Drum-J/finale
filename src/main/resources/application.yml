@@ -24,7 +24,7 @@ server:
 
 app:
   swagger:
-    version : "V 1.0.10"
+    version : "V 1.0.12"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties

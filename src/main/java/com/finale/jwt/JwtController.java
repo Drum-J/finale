@@ -1,10 +1,10 @@
 package com.finale.jwt;
 
 import com.finale.common.ApiResponse;
-import com.finale.common.CookieUtil;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -20,7 +20,8 @@ public class JwtController {
     @GetMapping("/master")
     public ApiResponse createMasterToken(HttpServletResponse response) {
         String accessToken = jwtProvider.createAccessToken(717L, "master-swagger", "MASTER");
-        CookieUtil.addCookie(response, accessToken);
+        //CookieUtil.addCookie(response, accessToken);
+        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         return ApiResponse.successResponse(accessToken);
     }
 
@@ -28,7 +29,8 @@ public class JwtController {
     @GetMapping("/sub")
     public ApiResponse createSubToken(HttpServletResponse response) {
         String accessToken = jwtProvider.createAccessToken(717L, "sub-swagger", "SUB");
-        CookieUtil.addCookie(response, accessToken);
+        //CookieUtil.addCookie(response, accessToken);
+        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         return ApiResponse.successResponse(accessToken);
     }
 
@@ -36,7 +38,8 @@ public class JwtController {
     @GetMapping("/student")
     public ApiResponse createStudentToken(HttpServletResponse response) {
         String accessToken = jwtProvider.createAccessToken(717L, "student-swagger", "STUDENT");
-        CookieUtil.addCookie(response, accessToken);
+        //CookieUtil.addCookie(response, accessToken);
+        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         return ApiResponse.successResponse(accessToken);
     }
 }
