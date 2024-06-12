@@ -26,25 +26,28 @@ public class LessonDetailBasicDTO extends LessonBasicDTO {
                 lesson.getTimetable().getStartTime(),
                 lesson.getTimetable().getEndTime());
 
-        LessonDateDTO second = new LessonDateDTO(
-                lesson.getTimetable().getSecondDate(),
-                lesson.getTimetable().getSecondStartTime(),
-                lesson.getTimetable().getSecondEndTime());
+        if (lesson.getTimetable().getSecondDate() != null) {
+            LessonDateDTO second = new LessonDateDTO(
+                    lesson.getTimetable().getSecondDate(),
+                    lesson.getTimetable().getSecondStartTime(),
+                    lesson.getTimetable().getSecondEndTime());
 
-        LessonDateDTO third = new LessonDateDTO(
-                lesson.getTimetable().getThirdDate(),
-                lesson.getTimetable().getThirdStartTime(),
-                lesson.getTimetable().getThirdEndTime());
+            LessonDateDTO third = new LessonDateDTO(
+                    lesson.getTimetable().getThirdDate(),
+                    lesson.getTimetable().getThirdStartTime(),
+                    lesson.getTimetable().getThirdEndTime());
 
-        LessonDateDTO fourth = new LessonDateDTO(
-                lesson.getTimetable().getFourthDate(),
-                lesson.getTimetable().getFourthStartTime(),
-                lesson.getTimetable().getFourthEndTime());
+            LessonDateDTO fourth = new LessonDateDTO(
+                    lesson.getTimetable().getFourthDate(),
+                    lesson.getTimetable().getFourthStartTime(),
+                    lesson.getTimetable().getFourthEndTime());
+
+            this.lessonDates.add(second);
+            this.lessonDates.add(third);
+            this.lessonDates.add(fourth);
+        }
 
         this.lessonDates.add(first);
-        this.lessonDates.add(second);
-        this.lessonDates.add(third);
-        this.lessonDates.add(fourth);
 
         this.cost = lesson.getTimetable().getCost();
         this.classSize = "1:" + lesson.getTimetable().getClassSize() + " 수업";

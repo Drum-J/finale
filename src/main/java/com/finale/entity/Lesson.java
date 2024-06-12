@@ -28,10 +28,10 @@ public class Lesson extends TimeStamped{
     private Timetable timetable;
 
     @OneToMany(mappedBy = "lesson",cascade = ALL)
-    private List<LessonCoach> coaches = new ArrayList<>();
+    private final List<LessonCoach> coaches = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson",cascade = ALL)
-    private List<LessonStudent> students = new ArrayList<>();
+    private final List<LessonStudent> students = new ArrayList<>();
 
     private int currentEnrolment; // 현재 수강 신청 인원
 

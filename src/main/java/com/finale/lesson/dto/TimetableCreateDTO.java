@@ -13,8 +13,8 @@ public class TimetableCreateDTO {
     @Schema(description = "장소", example = "계명대학교")
     private String location;
 
-    @Schema(description = "코치 수", example = "3")
-    private int coaches;
+    @Schema(description = "코치 ID List", example = "[1,2]")
+    private List<Long> coaches;
 
     @Schema(description = "레슨 요일", example = "월요일")
     private String days;
@@ -27,25 +27,36 @@ public class TimetableCreateDTO {
     private int classSize;
 
     public Timetable convertToEntity() {
-        return Timetable.builder()
+        Timetable timetable = Timetable.builder()
                 .title(this.title)
                 .location(this.location)
                 .days(this.days)
                 .date(this.lessonDates.get(0).date())
                 .startTime(this.lessonDates.get(0).startTime())
                 .endTime(this.lessonDates.get(0).endTime())
-                .secondDate(this.lessonDates.get(1).date())
-                .secondStartTime(this.lessonDates.get(1).startTime())
-                .secondEndTime(this.lessonDates.get(1).endTime())
-                .thirdDate(this.lessonDates.get(2).date())
-                .thirdStartTime(this.lessonDates.get(2).startTime())
-                .thirdEndTime(this.lessonDates.get(2).endTime())
-                .fourthDate(this.lessonDates.get(3).date())
-                .fourthStartTime(this.lessonDates.get(3).startTime())
-                .fourthEndTime(this.lessonDates.get(3).endTime())
                 .cost(this.cost)
                 .classSize(this.classSize)
-                .totalClassSize(this.classSize * this.coaches)
+                .totalClassSize(this.classSize * this.coaches.size())
                 .build();
+
+        if (this.lessonDates.size() > 1) {
+            timetable.setSecondDate(this.lessonDates.get(1).date());
+            timetable.setSecondStartTime(this.lessonDates.get(1).startTime());
+            timetable.setSecondEndTime(this.lessonDates.get(1).endTime());
+        }
+
+        if (this.lessonDates.size() > 2) {
+            timetable.setThirdDate(this.lessonDates.get(2).date());
+            timetable.setThirdStartTime(this.lessonDates.get(2).startTime());
+            timetable.setThirdEndTime(this.lessonDates.get(2).endTime());
+        }
+
+        if (this.lessonDates.size() > 3) {
+            timetable.setFourthDate(this.lessonDates.get(3).date());
+            timetable.setFourthStartTime(this.lessonDates.get(3).startTime());
+            timetable.setFourthEndTime(this.lessonDates.get(3).endTime());
+        }
+
+        return timetable;
     }
 }

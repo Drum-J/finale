@@ -3,6 +3,7 @@ package com.finale.lesson.service;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Lesson;
+import com.finale.entity.LessonCoach;
 import com.finale.entity.LessonStudent;
 import com.finale.entity.Location;
 import com.finale.entity.Timetable;
@@ -12,6 +13,7 @@ import com.finale.lesson.dto.LessonDetailBasicDTO;
 import com.finale.lesson.dto.LessonDetailResponseDTO;
 import com.finale.lesson.dto.LessonResponseDTO;
 import com.finale.lesson.dto.TimetableCreateDTO;
+import com.finale.lesson.repository.LessonCoachRepository;
 import com.finale.lesson.repository.LessonRepository;
 import com.finale.lesson.repository.LessonStudentRepository;
 import com.finale.lesson.repository.TimetableRepository;
@@ -34,6 +36,7 @@ public class LessonService {
     private final LessonRepository lessonRepository;
     private final LocationRepository locationRepository;
     private final LessonStudentRepository lessonStudentRepository;
+    private final LessonCoachRepository lessonCoachRepository;
 
     @Transactional
     public ApiResponse createTimetable(TimetableCreateDTO dto) throws ResourceNotFoundException {
@@ -46,12 +49,16 @@ public class LessonService {
 
         Lesson lesson = new Lesson(timetable);
 
-        /* 레슨 생성 단계에서 코치 정해지지 않음. 단순히 몇 명인지만 정함
         List<Long> coachId = dto.getCoaches();
         coachId.stream().map(id -> coachRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 코치를 찾을 수 없습니다.")))
-                .map(coach -> new LessonCoach(lesson,coach)).forEach(lesson::addCoaches);
-        */
+                .map(coach -> {
+                    LessonCoach lessonCoach = new LessonCoach(lesson, coach);
+                    lessonCoachRepository.save(lessonCoach);
+
+                    return lessonCoach;
+                    }
+                ).forEach(lesson::addCoaches);
 
         timetableRepository.save(timetable);
         lessonRepository.save(lesson);

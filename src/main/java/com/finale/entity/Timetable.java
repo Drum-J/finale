@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -26,16 +27,25 @@ public class Timetable extends TimeStamped {
     private String startTime; //07:10
     private String endTime; //08:30
 
+    @Setter
     private String secondDate; //2024-01-15
+    @Setter
     private String secondStartTime; //07:10
+    @Setter
     private String secondEndTime; //08:30
 
+    @Setter
     private String thirdDate; //2024-01-22
+    @Setter
     private String thirdStartTime; //07:10
+    @Setter
     private String thirdEndTime; //08:30
 
+    @Setter
     private String fourthDate; //2024-01-29
+    @Setter
     private String fourthStartTime; //07:40
+    @Setter
     private String fourthEndTime; //09:00
 
     private String cost; // 4회 18만원
