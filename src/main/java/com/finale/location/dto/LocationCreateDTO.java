@@ -10,10 +10,16 @@ public class LocationCreateDTO {
     @Schema(description = "레슨 장소", example = "고려대학교")
     private String name;
 
-    @Schema(description = "레슨 상세 주소", example = "서울 성북구 안암로 145")
+    @Schema(description = "시/도", example = "서울특별시")
+    private String city;
+
+    @Schema(description = "구", example = "성북구")
+    private String district;
+
+    @Schema(description = "상세 주소", example = "안암로 145")
     private String address;
 
     public Location convertToEntity() {
-        return new Location(name, address);
+        return new Location(name, city, district, address);
     }
 }

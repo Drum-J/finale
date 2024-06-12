@@ -21,10 +21,16 @@ public class Location extends TimeStamped {
 
     private String name;
 
+    private String city;
+
+    private String district;
+
     private String address;
 
-    public Location(String name,String address) {
+    public Location(String name, String city, String district, String address) {
         this.name = name;
+        this.city = city;
+        this.district = district;
         this.address = address;
     }
 }
