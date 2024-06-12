@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.BAD_REQUEST;
 import static org.springframework.http.HttpStatus.INTERNAL_SERVER_ERROR;
 import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
+import static org.springframework.http.HttpStatus.UNAUTHORIZED;
 
 public record ApiResponse(int status,
                           String message,
@@ -24,6 +25,11 @@ public record ApiResponse(int status,
 
     public static ApiResponse badRequestResponse(Object data) {
         return new ApiResponse(BAD_REQUEST.value(), BAD_REQUEST.getReasonPhrase(),
+                LocalDateTime.now(), data);
+    }
+
+    public static ApiResponse unauthorizedResponse(Object data) {
+        return new ApiResponse(UNAUTHORIZED.value(), UNAUTHORIZED.getReasonPhrase(),
                 LocalDateTime.now(), data);
     }
 
