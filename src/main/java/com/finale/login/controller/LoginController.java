@@ -2,6 +2,7 @@ package com.finale.login.controller;
 
 import com.finale.common.ApiResponse;
 import com.finale.login.dto.KakaoUserInfo;
+import com.finale.login.dto.LoginResponseDTO;
 import com.finale.login.service.KakaoAPIService;
 import com.finale.login.service.LoginService;
 import jakarta.servlet.http.HttpServletResponse;
@@ -14,8 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.io.IOException;
 
 @Slf4j
 @RestController
@@ -52,6 +51,6 @@ public class LoginController {
 
         // CookieUtil.addCookie(response, token);
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-        return ApiResponse.successResponse(token);
+        return ApiResponse.successResponse(new LoginResponseDTO(userInfo,token));
     }
 }
