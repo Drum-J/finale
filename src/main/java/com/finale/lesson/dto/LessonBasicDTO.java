@@ -19,7 +19,7 @@ public class LessonBasicDTO {
     protected String location; // 장소
 
     @Schema(description = "레슨 요일", example = "월요일")
-    protected String day; // 요일
+    protected int day; // 요일
 
     @Schema(description = "레슨 코치 이름 List", example = "[황승호, 우주형]")
     protected List<String> coaches; // 강사

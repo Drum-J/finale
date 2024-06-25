@@ -8,6 +8,8 @@ import com.finale.entity.LessonStudent;
 import com.finale.entity.Location;
 import com.finale.entity.Timetable;
 import com.finale.exception.ResourceNotFoundException;
+import com.finale.lesson.dto.ILessonCoachDTO;
+import com.finale.lesson.dto.ILessonDTO;
 import com.finale.lesson.dto.LessonBasicDTO;
 import com.finale.lesson.dto.LessonDetailBasicDTO;
 import com.finale.lesson.dto.LessonDetailResponseDTO;
@@ -79,6 +81,12 @@ public class LessonService {
         return ApiResponse.successResponse(all.stream().map(LessonResponseDTO::new).toList());
     }
 
+    public ApiResponse getAllLesson2() {
+        List<Lesson> all = lessonRepository.findAll();
+
+        return ApiResponse.successResponse(all.stream().map(ILessonDTO::new).toList());
+    }
+
     public ApiResponse getLessonStudentDetails(Long id) {
         Lesson lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
@@ -98,5 +106,11 @@ public class LessonService {
         findStudent.depositConfirm();
 
         return ApiResponse.successResponse("입금 확인이 완료 되었습니다.");
+    }
+
+    public ApiResponse getAllLessonCoach() {
+        List<Lesson> all = lessonRepository.findAll();
+
+        return ApiResponse.successResponse(all.stream().map(ILessonCoachDTO::new).toList());
     }
 }

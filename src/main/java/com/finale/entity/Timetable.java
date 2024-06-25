@@ -21,7 +21,7 @@ public class Timetable extends TimeStamped {
     private String title; // 레슨 제목
     private String location; // 레슨 장소
 
-    private String days; // 레슨 요일
+    private int days; // 레슨 요일
 
     private String date; //2024-01-08
     private String startTime; //07:10
@@ -53,7 +53,7 @@ public class Timetable extends TimeStamped {
     private int totalClassSize; // 코치 수 x 클래스 사이즈
 
     @Builder
-    public Timetable(String title,String location, String days,
+    public Timetable(String title,String location, int days,
                      String date, String startTime, String endTime,
                      String secondDate, String secondStartTime, String secondEndTime,
                      String thirdDate, String thirdStartTime, String thirdEndTime,

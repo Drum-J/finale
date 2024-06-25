@@ -48,6 +48,16 @@ public class LessonController {
         }
     }
 
+    @Operation(summary = "모든 레슨 조회 API Ver.2", description = "쿼리 파라미터가 없는 경우 학생, type=coach 인 경우 코치용 조회입니다.<br>현재는 list2 로 되어있으나 추후 기존 /list API를 삭제 후 해당 API로 변경 예정입니다.")
+    @GetMapping("/list2")
+    public ApiResponse getAllLesson2(@RequestParam(value = "type",required = false) String type) {
+        if ("coach".equals(type)) {
+            return lessonService.getAllLessonCoach();
+        } else {
+            return lessonService.getAllLesson2();
+        }
+    }
+
     @Operation(summary = "[코치] 입금 확인 API" ,description = "코치 권한이 [MASTER]인 경우만 가능합니다.")
     @PostMapping("/depositConfirm/{id}")
     public ApiResponse depositConfirm(@PathVariable("id") Long id) {

@@ -17,7 +17,7 @@ public class TimetableCreateDTO {
     private List<Long> coaches;
 
     @Schema(description = "레슨 요일", example = "월요일")
-    private String days;
+    private int days;
 
     private List<LessonDateDTO> lessonDates;
 
