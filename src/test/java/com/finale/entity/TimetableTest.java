@@ -88,7 +88,7 @@ public class TimetableTest {
                 .location("고려대학교")
                 .classSize(classSize)
                 .cost("4회 15만원")
-                .days("월요일")
+                .days(1)
                 .date("2024-02-05")
                 .startTime("07:30")
                 .endTime("08:10")
