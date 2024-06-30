@@ -10,10 +10,8 @@ import com.finale.entity.Timetable;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.dto.ILessonCoachDTO;
 import com.finale.lesson.dto.ILessonDTO;
-import com.finale.lesson.dto.LessonBasicDTO;
 import com.finale.lesson.dto.LessonDetailBasicDTO;
 import com.finale.lesson.dto.LessonDetailResponseDTO;
-import com.finale.lesson.dto.LessonResponseDTO;
 import com.finale.lesson.dto.TimetableCreateDTO;
 import com.finale.lesson.repository.LessonCoachRepository;
 import com.finale.lesson.repository.LessonCustomRepository;
@@ -71,52 +69,33 @@ public class LessonService {
         return ApiResponse.successResponse("레슨 생성을 완료했습니다.");
     }
 
-    public ApiResponse getLessonDetails(Long id) {
+    public ApiResponse getLessonDetails(Long id,String type) {
         Lesson lesson = lessonRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
-        return ApiResponse.successResponse(new LessonDetailResponseDTO(lesson));
+        if ("coach".equals(type)) {
+            return ApiResponse.successResponse(new LessonDetailResponseDTO(lesson));
+        } else {
+            return ApiResponse.successResponse(new LessonDetailBasicDTO(lesson));
+        }
     }
 
-    public ApiResponse getAllLesson() {
+    public ApiResponse getAllLesson(String type) {
         List<Lesson> all = lessonRepository.findAll();
-
-        return ApiResponse.successResponse(all.stream().map(LessonResponseDTO::new).toList());
+        if ("coach".equals(type)) {
+            return ApiResponse.successResponse(all.stream().map(ILessonCoachDTO::new).toList());
+        } else {
+            return ApiResponse.successResponse(all.stream().map(ILessonDTO::new).toList());
+        }
     }
 
-    public ApiResponse getAllLesson2() {
-        List<Lesson> all = lessonRepository.findAll();
-
-        return ApiResponse.successResponse(all.stream().map(ILessonDTO::new).toList());
-    }
-
-    public ApiResponse getLessonStudentDetails(Long id) {
-        Lesson lesson = lessonRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
-        return ApiResponse.successResponse(new LessonDetailBasicDTO(lesson));
-    }
-
-    public ApiResponse getAllLessonStudents() {
-        List<Lesson> all = lessonRepository.findAll();
-
-        return ApiResponse.successResponse(all.stream().map(LessonBasicDTO::new).toList());
-    }
-
-    @Transactional
-    public ApiResponse updateDeposit(Long id) {
-        LessonStudent findStudent = lessonStudentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("해당 수강생을 찾을 수 없습니다."));
-        findStudent.depositConfirm();
-
-        return ApiResponse.successResponse("입금 확인이 완료 되었습니다.");
-    }
-
-    public ApiResponse getAllLessonCoach() {
-        List<Lesson> all = lessonRepository.findAll();
-
-        return ApiResponse.successResponse(all.stream().map(ILessonCoachDTO::new).toList());
-    }
-
+    /**
+     * 장소 별 레슨 조회
+     * TODO : 월별 조회 조건이 들어가야 함
+     * @param name
+     * @param type
+     * @return
+     */
     public ApiResponse getLessonsByLocation(String name,String type) {
         Location location = locationRepository.findByName(name);
 
@@ -127,5 +106,19 @@ public class LessonService {
             List<ILessonDTO> lessonsByLocation = lessonCustomRepository.getLessonsByLocation(name);
             return ApiResponse.successResponse(new ILocationDTO<>(location, lessonsByLocation));
         }
+    }
+
+    /**
+     * 수강생 입금 확인
+     * @param id LessonStudent.id 임
+     * @return
+     */
+    @Transactional
+    public ApiResponse updateDeposit(Long id) {
+        LessonStudent findStudent = lessonStudentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 수강생을 찾을 수 없습니다."));
+        findStudent.depositConfirm();
+
+        return ApiResponse.successResponse("입금 확인이 완료 되었습니다.");
     }
 }
