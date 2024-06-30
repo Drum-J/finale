@@ -1,10 +1,13 @@
 package com.finale.entity;
 
+import com.finale.lesson.dto.LessonDateDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static lombok.AccessLevel.PROTECTED;
@@ -82,5 +85,31 @@ public class Timetable extends TimeStamped {
         this.cost = cost;
         this.classSize = classSize;
         this.totalClassSize = totalClassSize;
+    }
+
+    public Timetable(Timetable timetable, List<LessonDateDTO> lessonDate) {
+        this.title = timetable.getTitle();
+        this.location = timetable.getLocation();
+        this.days = timetable.getDays();
+
+        this.date = lessonDate.get(0).date();
+        this.startTime = timetable.getStartTime();
+        this.endTime = timetable.getEndTime();
+
+        this.secondDate = lessonDate.get(1).date();
+        this.secondStartTime = timetable.getSecondStartTime();
+        this.secondEndTime = timetable.getSecondEndTime();
+
+        this.thirdDate = lessonDate.get(2).date();
+        this.thirdStartTime = timetable.getThirdStartTime();
+        this.thirdEndTime = timetable.getThirdEndTime();
+
+        this.fourthDate = lessonDate.get(3).date();
+        this.fourthStartTime = timetable.getFourthStartTime();
+        this.fourthEndTime = timetable.getFourthEndTime();
+
+        this.cost = timetable.getCost();
+        this.classSize = timetable.getClassSize();
+        this.totalClassSize = timetable.getTotalClassSize();
     }
 }
