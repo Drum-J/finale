@@ -6,7 +6,6 @@ import com.finale.entity.LessonStudent;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.student.dto.EnrolmentDTO;
 import com.finale.entity.Student;
-import com.finale.student.dto.StudentCreateDTO;
 import com.finale.student.repository.StudentRepository;
 import com.finale.lesson.repository.LessonRepository;
 import lombok.RequiredArgsConstructor;
@@ -36,12 +35,5 @@ public class StudentService {
         lesson.addStudent(lessonStudent);
 
         return ApiResponse.successResponse("수강신청이 정상적으로 완료 되었습니다.");
-    }
-
-    @Transactional
-    public ApiResponse create(StudentCreateDTO dto) {
-        studentRepository.save(dto.toEntity());
-
-        return ApiResponse.successResponse("수강생 등록이 완료되었습니다.");
     }
 }

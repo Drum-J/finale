@@ -1,6 +1,5 @@
 package com.finale.coach.service;
 
-import com.finale.coach.dto.CoachCreateDTO;
 import com.finale.coach.dto.CoachResponseDTO;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
@@ -22,12 +21,6 @@ public class CoachService {
     public ApiResponse getCoachList() {
         return ApiResponse.successResponse(coachRepository.findAll().stream()
                 .map(CoachResponseDTO::new).toList());
-    }
-
-    @Transactional
-    public ApiResponse create(CoachCreateDTO dto) {
-        coachRepository.save(dto.toEntity());
-        return ApiResponse.successResponse("코치 등록이 완료되었습니다.");
     }
 
     @Transactional

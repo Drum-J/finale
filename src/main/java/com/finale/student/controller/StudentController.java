@@ -2,7 +2,6 @@ package com.finale.student.controller;
 
 import com.finale.common.ApiResponse;
 import com.finale.student.dto.EnrolmentDTO;
-import com.finale.student.dto.StudentCreateDTO;
 import com.finale.student.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -24,11 +23,5 @@ public class StudentController {
     @Operation(summary = "수강생 레슨 신청 API", description = "enrolment()")
     public ApiResponse enrolment(@RequestBody EnrolmentDTO dto) {
         return studentService.enrolment(dto);
-    }
-
-    @PostMapping("/create")
-    @Operation(summary = "수강생 생성 API", description = "createStudent()")
-    public ApiResponse createStudent(@RequestBody StudentCreateDTO dto) {
-        return studentService.create(dto);
     }
 }
