@@ -55,10 +55,11 @@ public class Lesson extends TimeStamped{
 
     // 연관관계 메서드 및 비즈니스 로직
     public void addStudent(LessonStudent student) {
+        if (this.students.contains(student)) {
+            throw new IllegalStateException("이미 수강 신청 한 강의입니다.");
+        }
+
         if (this.currentEnrolment < this.enrolment) {
-            if (this.students.contains(student)) {
-                throw new IllegalStateException("이미 수강 신청 한 강의입니다.");
-            }
             this.students.add(student);
             student.setLesson(this);
             this.currentEnrolment += 1;
