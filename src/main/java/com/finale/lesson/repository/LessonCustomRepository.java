@@ -43,7 +43,6 @@ public class LessonCustomRepository {
                 .join(lesson.timetable, timetable).fetchJoin()
                 .join(location)
                 .on(location.name.eq(timetable.location)).fetchJoin()
-                .join(lesson.students, lessonStudent).fetchJoin()
                 .where(location.name.eq(name))
                 .fetch();
     }
