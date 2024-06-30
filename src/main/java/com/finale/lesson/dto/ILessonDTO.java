@@ -1,6 +1,7 @@
 package com.finale.lesson.dto;
 
 import com.finale.entity.Lesson;
+import com.querydsl.core.annotations.QueryProjection;
 import lombok.Getter;
 
 import java.util.ArrayList;
@@ -17,6 +18,7 @@ public class ILessonDTO {
     private final int studentsPerCoach;
     private final List<LessonDateDTO> lessonDates = new ArrayList<>();
 
+    @QueryProjection
     public ILessonDTO(Lesson lesson) {
         this.id = lesson.getId();
         this.locationName = lesson.getTimetable().getLocation();

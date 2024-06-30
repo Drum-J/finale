@@ -1,5 +1,7 @@
 package com.finale;
 
+import com.querydsl.jpa.impl.JPAQueryFactory;
+import jakarta.persistence.EntityManager;
 import org.apache.catalina.Context;
 import org.apache.catalina.connector.Connector;
 import org.apache.tomcat.util.descriptor.web.SecurityCollection;
@@ -19,6 +21,11 @@ public class FinaleApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(FinaleApplication.class, args);
+    }
+
+    @Bean
+    JPAQueryFactory queryFactory(EntityManager em) {
+        return new JPAQueryFactory(em);
     }
 
     @Bean

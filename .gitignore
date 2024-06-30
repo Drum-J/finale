@@ -39,3 +39,4 @@ out/
 ### custom ###
 src/main/resources/finale.p12
 logs/
+src/main/generated

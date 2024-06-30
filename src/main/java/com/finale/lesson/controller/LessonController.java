@@ -63,4 +63,10 @@ public class LessonController {
     public ApiResponse depositConfirm(@PathVariable("id") Long id) {
         return lessonService.updateDeposit(id);
     }
+
+    @Operation(summary = "장소 별 레슨 조회 API")
+    @GetMapping("/withLocation/{locationName}")
+    public ApiResponse lessonsByLocation(@PathVariable("locationName") String name, @RequestParam(value = "type",required = false) String type) {
+        return lessonService.getLessonsByLocation(name,type);
+    }
 }

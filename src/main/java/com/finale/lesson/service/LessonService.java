@@ -16,9 +16,11 @@ import com.finale.lesson.dto.LessonDetailResponseDTO;
 import com.finale.lesson.dto.LessonResponseDTO;
 import com.finale.lesson.dto.TimetableCreateDTO;
 import com.finale.lesson.repository.LessonCoachRepository;
+import com.finale.lesson.repository.LessonCustomRepository;
 import com.finale.lesson.repository.LessonRepository;
 import com.finale.lesson.repository.LessonStudentRepository;
 import com.finale.lesson.repository.TimetableRepository;
+import com.finale.lesson.dto.ILocationDTO;
 import com.finale.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -39,6 +41,7 @@ public class LessonService {
     private final LocationRepository locationRepository;
     private final LessonStudentRepository lessonStudentRepository;
     private final LessonCoachRepository lessonCoachRepository;
+    private final LessonCustomRepository lessonCustomRepository;
 
     @Transactional
     public ApiResponse createTimetable(TimetableCreateDTO dto) throws ResourceNotFoundException {
@@ -112,5 +115,17 @@ public class LessonService {
         List<Lesson> all = lessonRepository.findAll();
 
         return ApiResponse.successResponse(all.stream().map(ILessonCoachDTO::new).toList());
+    }
+
+    public ApiResponse getLessonsByLocation(String name,String type) {
+        Location location = locationRepository.findByName(name);
+
+        if ("coach".equals(type)) {
+            List<ILessonCoachDTO> lessonsByLocation = lessonCustomRepository.getLessonsByLocationForCoach(name);
+            return ApiResponse.successResponse(new ILocationDTO<>(location, lessonsByLocation));
+        } else {
+            List<ILessonDTO> lessonsByLocation = lessonCustomRepository.getLessonsByLocation(name);
+            return ApiResponse.successResponse(new ILocationDTO<>(location, lessonsByLocation));
+        }
     }
 }
