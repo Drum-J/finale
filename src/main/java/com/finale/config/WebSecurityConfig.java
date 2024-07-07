@@ -44,13 +44,14 @@ public class WebSecurityConfig {
                 .sessionManagement(m -> m.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // 세선 상태 변경
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
-                                "/api/lesson/depositConfirm/**",
+                                "/api/coach/depositConfirm/**",
                                 "/api/coach/updateRole/**").hasAnyAuthority("MASTER")
-                        .requestMatchers("/api/lesson/create").hasAnyAuthority("MASTER", "SUB")
+                        .requestMatchers("/api/coach/lesson/**").hasAnyAuthority("MASTER", "SUB")
+                        .requestMatchers("/api/student/**").hasAnyAuthority("STUDENT")
                         .anyRequest().permitAll() // 우선 모든 접근 허용으로 설정
                 )
                 .addFilterBefore(new JwtFilter(jwtProvider), BasicAuthenticationFilter.class)
-                .addFilterAfter(new CoachAccessFilter(), JwtFilter.class)
+                //.addFilterAfter(new CoachAccessFilter(), JwtFilter.class)
                 .build();
     }
 }

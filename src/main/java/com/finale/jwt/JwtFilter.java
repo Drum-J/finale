@@ -54,7 +54,9 @@ public class JwtFilter extends OncePerRequestFilter {
     protected boolean shouldNotFilter(HttpServletRequest request) {
         return request.getServletPath().startsWith("/login") ||
                 request.getServletPath().startsWith("/logout") ||
-                request.getServletPath().startsWith("/jwt")
+                request.getServletPath().startsWith("/jwt") ||
+                request.getServletPath().startsWith("/api/location") ||
+                request.getServletPath().startsWith("/api/lesson")
                 ;
     }
 }
