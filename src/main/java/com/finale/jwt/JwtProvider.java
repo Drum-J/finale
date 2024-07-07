@@ -121,11 +121,11 @@ public class JwtProvider {
     public void setAuthentication(Claims claims) {
         log.info("==== 스프링 시큐리티 컨텍스트 세팅 ====");
 
-        String name = claims.get("name").toString();
+        String id = claims.get("id").toString();
         String role = claims.get("role").toString();
 
         UsernamePasswordAuthenticationToken auth =
-                new UsernamePasswordAuthenticationToken(name, null, AuthorityUtils.createAuthorityList(role));
+                new UsernamePasswordAuthenticationToken(id, null, AuthorityUtils.createAuthorityList(role));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
