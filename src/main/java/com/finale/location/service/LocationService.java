@@ -20,6 +20,9 @@ public class LocationService {
 
     @Transactional
     public ApiResponse createLocation(LocationCreateDTO dto) {
+        log.info("=== 장소 생성 Service 진입 ===");
+        log.info("장소 생성 DTO = {}",dto);
+
         Location location = dto.convertToEntity();
         locationRepository.save(location);
         return ApiResponse.successResponse("레슨 장소 저장을 완료했습니다.");

@@ -23,7 +23,9 @@ public class StudentController {
     @PostMapping("/enrolment")
     @Operation(summary = "수강생 레슨 신청 API", description = "enrolment()")
     public ApiResponse enrolment(@RequestBody EnrolmentDTO dto) {
+        log.info("=== 수강 신청 Controller 진입 ===");
         Object id = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        log.info("로그인한 수강생 ID = {}", id);
         dto.setStudentId(Long.parseLong(id.toString()));
         return studentService.enrolment(dto);
     }

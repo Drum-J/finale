@@ -24,6 +24,8 @@ public class StudentService {
 
     @Transactional
     public ApiResponse enrolment(EnrolmentDTO dto) {
+        log.info("=== 수강 신청 Service 진입 ===");
+        log.info("수강 신청 데이터 = {}",dto);
         Lesson lesson = lessonRepository.findById(dto.getLessonId())
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 

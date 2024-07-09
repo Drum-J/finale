@@ -47,6 +47,9 @@ public class CoachService {
 
     @Transactional
     public ApiResponse updateRole(Long id) {
+        log.info("=== 코치 권한 변경 Service 진입 ===");
+        log.info("=== 코치 ID = {} ===" ,id);
+
         Coach find = coachRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 코치를 찾을 수 없습니다."));
 
@@ -80,6 +83,9 @@ public class CoachService {
      */
     @Transactional
     public ApiResponse updateDeposit(Long id) {
+        log.info("=== 수강생 입금 확인 Service 진입 ===");
+        log.info("=== LessonStudent Id = {} ===",id);
+
         LessonStudent findStudent = lessonStudentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 수강생을 찾을 수 없습니다."));
         findStudent.depositConfirm();
@@ -89,6 +95,9 @@ public class CoachService {
 
     @Transactional
     public ApiResponse createTimetable(TimetableCreateDTO dto) throws ResourceNotFoundException {
+        log.info("=== 레슨 생성 Service 진입 ===");
+        log.info("레슨 데이터 = {}",dto);
+
         Location findLocation = locationRepository.findByName(dto.getLocation());
         if (findLocation == null) {
             throw new ResourceNotFoundException("해당 장소를 찾을 수 없습니다.");
