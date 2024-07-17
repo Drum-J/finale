@@ -14,6 +14,6 @@ public class ILessonCoachDTO extends ILessonDTO{
     @QueryProjection
     public ILessonCoachDTO(Lesson lesson) {
         super(lesson);
-        this.students = lesson.getStudents().stream().map(LessonStudentDetailDTO::new).toList();
+        this.students = lesson.getStudents().stream().filter(ls ->!ls.isRestLesson()).map(LessonStudentDetailDTO::new).toList();
     }
 }
