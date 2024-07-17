@@ -19,7 +19,7 @@ public class JwtController {
     @Operation(summary = "[Swagger] 토큰 생성 API-Master", description = "MASTER 권한을 가진 토큰을 생성합니다.")
     @GetMapping("/master")
     public ApiResponse createMasterToken(HttpServletResponse response) {
-        String accessToken = jwtProvider.createAccessToken(717L, "master-swagger", "MASTER");
+        String accessToken = jwtProvider.createAccessToken(2L, "헤드코치", "MASTER");
         //CookieUtil.addCookie(response, accessToken);
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         return ApiResponse.successResponse(accessToken);
@@ -28,7 +28,7 @@ public class JwtController {
     @Operation(summary = "[Swagger] 토큰 생성 API-Sub", description = "SUB 권한을 가진 토큰을 생성합니다.")
     @GetMapping("/sub")
     public ApiResponse createSubToken(HttpServletResponse response) {
-        String accessToken = jwtProvider.createAccessToken(717L, "sub-swagger", "SUB");
+        String accessToken = jwtProvider.createAccessToken(1L, "승호", "SUB");
         //CookieUtil.addCookie(response, accessToken);
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         return ApiResponse.successResponse(accessToken);
@@ -37,7 +37,7 @@ public class JwtController {
     @Operation(summary = "[Swagger] 토큰 생성 API-Student", description = "STUDENT 권한을 가진 토큰을 생성합니다.")
     @GetMapping("/student")
     public ApiResponse createStudentToken(HttpServletResponse response) {
-        String accessToken = jwtProvider.createAccessToken(717L, "student-swagger", "STUDENT");
+        String accessToken = jwtProvider.createAccessToken(1L, "승호", "STUDENT");
         //CookieUtil.addCookie(response, accessToken);
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         return ApiResponse.successResponse(accessToken);
