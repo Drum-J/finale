@@ -37,10 +37,13 @@ public class Lesson extends TimeStamped{
 
     private int enrolment; // 총 수강 신청 가능 인원
 
+    private String lessonDate; // 복사용 lesson Date
+
     public Lesson(Timetable timetable) {
         this.timetable = timetable;
         this.enrolment = timetable.getTotalClassSize(); //dto 사용시 자동 설정 됨
         this.title = timetable.getTitle();
+        this.lessonDate = timetable.getDate().substring(0,7);
     }
 
     public void setTotalClassSize() {

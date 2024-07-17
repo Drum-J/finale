@@ -1,9 +1,10 @@
 package com.finale.coach.controller;
 
+import com.finale.coach.dto.CopyRequestDTO;
 import com.finale.coach.service.CoachService;
+import com.finale.coach.service.CopyService;
 import com.finale.common.ApiResponse;
 import com.finale.lesson.dto.TimetableCreateDTO;
-import com.finale.lesson.service.LessonService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CoachController {
 
     private final CoachService coachService;
-    private final LessonService lessonService;
+    private final CopyService copyService;
 
     @GetMapping("/list")
     @Operation(summary = "코치 리스트 API", description = "getCoachList()")
@@ -41,7 +42,7 @@ public class CoachController {
         return coachService.createTimetable(dto);
     }
 
-    @Operation(summary = "[MASTER] 수강생 입금 확인 API" ,description = "코치 권한이 [MASTER]인 경우만 가능합니다.")
+    @Operation(summary = "[MASTER] 수강생 입금 확인 API", description = "코치 권한이 [MASTER]인 경우만 가능합니다.")
     @PostMapping("/depositConfirm/{id}")
     public ApiResponse depositConfirm(@PathVariable("id") Long id) {
         return coachService.updateDeposit(id);
@@ -63,5 +64,11 @@ public class CoachController {
     @GetMapping("/lesson/{id}")
     public ApiResponse getLessonDetails(@PathVariable(name = "id") Long id) {
         return coachService.getLessonDetailsForCoach(id);
+    }
+
+    @Operation(summary = "[코치용] 레슨 복사 API")
+    @PostMapping("/lesson/copy")
+    public ApiResponse lessonCopy(CopyRequestDTO dto) {
+        return copyService.lessonCopy(dto);
     }
 }
