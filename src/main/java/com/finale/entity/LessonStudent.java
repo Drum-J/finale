@@ -30,6 +30,8 @@ public class LessonStudent {
 
     private boolean deposit;
 
+    private boolean restLesson = false; // 휴식 유무
+
     public LessonStudent(Lesson lesson, Student student) {
         this.lesson = lesson;
         this.student = student;
@@ -40,5 +42,13 @@ public class LessonStudent {
             throw new IllegalStateException("이미 입금 확인을 완료했습니다.");
         }
         this.deposit = true;
+    }
+
+    public void restLesson() throws IllegalStateException {
+        if (this.restLesson) {
+            throw new IllegalStateException("이미 휴식 신청을 완료했습니다.");
+        }
+        this.restLesson = true;
+        this.lesson.enrolmentMinus();
     }
 }

@@ -67,4 +67,8 @@ public class Lesson extends TimeStamped{
             throw new IllegalStateException("수강 인원을 초과하여 신청할 수 없습니다.");
         }
     }
+
+    public void enrolmentMinus() {
+        this.currentEnrolment--;
+    }
 }
