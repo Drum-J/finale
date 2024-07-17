@@ -1,6 +1,7 @@
 package com.finale.login.controller;
 
 import com.finale.common.ApiResponse;
+import com.finale.login.dto.IdTokenDTO;
 import com.finale.login.dto.KakaoUserInfo;
 import com.finale.login.dto.LoginResponseDTO;
 import com.finale.login.service.KakaoAPIService;
@@ -39,18 +40,18 @@ public class LoginController {
                                   @RequestParam(name = "state") String type,
                                   HttpServletResponse response) throws Exception {
         KakaoUserInfo userInfo = kakaoAPIService.getAccessToken(code);
-        String token;
+        IdTokenDTO dto;
         if (type.equals(STUDENT)) {
-            token = loginService.loginStudent(userInfo);
+            dto = loginService.loginStudent(userInfo);
         } else if (type.equals(COACH)) {
-            token = loginService.loginCoach(userInfo);
+            dto = loginService.loginCoach(userInfo);
         } else {
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             return ApiResponse.errorResponse("Type 값이 올바르지 않습니다.");
         }
 
         // CookieUtil.addCookie(response, token);
-        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + token);
-        return ApiResponse.successResponse(new LoginResponseDTO(userInfo,token));
+        response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + dto.token());
+        return ApiResponse.successResponse(new LoginResponseDTO(dto.id(),userInfo,dto.token()));
     }
 }

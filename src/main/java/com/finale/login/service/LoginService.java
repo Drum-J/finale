@@ -5,6 +5,7 @@ import com.finale.entity.Coach;
 import com.finale.entity.CoachRole;
 import com.finale.entity.Student;
 import com.finale.jwt.JwtProvider;
+import com.finale.login.dto.IdTokenDTO;
 import com.finale.login.dto.KakaoUserInfo;
 import com.finale.student.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class LoginService {
     private final StudentRepository studentRepository;
     private final JwtProvider jwtProvider;
 
-    public String loginCoach(KakaoUserInfo coachInfo) {
+    public IdTokenDTO loginCoach(KakaoUserInfo coachInfo) {
         Coach coach = coachRepository.findByNameAndEmailAndPhoneNumber(
                 coachInfo.name(), coachInfo.email(), coachInfo.phoneNumber()).orElse(null);
 
@@ -35,10 +36,12 @@ public class LoginService {
             coach = coachRepository.save(saveCoach);
         }
 
-        return jwtProvider.createAccessToken(coach.getId(), coach.getName(), coach.getCoachRole().toString());
+        String token = jwtProvider.createAccessToken(coach.getId(), coach.getName(), coach.getCoachRole().toString());
+
+        return new IdTokenDTO(coach.getId(), token);
     }
 
-    public String loginStudent(KakaoUserInfo studentInfo) {
+    public IdTokenDTO loginStudent(KakaoUserInfo studentInfo) {
         Student student = studentRepository.findByNameAndEmailAndPhoneNumber(
                 studentInfo.name(), studentInfo.email(), studentInfo.phoneNumber()).orElse(null);
 
@@ -51,6 +54,8 @@ public class LoginService {
             student = studentRepository.save(saveStudent);
         }
 
-        return jwtProvider.createAccessToken(student.getId(), student.getName(), "STUDENT");
+        String token = jwtProvider.createAccessToken(student.getId(), student.getName(), "STUDENT");
+
+        return new IdTokenDTO(student.getId(), token);
     }
 }

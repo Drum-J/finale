@@ -1,4 +1,4 @@
 package com.finale.login.dto;
 
-public record LoginResponseDTO(KakaoUserInfo userInfo, String token) {
+public record LoginResponseDTO(Long userId, KakaoUserInfo userInfo, String token) {
 }
