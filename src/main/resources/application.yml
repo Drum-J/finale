@@ -13,18 +13,9 @@ spring:
       hibernate:
         format_sql: true
 
-server:
-  port: 8443
-  ssl:
-    enabled: true
-    key-store: ${KEY_STORE}
-    key-store-password: ${KEY_STORE_PASSWORD}
-    key-store-type: PKCS12
-    key-alias: finale
-
 app:
   swagger:
-    version : "V 1.0.17"
+    version : "V 1.0.22"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties
