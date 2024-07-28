@@ -11,7 +11,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class LoggingAspect {
 
-    @Around("execution(* com.finale..*(..))") // com.finale 패키지 아래의 모든 메서드에 적용
+    @Around("execution(* com.finale..*(..)) && !execution(* com.finale.common.MainController.main(..))") // com.finale 패키지 아래의 모든 메서드에 적용
     public Object logExecutionTime(ProceedingJoinPoint joinPoint) throws Throwable {
         long start = System.currentTimeMillis();
         Object proceed = joinPoint.proceed();

@@ -59,6 +59,7 @@ public class KakaoAPIService {
     }
 
     public KakaoUserInfo getAccessToken(String code) throws Exception {
+        log.info("카카오 getAccessToken 메서드 진입");
 
         String uri = UriComponentsBuilder
                 .fromUriString(tokenUri)
@@ -69,6 +70,8 @@ public class KakaoAPIService {
                 .queryParam("client_secret", clientSecret)
                 .build()
                 .toString();
+
+        log.info("Redirect URL = {}",redirectLogin);
 
         RestClient restClient = RestClient.builder()
                 .baseUrl(uri)

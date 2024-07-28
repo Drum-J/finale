@@ -31,7 +31,11 @@ public class LoginController {
 
     @GetMapping("/{type}")
     public ApiResponse studentLogin(@PathVariable("type") String type) {
-        return ApiResponse.successResponse(kakaoAPIService.redirectUri(type));
+        log.info("카카오 로그인 진입 TYPE = {}", type);
+
+        String redirectUri = kakaoAPIService.redirectUri(type);
+        log.info("생성된 Redirect URL : {}",redirectUri);
+        return ApiResponse.successResponse(redirectUri);
     }
 
     @ResponseBody
@@ -39,6 +43,9 @@ public class LoginController {
     public ApiResponse studentCallback(@RequestParam(name = "code") String code,
                                   @RequestParam(name = "state") String type,
                                   HttpServletResponse response) throws Exception {
+        log.info("카카로 CallBack Controller 진입");
+        log.info("CODE = {} / state = {} ",code, type);
+
         KakaoUserInfo userInfo = kakaoAPIService.getAccessToken(code);
         IdTokenDTO dto;
         if (type.equals(STUDENT)) {
