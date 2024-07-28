@@ -62,7 +62,8 @@ public class StudentService {
     public ApiResponse getMyPage(Long id) {
         List<LessonStudent> byStudentId = lessonStudentRepository.findByStudentId(id);
 
-        List<MyPageDTO> list = byStudentId.stream().map(MyPageDTO::new).toList();
+        List<MyPageDTO> list = byStudentId.stream()
+                .filter(lessonStudent -> !lessonStudent.isRestLesson()).map(MyPageDTO::new).toList();
 
         return ApiResponse.successResponse(list);
     }

@@ -55,7 +55,9 @@ public class CopyService {
     private void makeCopyLesson(Lesson lesson) {
         Timetable timetable = lesson.getTimetable();
         List<Coach> coaches = lesson.getCoaches().stream().map(LessonCoach::getCoach).toList();
-        List<Student> students = lesson.getStudents().stream().map(LessonStudent::getStudent).toList();
+        List<Student> students = lesson.getStudents().stream()
+                .filter(lessonStudent -> !lessonStudent.isRestLesson())
+                .map(LessonStudent::getStudent).toList();
 
         List<LessonDateDTO> lessonDate = dateCopy(timetable);
         Timetable copyTimetable = new Timetable(timetable, lessonDate);
