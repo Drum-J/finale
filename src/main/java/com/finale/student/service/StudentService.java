@@ -1,10 +1,12 @@
 package com.finale.student.service;
 
 import com.finale.common.ApiResponse;
+import com.finale.entity.EnrollmentStatus;
 import com.finale.entity.Lesson;
 import com.finale.entity.LessonStudent;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.repository.LessonStudentRepository;
+import com.finale.scheduler.ScheduleRepository;
 import com.finale.student.dto.EnrolmentDTO;
 import com.finale.entity.Student;
 import com.finale.student.dto.MyPageDTO;
@@ -26,37 +28,60 @@ public class StudentService {
     private final StudentRepository studentRepository;
     private final LessonRepository lessonRepository;
     private final LessonStudentRepository lessonStudentRepository;
+    private final ScheduleRepository scheduleRepository;
 
     @Transactional
     public ApiResponse enrolment(EnrolmentDTO dto) {
         log.info("=== 수강 신청 Service 진입 ===");
         log.info("수강 신청 데이터 = {}",dto);
-        Lesson lesson = lessonRepository.findById(dto.getLessonId())
-                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
-        Student student = studentRepository.findById(dto.getStudentId())
-                .orElseThrow(() -> new ResourceNotFoundException("해당 학생을 찾을 수 없습니다."));
+        EnrollmentStatus status = scheduleRepository.findById(1L)
+                .orElseThrow(() -> new IllegalStateException("해당 ID의 스케줄러를 찾을 수 없습니다."));
 
-        LessonStudent lessonStudent = new LessonStudent(lesson, student);
+        log.info("수강신청 가능 여부 = {}",status.isEnrollmentStatus());
 
-        lesson.addStudent(lessonStudent);
+        if (status.isEnrollmentStatus()) {
+            Lesson lesson = lessonRepository.findById(dto.getLessonId())
+                    .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
-        return ApiResponse.successResponse("수강신청이 정상적으로 완료 되었습니다.");
+            Student student = studentRepository.findById(dto.getStudentId())
+                    .orElseThrow(() -> new ResourceNotFoundException("해당 학생을 찾을 수 없습니다."));
+
+            LessonStudent lessonStudent = new LessonStudent(lesson, student);
+
+            lesson.addStudent(lessonStudent);
+
+            return ApiResponse.successResponse("수강신청이 정상적으로 완료 되었습니다.");
+        } else {
+            return ApiResponse.badRequestResponse("수강신청 기간이 아닙니다.");
+        }
+
+
     }
 
     @Transactional
     public ApiResponse restLesson(Long id, Long userId) {
         log.info("=== 휴식 신청 Service 진입 ===");
         log.info("휴식 신청 LessonStudent ID = {}",id);
-        LessonStudent lessonStudent = lessonStudentRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
-        if (!userId.equals(lessonStudent.getStudent().getId())) {
-            throw new IllegalStateException("본인의 레슨만 휴식 신청 할 수 있습니다.");
+        EnrollmentStatus status = scheduleRepository.findById(1L)
+                .orElseThrow(() -> new IllegalStateException("해당 ID의 스케줄러를 찾을 수 없습니다."));
+
+        log.info("휴식신청 가능 여부 = {}",status.isRestLessonStatus());
+
+        if (status.isRestLessonStatus()) {
+            LessonStudent lessonStudent = lessonStudentRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
+
+            if (!userId.equals(lessonStudent.getStudent().getId())) {
+                throw new IllegalStateException("본인의 레슨만 휴식 신청 할 수 있습니다.");
+            }
+
+            lessonStudent.restLesson();
+            return ApiResponse.successResponse("휴식신청이 정상적으로 완료 되었습니다.");
+        } else {
+            return ApiResponse.badRequestResponse("휴식신청 기간이 아닙니다.");
         }
-
-        lessonStudent.restLesson();
-        return ApiResponse.successResponse("휴식신청이 정상적으로 완료 되었습니다.");
     }
 
     public ApiResponse getMyPage(Long id) {

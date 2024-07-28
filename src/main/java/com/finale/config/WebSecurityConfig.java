@@ -30,7 +30,11 @@ public class WebSecurityConfig {
         return http
                 .cors(corsCustom -> corsCustom.configurationSource(request -> {
                     CorsConfiguration corsConfig = new CorsConfiguration();
-                    corsConfig.setAllowedOrigins(List.of("http://localhost:3000", "https://localhost:3000", "https://finale-web.vercel.app")); //React Server
+                    corsConfig.setAllowedOrigins(
+                            List.of("http://localhost:3000"
+                                    ,"https://localhost:3000"
+                                    ,"https://finale-web.vercel.app"
+                                    ,"https://finale-api.shop")); //React Server
                     corsConfig.setAllowedHeaders(Collections.singletonList("*"));
                     corsConfig.setAllowedMethods(Collections.singletonList("*"));
                     corsConfig.setAllowCredentials(true);
@@ -46,7 +50,10 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/api/coach/depositConfirm/**",
                                 "/api/coach/updateRole/**").hasAnyAuthority("MASTER")
-                        .requestMatchers("/api/coach/lesson/**").hasAnyAuthority("MASTER", "SUB")
+                        .requestMatchers(
+                                "/api/coach/lesson/**",
+                                "/api/schedule/enrollment/**",
+                                "/api/schedule/restLesson/**").hasAnyAuthority("MASTER", "SUB")
                         .requestMatchers("/api/student/**").hasAnyAuthority("STUDENT")
                         .anyRequest().permitAll() // 우선 모든 접근 허용으로 설정
                 )
