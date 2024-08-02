@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -34,5 +35,11 @@ public class LessonController {
     @GetMapping("/withLocation/{locationName}")
     public ApiResponse lessonsByLocation(@PathVariable("locationName") String name) {
         return lessonService.getLessonsByLocation(name);
+    }
+
+    @Operation(summary = "레슨 공지사항 조회 API")
+    @GetMapping("/notice")
+    public ApiResponse lessonNotice() {
+        return lessonService.getNotice();
     }
 }

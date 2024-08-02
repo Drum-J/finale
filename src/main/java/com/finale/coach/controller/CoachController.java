@@ -1,6 +1,7 @@
 package com.finale.coach.controller;
 
 import com.finale.coach.dto.CopyRequestDTO;
+import com.finale.coach.dto.CreateNoticeDTO;
 import com.finale.coach.service.CoachService;
 import com.finale.coach.service.CopyService;
 import com.finale.common.ApiResponse;
@@ -71,4 +72,11 @@ public class CoachController {
     public ApiResponse lessonCopy(CopyRequestDTO dto) {
         return copyService.lessonCopy(dto);
     }
+
+    @Operation(summary = "[코치용] 레슨 공지사항 생성 API")
+    @PostMapping("/createNotice")
+    public ApiResponse createNotice(@RequestBody CreateNoticeDTO dto) {
+        return coachService.createNotice(dto);
+    }
+
 }

@@ -3,11 +3,13 @@ package com.finale.lesson.service;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Lesson;
 import com.finale.entity.Location;
+import com.finale.entity.Notice;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.dto.ILessonDTO;
 import com.finale.lesson.dto.ILocationDTO;
 import com.finale.lesson.repository.LessonCustomRepository;
 import com.finale.lesson.repository.LessonRepository;
+import com.finale.lesson.repository.NoticeRepository;
 import com.finale.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +27,7 @@ public class LessonService {
     private final LessonRepository lessonRepository;
     private final LocationRepository locationRepository;
     private final LessonCustomRepository lessonCustomRepository;
+    private final NoticeRepository noticeRepository;
 
     public ApiResponse getLessonDetails(Long id) {
         Lesson lesson = lessonRepository.findById(id)
@@ -50,5 +53,12 @@ public class LessonService {
 
         List<ILessonDTO> lessonsByLocation = lessonCustomRepository.getLessonsByLocation(name);
         return ApiResponse.successResponse(new ILocationDTO<>(location, lessonsByLocation));
+    }
+
+    public ApiResponse getNotice() {
+        Notice notice = noticeRepository.findTopByOrderByCreateAtDesc()
+                .orElseThrow(() -> new ResourceNotFoundException("아직 공지사항이 없습니다."));
+
+        return ApiResponse.successResponse(notice.getContents());
     }
 }

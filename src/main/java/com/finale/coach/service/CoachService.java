@@ -1,6 +1,7 @@
 package com.finale.coach.service;
 
 import com.finale.coach.dto.CoachResponseDTO;
+import com.finale.coach.dto.CreateNoticeDTO;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Coach;
@@ -8,6 +9,7 @@ import com.finale.entity.Lesson;
 import com.finale.entity.LessonCoach;
 import com.finale.entity.LessonStudent;
 import com.finale.entity.Location;
+import com.finale.entity.Notice;
 import com.finale.entity.Timetable;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.dto.ILessonCoachDTO;
@@ -17,6 +19,7 @@ import com.finale.lesson.repository.LessonCoachRepository;
 import com.finale.lesson.repository.LessonCustomRepository;
 import com.finale.lesson.repository.LessonRepository;
 import com.finale.lesson.repository.LessonStudentRepository;
+import com.finale.lesson.repository.NoticeRepository;
 import com.finale.lesson.repository.TimetableRepository;
 import com.finale.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
@@ -39,6 +42,7 @@ public class CoachService {
     private final LessonStudentRepository lessonStudentRepository;
     private final LessonCoachRepository lessonCoachRepository;
     private final TimetableRepository timetableRepository;
+    private final NoticeRepository noticeRepository;
 
     public ApiResponse getCoachList() {
         return ApiResponse.successResponse(coachRepository.findAll().stream()
@@ -122,5 +126,14 @@ public class CoachService {
         lessonRepository.save(lesson);
 
         return ApiResponse.successResponse("레슨 생성을 완료했습니다.");
+    }
+
+    @Transactional
+    public ApiResponse createNotice(CreateNoticeDTO dto) {
+        Notice notice = dto.toEntity();
+
+        noticeRepository.save(notice);
+
+        return ApiResponse.successResponse("레슨 공지사항 생성을 완료했습니다.");
     }
 }

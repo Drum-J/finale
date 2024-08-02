@@ -51,7 +51,7 @@ public class WebSecurityConfig {
                                 "/api/coach/depositConfirm/**",
                                 "/api/coach/updateRole/**").hasAnyAuthority("MASTER")
                         .requestMatchers(
-                                "/api/coach/lesson/**",
+                                "/api/coach/**",
                                 "/api/schedule/enrollment/**",
                                 "/api/schedule/restLesson/**").hasAnyAuthority("MASTER", "SUB")
                         .requestMatchers("/api/student/**").hasAnyAuthority("STUDENT")
