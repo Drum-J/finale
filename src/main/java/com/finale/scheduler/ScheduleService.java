@@ -16,16 +16,18 @@ public class ScheduleService {
 
     private final ScheduleRepository scheduleRepository;
 
-    @Scheduled(cron = "0 0 0 14 * ?")
+    @Scheduled(cron = "0 0 0 25 * ?")
     public void enrollmentOpen() {
+        log.info("매월 25일에 실행! 수강신청 OPEN");
         EnrollmentStatus status = scheduleRepository.findById(1L)
                 .orElseThrow(() -> new IllegalStateException("해당 ID의 스케줄러를 찾을 수 없습니다."));
 
         status.enrollmentOpen();
     }
 
-    @Scheduled(cron = "0 0 0 20 * ?")
+    @Scheduled(cron = "0 0 0 15 * ?")
     public void enrollmentClose() {
+        log.info("매월 15일에 실행! 수강신청 CLOSE");
         EnrollmentStatus status = scheduleRepository.findById(1L)
                 .orElseThrow(() -> new IllegalStateException("해당 ID의 스케줄러를 찾을 수 없습니다."));
 
