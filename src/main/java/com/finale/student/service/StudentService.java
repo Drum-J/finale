@@ -53,7 +53,7 @@ public class StudentService {
 
             return ApiResponse.successResponse("수강신청이 정상적으로 완료 되었습니다.");
         } else {
-            return ApiResponse.badRequestResponse("수강신청 기간이 아닙니다.");
+            throw new IllegalStateException("수강신청 기간이 아닙니다.");
         }
 
 
@@ -80,7 +80,7 @@ public class StudentService {
             lessonStudent.restLesson();
             return ApiResponse.successResponse("휴식신청이 정상적으로 완료 되었습니다.");
         } else {
-            return ApiResponse.badRequestResponse("휴식신청 기간이 아닙니다.");
+            throw new IllegalStateException("휴식신청 기간이 아닙니다.");
         }
     }
 
