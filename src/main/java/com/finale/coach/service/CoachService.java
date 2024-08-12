@@ -2,6 +2,8 @@ package com.finale.coach.service;
 
 import com.finale.coach.dto.CoachResponseDTO;
 import com.finale.coach.dto.CreateNoticeDTO;
+import com.finale.coach.dto.EnrollmentResponseDTO;
+import com.finale.coach.dto.EnrollmentSearchDTO;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Coach;
@@ -10,6 +12,7 @@ import com.finale.entity.LessonCoach;
 import com.finale.entity.LessonStudent;
 import com.finale.entity.Location;
 import com.finale.entity.Notice;
+import com.finale.entity.Student;
 import com.finale.entity.Timetable;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.dto.ILessonCoachDTO;
@@ -22,6 +25,8 @@ import com.finale.lesson.repository.LessonStudentRepository;
 import com.finale.lesson.repository.NoticeRepository;
 import com.finale.lesson.repository.TimetableRepository;
 import com.finale.location.repository.LocationRepository;
+import com.finale.student.dto.StudentDTO;
+import com.finale.student.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -43,6 +48,7 @@ public class CoachService {
     private final LessonCoachRepository lessonCoachRepository;
     private final TimetableRepository timetableRepository;
     private final NoticeRepository noticeRepository;
+    private final StudentRepository studentRepository;
 
     public ApiResponse getCoachList() {
         return ApiResponse.successResponse(coachRepository.findAll().stream()
@@ -135,5 +141,17 @@ public class CoachService {
         noticeRepository.save(notice);
 
         return ApiResponse.successResponse("레슨 공지사항 생성을 완료했습니다.");
+    }
+
+    public ApiResponse getStudentList() {
+        List<StudentDTO> list = studentRepository.findAll()
+                .stream().map(StudentDTO::new).toList();
+
+        return ApiResponse.successResponse(list);
+    }
+
+    public ApiResponse getEnrollmentList(EnrollmentSearchDTO dto) {
+        List<EnrollmentResponseDTO> enrollmentList = lessonCustomRepository.getEnrollmentList(dto);
+        return ApiResponse.successResponse(enrollmentList);
     }
 }

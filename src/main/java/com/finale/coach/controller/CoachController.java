@@ -2,6 +2,7 @@ package com.finale.coach.controller;
 
 import com.finale.coach.dto.CopyRequestDTO;
 import com.finale.coach.dto.CreateNoticeDTO;
+import com.finale.coach.dto.EnrollmentSearchDTO;
 import com.finale.coach.service.CoachService;
 import com.finale.coach.service.CopyService;
 import com.finale.common.ApiResponse;
@@ -79,4 +80,15 @@ public class CoachController {
         return coachService.createNotice(dto);
     }
 
+    @Operation(summary = "[코치용] 전체 수강생 리스트")
+    @GetMapping("/studentList")
+    public ApiResponse studentList() {
+        return coachService.getStudentList();
+    }
+
+    @Operation(summary = "[코치용] 수강신청 현황 리스트")
+    @GetMapping("/enrollmentList")
+    public ApiResponse enrollmentList(EnrollmentSearchDTO dto) {
+        return coachService.getEnrollmentList(dto);
+    }
 }
