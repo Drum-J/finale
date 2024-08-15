@@ -20,10 +20,18 @@ public class CoachResponseDTO {
     @Schema(description = "코치 역할", example = "MASTER")
     private final CoachRole coachRole;
 
+    @Schema(description = "코치 이미지 URL")
+    private final String url;
+
+    @Schema(description = "코치 이력")
+    private final String resume;
+
     public CoachResponseDTO(Coach coach) {
         this.id = coach.getId();
         this.name = coach.getName();
         this.phoneNumber = coach.getPhoneNumber();
         this.coachRole = coach.getCoachRole();
+        this.url = coach.getProfile();
+        this.resume = coach.getResume();
     }
 }

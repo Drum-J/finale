@@ -58,6 +58,10 @@ public class UploadService {
             String imageUrl = upload(dto,COACH_IMG);
 
             coach.updateProfile(imageUrl,COACH_IMG + dto.file().getOriginalFilename());
+            if (StringUtils.hasText(dto.resume())) {
+                log.info("코치 이력도 함께 변경");
+                coach.updateResume(dto.resume());
+            }
 
             return ApiResponse.successResponse("이미지 업로드 성공 : " + imageUrl);
         } catch (IOException e) {

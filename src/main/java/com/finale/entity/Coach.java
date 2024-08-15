@@ -48,11 +48,15 @@ public class Coach extends TimeStamped {
     }
 
     public void updateRole() {
-        this.coachRole = CoachRole.MASTER;
+        this.coachRole = coachRole == CoachRole.MASTER ? CoachRole.SUB : CoachRole.MASTER;
     }
 
     public void updateProfile(String profile, String s3Key) {
         this.profile = profile;
         this.s3Key = s3Key;
+    }
+
+    public void updateResume(String resume) {
+        this.resume = resume;
     }
 }

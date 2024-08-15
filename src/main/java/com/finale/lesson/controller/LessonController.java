@@ -42,4 +42,10 @@ public class LessonController {
     public ApiResponse lessonNotice() {
         return lessonService.getNotice();
     }
+
+    @Operation(summary = "레슨 시간표 이미지 조회 APi")
+    @GetMapping("/timetable")
+    public ApiResponse getTimetable() {
+        return lessonService.getTimetable();
+    }
 }

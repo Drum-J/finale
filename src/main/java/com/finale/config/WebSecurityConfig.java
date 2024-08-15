@@ -53,7 +53,8 @@ public class WebSecurityConfig {
                         .requestMatchers(
                                 "/api/coach/**",
                                 "/api/schedule/enrollment/**",
-                                "/api/schedule/restLesson/**").hasAnyAuthority("MASTER", "SUB")
+                                "/api/schedule/restLesson/**",
+                                "/api/upload/**").hasAnyAuthority("MASTER", "SUB")
                         .requestMatchers("/api/student/**").hasAnyAuthority("STUDENT")
                         .anyRequest().permitAll() // 우선 모든 접근 허용으로 설정
                 )

@@ -4,6 +4,7 @@ import com.finale.coach.dto.CoachResponseDTO;
 import com.finale.coach.dto.CreateNoticeDTO;
 import com.finale.coach.dto.EnrollmentResponseDTO;
 import com.finale.coach.dto.EnrollmentSearchDTO;
+import com.finale.coach.dto.S3UploadDTO;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Coach;
@@ -64,7 +65,7 @@ public class CoachService {
                 .orElseThrow(() -> new ResourceNotFoundException("해당 코치를 찾을 수 없습니다."));
 
         find.updateRole();
-        return ApiResponse.successResponse("코치 권한이 변경되었습니다.");
+        return ApiResponse.successResponse("코치 권한이 변경되었습니다. 현재 권한 : " + find.getCoachRole());
     }
 
     public ApiResponse getAllLessonForCoach() {
@@ -153,5 +154,18 @@ public class CoachService {
     public ApiResponse getEnrollmentList(EnrollmentSearchDTO dto) {
         List<EnrollmentResponseDTO> enrollmentList = lessonCustomRepository.getEnrollmentList(dto);
         return ApiResponse.successResponse(enrollmentList);
+    }
+
+    @Transactional
+    public ApiResponse updateCoach(S3UploadDTO dto) {
+        log.info("===== 단순 코치 이력 업데이트 =====");
+        Long coachId = dto.id();
+
+        Coach coach = coachRepository.findById(coachId)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 코치를 찾을 수 없습니다."));
+
+        coach.updateResume(dto.resume());
+
+        return ApiResponse.successResponse("코치 이력이 변경 되었습니다.");
     }
 }

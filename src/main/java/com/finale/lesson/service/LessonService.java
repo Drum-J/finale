@@ -1,9 +1,11 @@
 package com.finale.lesson.service;
 
+import com.finale.coach.repository.TimetableImageRepository;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Lesson;
 import com.finale.entity.Location;
 import com.finale.entity.Notice;
+import com.finale.entity.TimetableImage;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.dto.ILessonDTO;
 import com.finale.lesson.dto.ILocationDTO;
@@ -28,6 +30,7 @@ public class LessonService {
     private final LocationRepository locationRepository;
     private final LessonCustomRepository lessonCustomRepository;
     private final NoticeRepository noticeRepository;
+    private final TimetableImageRepository timetableImageRepository;
 
     public ApiResponse getLessonDetails(Long id) {
         Lesson lesson = lessonRepository.findById(id)
@@ -60,5 +63,12 @@ public class LessonService {
                 .orElseThrow(() -> new ResourceNotFoundException("아직 공지사항이 없습니다."));
 
         return ApiResponse.successResponse(notice.getContents());
+    }
+
+    public ApiResponse getTimetable() {
+        TimetableImage timetableImage = timetableImageRepository.findTopByOrderByCreateAtDesc()
+                .orElseThrow(() -> new ResourceNotFoundException("아직 시간표를 등록하지 않았습니다."));
+
+        return ApiResponse.successResponse(timetableImage.getUrl());
     }
 }
