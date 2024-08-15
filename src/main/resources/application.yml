@@ -15,7 +15,7 @@ spring:
 
 app:
   swagger:
-    version : "V 1.0.32"
+    version : "V 1.0.33"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties
@@ -37,3 +37,14 @@ kakao:
 custom:
   jwt:
     secretKey: finaleSecretKeyMadeBySeungHoAKADrumJ
+
+# AWS S3
+cloud:
+  aws:
+    s3:
+      bucket: ${S3-BUCKET-NAME}
+    stack.auto: false
+    region.static: ap-northeast-2
+    credentials:
+      accessKey: ${S3-BUCKET-ACCESS-KEY}
+      secretKey: ${S3-BUCKET-SECRET-KEY}

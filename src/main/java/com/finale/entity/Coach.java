@@ -31,6 +31,11 @@ public class Coach extends TimeStamped {
     @Enumerated(value = STRING)
     private CoachRole coachRole;
 
+    private String profile;
+
+    @Lob
+    private String resume;
+
     @Builder
     public Coach(String email,String name,String phoneNumber, CoachRole coachRole) {
         this.email = email;
@@ -41,5 +46,9 @@ public class Coach extends TimeStamped {
 
     public void updateRole() {
         this.coachRole = CoachRole.MASTER;
+    }
+
+    public void updateProfile(String profile) {
+        this.profile = profile;
     }
 }

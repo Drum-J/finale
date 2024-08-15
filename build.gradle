@@ -61,6 +61,9 @@ dependencies {
     //AOP 추가
     implementation 'org.springframework.boot:spring-boot-starter-aop'
 
+    //AWS 추가
+    implementation 'io.awspring.cloud:spring-cloud-starter-aws:2.4.4'
+
 }
 
 tasks.named('test') {
