@@ -40,9 +40,9 @@ jobs:
         kakao.client-secret : ${{secrets.KAKAO_CLIENT_SECRET}}
         kakao.redirect-uri.login : ${{secrets.KAKAO_REDIRECT_LOGIN}}
         kakao.redirect-uri.logout : ${{secrets.KAKAO_REDIRECT_LOGOUT}}
-        cloud.aws.s3.bucket : ${{secrets.S3-BUCKET-NAME}}
-        cloud.aws.s3.credentials.accessKey : ${{secrets.S3-BUCKET-ACCESS-KEY}}
-        cloud.aws.s3.credentials.secretKey : ${{secrets.S3-BUCKET-SECRET-KEY}}
+        cloud.aws.s3.bucket : ${{secrets.S3_BUCKET_NAME}}
+        cloud.aws.s3.credentials.accessKey : ${{secrets.S3_BUCKET_ACCESS_KEY}}
+        cloud.aws.s3.credentials.secretKey : ${{secrets.S3_BUCKET_SECRET_KEY}}
 
     - name: Gradle 명령 실행을 위한 권한을 부여합니다
       run: chmod +x gradlew
