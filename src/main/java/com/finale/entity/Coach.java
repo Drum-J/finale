@@ -33,6 +33,9 @@ public class Coach extends TimeStamped {
 
     private String profile;
 
+    @Column(name = "s3_key")
+    private String s3Key;
+
     @Lob
     private String resume;
 
@@ -48,7 +51,8 @@ public class Coach extends TimeStamped {
         this.coachRole = CoachRole.MASTER;
     }
 
-    public void updateProfile(String profile) {
+    public void updateProfile(String profile, String s3Key) {
         this.profile = profile;
+        this.s3Key = s3Key;
     }
 }

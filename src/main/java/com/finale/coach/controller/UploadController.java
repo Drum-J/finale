@@ -20,7 +20,7 @@ public class UploadController {
     private final UploadService uploadService;
 
     @PostMapping("/coach")
-    public ApiResponse testUpload(@ModelAttribute S3UploadDTO dto) {
+    public ApiResponse coachUpload(@ModelAttribute S3UploadDTO dto) {
         String originalFilename = dto.file().getOriginalFilename();
 
         if (!FileValidator.isImage(originalFilename)) {
@@ -28,5 +28,21 @@ public class UploadController {
         }
 
         return uploadService.coachProfileUpload(dto);
+    }
+
+    @PostMapping("/timetable")
+    public ApiResponse timetableUpload(@ModelAttribute S3UploadDTO dto) {
+        String originalFilename = dto.file().getOriginalFilename();
+
+        if (!FileValidator.isImage(originalFilename)) {
+            throw new IllegalStateException("이미지 확장자를 확인해 주세요. [jpg,jpeg,png,gif] 파일만 가능합니다.");
+        }
+
+        Long id = dto.id();
+        if (id == null) {
+            return uploadService.timetableUpload(dto);
+        } else {
+            return uploadService.timetableUpdate(dto);
+        }
     }
 }
