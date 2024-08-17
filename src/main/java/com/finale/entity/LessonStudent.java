@@ -13,8 +13,8 @@ import static lombok.AccessLevel.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-@EqualsAndHashCode(of = {"lesson", "student"})
-public class LessonStudent {
+@EqualsAndHashCode(of = {"lesson", "student"}, callSuper = false)
+public class LessonStudent extends TimeStamped {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;

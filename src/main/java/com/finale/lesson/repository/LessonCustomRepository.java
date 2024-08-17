@@ -1,5 +1,8 @@
 package com.finale.lesson.repository;
 
+import com.finale.admin.dto.DepositRequestDTO;
+import com.finale.admin.dto.DepositResponseDTO;
+import com.finale.admin.dto.QDepositResponseDTO;
 import com.finale.coach.dto.EnrollmentResponseDTO;
 import com.finale.coach.dto.EnrollmentSearchDTO;
 import com.finale.coach.dto.QEnrollmentResponseDTO;
@@ -21,6 +24,7 @@ import java.util.List;
 import static com.finale.entity.QLesson.lesson;
 import static com.finale.entity.QLessonStudent.lessonStudent;
 import static com.finale.entity.QLocation.location;
+import static com.finale.entity.QStudent.student;
 import static com.finale.entity.QTimetable.timetable;
 
 @Repository
@@ -81,7 +85,36 @@ public class LessonCustomRepository {
                 .fetch();
     }
 
+    public List<DepositResponseDTO> getDepositList(DepositRequestDTO dto, boolean isDeposit) {
+        return query
+                .select(new QDepositResponseDTO(
+                        lessonStudent.id,
+                        lessonStudent.student.id,
+                        lessonStudent.lesson.title,
+                        lessonStudent.student.name,
+                        lessonStudent.student.phoneNumber,
+                        lessonStudent.createAt.stringValue()
+                ))
+                .from(lessonStudent)
+                .where(
+                        lessonDateEq(dto.date()),
+                        studentNameEq(dto.studentName()),
+                        locationEq(dto.location()),
+                        lessonStudent.deposit.eq(isDeposit),
+                        lessonStudent.restLesson.eq(false)
+                )
+                .fetch();
+    }
+
     private BooleanExpression lessonDateEq(String lessonDate) {
         return StringUtils.hasText(lessonDate) ? lesson.lessonDate.eq(lessonDate) : null;
+    }
+
+    private BooleanExpression studentNameEq(String name) {
+        return StringUtils.hasText(name) ? student.name.eq(name) : null;
+    }
+
+    private BooleanExpression locationEq(String location) {
+        return StringUtils.hasText(location) ? lesson.timetable.location.eq(location) : null;
     }
 }
