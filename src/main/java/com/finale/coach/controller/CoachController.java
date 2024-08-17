@@ -3,6 +3,7 @@ package com.finale.coach.controller;
 import com.finale.coach.dto.CopyRequestDTO;
 import com.finale.coach.dto.CreateNoticeDTO;
 import com.finale.coach.dto.EnrollmentSearchDTO;
+import com.finale.coach.dto.LessonChangeDTO;
 import com.finale.coach.dto.S3UploadDTO;
 import com.finale.coach.service.CoachService;
 import com.finale.coach.service.CopyService;
@@ -124,4 +125,18 @@ public class CoachController {
 
         return uploadService.coachProfileUpload(dto);
     }
+
+    @Operation(summary = "[코치용] 수강신청 취소 API")
+    @PostMapping("/lessonCancel/{id}")
+    public ApiResponse lessonCancel(@PathVariable("id") Long id) {
+        return coachService.lessonCancel(id);
+    }
+
+    @Operation(summary = "[코치용] 수강변경 API")
+    @PostMapping("/lessonChange")
+    public ApiResponse lessonChange(LessonChangeDTO dto) {
+        return coachService.lessonChange(dto);
+    }
+
+
 }

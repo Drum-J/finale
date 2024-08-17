@@ -4,6 +4,7 @@ import com.finale.coach.dto.CoachResponseDTO;
 import com.finale.coach.dto.CreateNoticeDTO;
 import com.finale.coach.dto.EnrollmentResponseDTO;
 import com.finale.coach.dto.EnrollmentSearchDTO;
+import com.finale.coach.dto.LessonChangeDTO;
 import com.finale.coach.dto.S3UploadDTO;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
@@ -167,5 +168,38 @@ public class CoachService {
         coach.updateResume(dto.resume());
 
         return ApiResponse.successResponse("코치 이력이 변경 되었습니다.");
+    }
+
+    @Transactional
+    public ApiResponse lessonCancel(Long id) {
+        cancel(id);
+
+        return ApiResponse.successResponse("수강취소를 완료 했습니다.");
+    }
+
+    @Transactional
+    public ApiResponse lessonChange(LessonChangeDTO dto) {
+        cancel(dto.lessonStudentId());
+
+        Lesson lesson = lessonRepository.findById(dto.lessonId())
+                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
+
+        Student student = studentRepository.findById(dto.studentId())
+                .orElseThrow(() -> new ResourceNotFoundException("해당 학생을 찾을 수 없습니다."));
+
+        LessonStudent lessonStudent = new LessonStudent(lesson, student);
+
+        lesson.addStudent(lessonStudent);
+
+        return ApiResponse.successResponse("수강 변경을 완료 했습니다. 변경 레슨 = " + lesson.getTitle());
+    }
+
+    private void cancel(Long id) {
+        LessonStudent lessonStudent = lessonStudentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
+
+        lessonStudent.getLesson().enrolmentMinus();
+
+        lessonStudentRepository.delete(lessonStudent);
     }
 }
