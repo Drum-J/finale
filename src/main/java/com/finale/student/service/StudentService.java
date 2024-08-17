@@ -92,4 +92,20 @@ public class StudentService {
 
         return ApiResponse.successResponse(list);
     }
+
+    @Transactional
+    public ApiResponse lessonCancel(Long id, Long userId) {
+        LessonStudent lessonStudent = lessonStudentRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
+
+        if (!userId.equals(lessonStudent.getStudent().getId())) {
+            throw new IllegalStateException("본인의 레슨만 취소 할 수 있습니다.");
+        }
+
+        lessonStudent.getLesson().enrolmentMinus();
+
+        lessonStudentRepository.delete(lessonStudent);
+
+        return ApiResponse.successResponse("수강취소를 완료 했습니다.");
+    }
 }

@@ -54,4 +54,11 @@ public class StudentController {
         log.info("로그인한 수강생 ID = {}", id);
         return studentService.getMyPage(Long.parseLong(id));
     }
+
+    @Operation(summary = "[수강생용] 수강 취소 API")
+    @PostMapping("/cancel/{id}")
+    public ApiResponse lessonCancel(@PathVariable("id") Long id) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
+        return studentService.lessonCancel(id,Long.parseLong(userId));
+    }
 }
