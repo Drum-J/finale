@@ -42,4 +42,10 @@ public class JwtController {
         response.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + accessToken);
         return ApiResponse.successResponse(accessToken);
     }
+
+    @GetMapping("/student2")
+    public ApiResponse createSub2Token() {
+        String accessToken = jwtProvider.createAccessToken(2L, "은지", "STUDENT");
+        return ApiResponse.successResponse(accessToken);
+    }
 }

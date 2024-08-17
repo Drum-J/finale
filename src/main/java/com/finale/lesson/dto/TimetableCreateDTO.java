@@ -7,10 +7,10 @@ import java.util.List;
 
 @Data
 public class TimetableCreateDTO {
-    @Schema(description = "수업 제목", example = "2024년 1월 월요일 계명대학교")
+    @Schema(description = "수업 제목", example = "고려대학교(월요일)")
     private String title;
 
-    @Schema(description = "장소", example = "계명대학교")
+    @Schema(description = "장소", example = "고려대학교")
     private String location;
 
     @Schema(description = "코치 ID List", example = "[1,2]")
