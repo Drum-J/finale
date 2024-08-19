@@ -5,6 +5,7 @@ import com.finale.coach.dto.CreateNoticeDTO;
 import com.finale.coach.dto.EnrollmentResponseDTO;
 import com.finale.coach.dto.EnrollmentSearchDTO;
 import com.finale.coach.dto.LessonChangeDTO;
+import com.finale.coach.dto.LessonUpdateDTO;
 import com.finale.coach.dto.S3UploadDTO;
 import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
@@ -201,5 +202,42 @@ public class CoachService {
         lessonStudent.getLesson().enrolmentMinus();
 
         lessonStudentRepository.delete(lessonStudent);
+    }
+
+    @Transactional
+    public ApiResponse updateLesson(LessonUpdateDTO dto) {
+
+        Lesson lesson = lessonRepository.findById(dto.lessonId())
+                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
+
+        Location findLocation = locationRepository.findByName(dto.locationName());
+        if (findLocation == null) {
+            throw new ResourceNotFoundException("해당 장소를 찾을 수 없습니다.");
+        }
+
+        Timetable timetable = lesson.getTimetable();
+        timetable.update(dto);
+
+        List<Long> coaches = dto.coaches();
+
+        //lessonCoach 엔티티 삭제
+        lesson.getCoaches().clear();
+
+        for (Long coach : coaches) {
+            Coach findCoach = coachRepository.findById(coach)
+                    .orElseThrow(() -> new ResourceNotFoundException("해당 코치를 찾을 수 없습니다."));
+
+            LessonCoach lessonCoach = new LessonCoach(lesson, findCoach);
+            lesson.addCoaches(lessonCoach);
+
+            lessonCoachRepository.save(lessonCoach);
+        }
+
+        lesson.update(timetable);
+
+        timetableRepository.save(timetable);
+        lessonRepository.save(lesson);
+
+        return ApiResponse.successResponse("레슨 변경을 완료했습니다.");
     }
 }

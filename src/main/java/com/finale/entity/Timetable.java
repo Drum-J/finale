@@ -1,11 +1,13 @@
 package com.finale.entity;
 
+import com.finale.coach.dto.LessonUpdateDTO;
 import com.finale.lesson.dto.LessonDateDTO;
 import jakarta.persistence.*;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -111,5 +113,31 @@ public class Timetable extends TimeStamped {
         this.cost = timetable.getCost();
         this.classSize = timetable.getClassSize();
         this.totalClassSize = timetable.getTotalClassSize();
+    }
+
+    public void update(LessonUpdateDTO dto) {
+        this.title = dto.title();
+        this.location = dto.locationName();
+        this.days = dto.days();
+
+        this.date = dto.lessonDates().get(0).date();
+        this.startTime = dto.lessonDates().get(0).startTime();
+        this.endTime = dto.lessonDates().get(0).endTime();
+
+        this.secondDate = dto.lessonDates().get(1).date();
+        this.secondStartTime = dto.lessonDates().get(1).startTime();
+        this.secondEndTime = dto.lessonDates().get(1).endTime();
+
+        this.thirdDate = dto.lessonDates().get(2).date();
+        this.thirdStartTime = dto.lessonDates().get(2).startTime();
+        this.thirdEndTime = dto.lessonDates().get(2).endTime();
+
+        this.fourthDate = dto.lessonDates().get(3).date();
+        this.fourthStartTime = dto.lessonDates().get(3).startTime();
+        this.fourthEndTime = dto.lessonDates().get(3).endTime();
+
+        this.cost = dto.cost();
+        this.classSize = dto.studentsPerCoach();
+        this.totalClassSize = dto.coaches().size() * dto.studentsPerCoach();
     }
 }

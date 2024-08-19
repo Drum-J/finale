@@ -27,7 +27,7 @@ public class Lesson extends TimeStamped{
     @JoinColumn(name = "timetable_id")
     private Timetable timetable;
 
-    @OneToMany(mappedBy = "lesson",cascade = ALL)
+    @OneToMany(mappedBy = "lesson",cascade = ALL, orphanRemoval = true)
     private final List<LessonCoach> coaches = new ArrayList<>();
 
     @OneToMany(mappedBy = "lesson",cascade = ALL)
@@ -73,5 +73,12 @@ public class Lesson extends TimeStamped{
 
     public void enrolmentMinus() {
         this.currentEnrolment--;
+    }
+
+    public void update(Timetable timetable) {
+        this.timetable = timetable;
+        this.title = timetable.getTitle();
+        this.enrolment = timetable.getTotalClassSize();
+        this.lessonDate = timetable.getDate().substring(0,7);
     }
 }

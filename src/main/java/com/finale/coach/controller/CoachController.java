@@ -4,6 +4,7 @@ import com.finale.coach.dto.CopyRequestDTO;
 import com.finale.coach.dto.CreateNoticeDTO;
 import com.finale.coach.dto.EnrollmentSearchDTO;
 import com.finale.coach.dto.LessonChangeDTO;
+import com.finale.coach.dto.LessonUpdateDTO;
 import com.finale.coach.dto.S3UploadDTO;
 import com.finale.coach.service.CoachService;
 import com.finale.coach.service.CopyService;
@@ -138,5 +139,9 @@ public class CoachController {
         return coachService.lessonChange(dto);
     }
 
-
+    @Operation(summary = "[코치용] 레슨 업데이트 API")
+    @PostMapping("/updateLesson")
+    public ApiResponse updateLesson(@RequestBody LessonUpdateDTO dto) {
+        return coachService.updateLesson(dto);
+    }
 }
