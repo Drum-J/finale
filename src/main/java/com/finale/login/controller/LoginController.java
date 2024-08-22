@@ -46,7 +46,7 @@ public class LoginController {
         log.info("카카로 CallBack Controller 진입");
         log.info("CODE = {} / state = {} ",code, type);
 
-        KakaoUserInfo userInfo = kakaoAPIService.getAccessToken(code);
+        KakaoUserInfo userInfo = kakaoAPIService.getAccessToken(code,type);
         IdTokenDTO dto;
         if (type.equals(STUDENT)) {
             dto = loginService.loginStudent(userInfo);

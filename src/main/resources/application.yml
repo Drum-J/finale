@@ -19,7 +19,7 @@ spring:
 
 app:
   swagger:
-    version : "V 1.0.34"
+    version : "V 1.0.38"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties
@@ -28,7 +28,9 @@ kakao:
   client-secret: ${KAKAO_CLIENT_SECRET}
   redirect-uri:
     login: ${KAKAO_REDIRECT_LOGIN}
-    logout : ${KAKAO_REDIRECT_LOGOUT}
+    login-coach: ${KAKAO_REDIRECT_LOGIN_COACH}
+    logout: ${KAKAO_REDIRECT_LOGOUT}
+    logout-coach: ${KAKAO_REDIRECT_LOGOUT_COACH}
   content-type: application/x-www-form-urlencoded;charset=utf-8
   authorization-grant-type: authorization_code
   #Get

@@ -25,8 +25,14 @@ public class KakaoAPIService {
     @Value("${kakao.redirect-uri.login}")
     private String redirectLogin;
 
+    @Value("${kakao.redirect-uri.login-coach}")
+    private String redirectLoginCoach;
+
     @Value("${kakao.redirect-uri.logout}")
     private String redirectLogout;
+
+    @Value("${kakao.redirect-uri.logout-coach}")
+    private String redirectLogoutCoach;
 
     @Value("${kakao.content-type}")
     private String contentType;
@@ -46,32 +52,53 @@ public class KakaoAPIService {
     @Value("${kakao.logout-uri}")
     private String logoutUri;
 
+    private static final String STUDENT = "student";
+    private static final String COACH = "coach";
+
     public String redirectUri(String type) {
+
+        String redirectUri = "";
+        if (type.equals(STUDENT)) {
+            redirectUri = redirectLogin;
+        } else if (type.equals(COACH)) {
+            redirectUri = redirectLoginCoach;
+        }
+
+        log.info("카카오 리다이렉트 URI = {}",redirectUri);
 
         return UriComponentsBuilder
                 .fromUriString(authorizationUri)
                 .queryParam("response_type", "code")
                 .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", encode(redirectLogin, UTF_8))
+                .queryParam("redirect_uri", encode(redirectUri, UTF_8))
                 .queryParam("state", type)
                 .build()
                 .toString();
     }
 
-    public KakaoUserInfo getAccessToken(String code) throws Exception {
+    public KakaoUserInfo getAccessToken(String code, String type) throws Exception {
         log.info("카카오 getAccessToken 메서드 진입");
+
+        String redirectUri = "";
+        if (type.equals(STUDENT)) {
+            redirectUri = redirectLogin;
+        } else if (type.equals(COACH)) {
+            redirectUri = redirectLoginCoach;
+        }
+
+        log.info("카카오 리다이렉트 URI = {}",redirectUri);
 
         String uri = UriComponentsBuilder
                 .fromUriString(tokenUri)
                 .queryParam("grant_type", grantType)
                 .queryParam("client_id", clientId)
-                .queryParam("redirect_uri", redirectLogin)
+                .queryParam("redirect_uri", redirectUri)
                 .queryParam("code", code)
                 .queryParam("client_secret", clientSecret)
                 .build()
                 .toString();
 
-        log.info("Redirect URL = {}",redirectLogin);
+        log.info("Redirect URL = {}",redirectUri);
 
         RestClient restClient = RestClient.builder()
                 .baseUrl(uri)
