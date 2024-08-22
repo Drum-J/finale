@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -20,13 +21,19 @@ public class DepositController {
 
     @Operation(summary = "[코치용] 입금 완료 List", description = "DTO 값에 따라 월별, 장소별(레슨별), 수강생 이름별 검색이 가능 합니다.")
     @GetMapping("/trueList")
-    public ApiResponse getDepositTrueList(DepositRequestDTO dto) {
+    public ApiResponse getDepositTrueList(@RequestParam(value = "date",required = false) String date,
+                                          @RequestParam(value = "location",required = false) String location,
+                                          @RequestParam(value = "studentName",required = false) String studentName) {
+        DepositRequestDTO dto = new DepositRequestDTO(date, location, studentName);
         return depositService.getDepositTrueList(dto,true);
     }
 
     @Operation(summary = "[코치용] 미입금 List", description = "DTO 값에 따라 월별, 장소별(레슨별), 수강생 이름별 검색이 가능 합니다.")
     @GetMapping("/falseList")
-    public ApiResponse getDepositFalseList(DepositRequestDTO dto) {
+    public ApiResponse getDepositFalseList(@RequestParam(value = "date",required = false) String date,
+                                           @RequestParam(value = "location",required = false) String location,
+                                           @RequestParam(value = "studentName",required = false) String studentName) {
+        DepositRequestDTO dto = new DepositRequestDTO(date, location, studentName);
         return depositService.getDepositTrueList(dto,false);
     }
 }
