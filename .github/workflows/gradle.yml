@@ -39,7 +39,9 @@ jobs:
         kakao.client-id : ${{secrets.KAKAO_CLIENT_ID}}
         kakao.client-secret : ${{secrets.KAKAO_CLIENT_SECRET}}
         kakao.redirect-uri.login : ${{secrets.KAKAO_REDIRECT_LOGIN}}
+        kakao.redirect-uri.login-coach : ${{secrets.KAKAO_REDIRECT_LOGIN_COACH}}
         kakao.redirect-uri.logout : ${{secrets.KAKAO_REDIRECT_LOGOUT}}
+        kakao.redirect-uri.logout-coach : ${{secrets.KAKAO_REDIRECT_LOGOUT_COACH}}
         cloud.aws.s3.bucket : ${{secrets.S3_BUCKET_NAME}}
         cloud.aws.credentials.accessKey : ${{secrets.S3_BUCKET_ACCESS_KEY}}
         cloud.aws.credentials.secretKey : ${{secrets.S3_BUCKET_SECRET_KEY}}
