@@ -34,6 +34,7 @@ public class WebSecurityConfig {
                             List.of("http://localhost:3000"
                                     ,"https://localhost:3000"
                                     ,"https://finale-web.vercel.app"
+                                    ,"https://admin-finale.vercel.app"
                                     ,"https://finale-api.shop")); //React Server
                     corsConfig.setAllowedHeaders(Collections.singletonList("*"));
                     corsConfig.setAllowedMethods(Collections.singletonList("*"));

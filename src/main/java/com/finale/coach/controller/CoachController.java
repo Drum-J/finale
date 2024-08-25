@@ -26,7 +26,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 @Slf4j
 @RestController
@@ -107,14 +109,22 @@ public class CoachController {
 
     @Operation(summary = "[코치용] 코치 데이터 수정 API")
     @PostMapping("/update")
-    public ApiResponse updateCoach(@ModelAttribute S3UploadDTO dto) {
+    public ApiResponse updateCoach(@RequestPart(value = "file", required = false) MultipartFile file,
+                                   @RequestPart(value = "id", required = false) String id,
+                                   @RequestPart(value = "resume", required = false) String resume
+                                   ) {
         log.info("===== 코치 Update Controller 진입 =====");
+        log.info("코치 ID = {}",id);
+        log.info("코치 이력 = {}",resume);
+        log.info("코치 프로필 사진 = {}",file);
+        S3UploadDTO dto = new S3UploadDTO(Long.parseLong(id), resume, file);
+        log.info("DTO = {}", dto);
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        long id = Long.parseLong(authentication.getPrincipal().toString());
+        long authID = Long.parseLong(authentication.getPrincipal().toString());
         boolean contains = authentication.getAuthorities().contains(new SimpleGrantedAuthority(CoachRole.MASTER.toString()));
 
-        if (!(id == dto.id() || contains)) {
+        if (!(authID == dto.id() || contains)) {
             throw new IllegalStateException("본인 또는 운영자만 변경할 수 있습니다.");
         }
 
