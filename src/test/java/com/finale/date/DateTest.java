@@ -16,7 +16,7 @@ public class DateTest {
         String date = "2024-07-01";
         LocalDate originalDate = LocalDate.parse(date, formatter);
 
-        DayOfWeek dayOfWeek = originalDate.getDayOfWeek();
+        DayOfWeek dayOfWeek = DayOfWeek.of(7);
         System.out.println("dayOfWeek = " + dayOfWeek);
 
         //when

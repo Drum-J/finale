@@ -87,7 +87,7 @@ public class CopyService {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
         LocalDate originalDate = LocalDate.parse(timetable.getDate(), formatter); // 해당 레슨의 첫번째 날짜
-        DayOfWeek dayOfWeek = originalDate.getDayOfWeek(); //날짜의 요일 구하기
+        DayOfWeek dayOfWeek = DayOfWeek.of(timetable.getDays()); //날짜의 요일 구하기
         LocalDate nextMonthFirstDay = originalDate.plusMonths(1).withDayOfMonth(1); // 날짜 기준 다음 달의 첫번째 날 구하기
 
         List<LessonDateDTO> dates = new ArrayList<>();
