@@ -19,6 +19,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import static com.finale.entity.QLesson.lesson;
@@ -43,7 +44,7 @@ public class LessonCustomRepository {
                 .join(lesson.timetable, timetable).fetchJoin()
                 .join(location)
                 .on(location.name.eq(timetable.location)).fetchJoin()
-                .where(location.name.eq(name),isWithinMonth(timetable.date))
+                .where(location.name.eq(name),lesson.lessonDate.eq(searchDate()))
                 .fetch();
     }
 
@@ -54,14 +55,23 @@ public class LessonCustomRepository {
                 .join(lesson.timetable, timetable).fetchJoin()
                 .join(location)
                 .on(location.name.eq(timetable.location)).fetchJoin()
-                .where(location.name.eq(name),isWithinMonth(timetable.date))
+                .where(location.name.eq(name),lesson.lessonDate.eq(searchDate()))
                 .fetch();
     }
 
-    private BooleanExpression isWithinMonth(StringPath date) {
-        LocalDate firstDay = DateUtil.getFirstDayOfMonth();
-        LocalDate lastDay = DateUtil.getLastDayOfMonth();
-        return date.goe(firstDay.toString()).and(date.loe(lastDay.toString()));
+    private String searchDate() {
+        LocalDate now = LocalDate.now();
+
+        LocalDate searchMonth;
+        if (now.getDayOfMonth() >= 25) {
+            searchMonth = now.plusMonths(1);
+        } else {
+            searchMonth = now;
+        }
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM");
+
+        return searchMonth.format(formatter);
     }
 
     public List<EnrollmentResponseDTO> getEnrollmentList(EnrollmentSearchDTO dto) {
