@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -20,10 +21,11 @@ public class LogoutController {
 
     private final KakaoAPIService kakaoAPIService;
 
-    @GetMapping("/withKakao")
-    public void logout(HttpServletResponse response) throws IOException {
-        String uri = kakaoAPIService.logoutWithKakao();
-        response.sendRedirect(uri);
+    @GetMapping("/withKakao/{type}")
+    public ApiResponse logout(@PathVariable("type") String type) {
+        String uri = kakaoAPIService.logoutWithKakao(type);
+
+        return ApiResponse.successResponse(uri);
     }
 
 

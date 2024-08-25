@@ -149,11 +149,19 @@ public class KakaoAPIService {
         }
     }
 
-    public String logoutWithKakao() {
+    public String logoutWithKakao(String type) {
+
+        String redirectUriLogout = "";
+        if (type.equals(STUDENT)) {
+            redirectUriLogout = redirectLogout;
+        } else if (type.equals(COACH)) {
+            redirectUriLogout = redirectLogoutCoach;
+        }
+
         return UriComponentsBuilder
                 .fromUriString(logoutUri)
                 .queryParam("client_id", clientId)
-                .queryParam("logout_redirect_uri", redirectLogout)
+                .queryParam("logout_redirect_uri", redirectUriLogout)
                 .build()
                 .toString();
     }
