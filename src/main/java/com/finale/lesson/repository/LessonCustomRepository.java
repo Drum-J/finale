@@ -101,6 +101,8 @@ public class LessonCustomRepository {
                         lessonStudent.id,
                         lessonStudent.student.id,
                         lessonStudent.lesson.title,
+                        lessonStudent.lesson.timetable.startTime,
+                        lessonStudent.lesson.timetable.endTime,
                         lessonStudent.student.name,
                         lessonStudent.student.phoneNumber,
                         lessonStudent.createAt.stringValue()
