@@ -144,7 +144,7 @@ public class LessonCustomRepository {
                     lesson.timetable.endTime
                 ))
                 .from(lesson)
-                .where(lesson.timetable.location.eq(location), lesson.lessonDate.eq(date))
+                .where(locationEq(location), lessonDateEq(date))
                 .fetch();
     }
 }

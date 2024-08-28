@@ -52,8 +52,8 @@ public class LessonController {
 
     @Operation(summary = "레슨 분반별 조회 API")
     @GetMapping("/withDateAndLocation")
-    public ApiResponse getLessonWithDateAndLocation(@RequestParam("date") String date,
-                                                    @RequestParam("location") String location) {
+    public ApiResponse getLessonWithDateAndLocation(@RequestParam(value = "date",required = false) String date,
+                                                    @RequestParam(value = "location",required = false) String location) {
         return lessonService.getLessonWithDateAndLocation(date,location);
     }
 }
