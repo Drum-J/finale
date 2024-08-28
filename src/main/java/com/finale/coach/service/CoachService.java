@@ -120,6 +120,9 @@ public class CoachService {
 
         Lesson lesson = new Lesson(timetable);
 
+        timetableRepository.save(timetable);
+        lessonRepository.save(lesson);
+
         List<Long> coachId = dto.getCoaches();
         coachId.stream().map(id -> coachRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("해당 코치를 찾을 수 없습니다.")))
@@ -130,9 +133,6 @@ public class CoachService {
                             return lessonCoach;
                         }
                 ).forEach(lesson::addCoaches);
-
-        timetableRepository.save(timetable);
-        lessonRepository.save(lesson);
 
         return ApiResponse.successResponse("레슨 생성을 완료했습니다.");
     }
