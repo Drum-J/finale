@@ -6,13 +6,13 @@ import com.finale.admin.dto.QDepositResponseDTO;
 import com.finale.coach.dto.EnrollmentResponseDTO;
 import com.finale.coach.dto.EnrollmentSearchDTO;
 import com.finale.coach.dto.QEnrollmentResponseDTO;
-import com.finale.common.DateUtil;
 import com.finale.lesson.dto.ILessonCoachDTO;
 import com.finale.lesson.dto.ILessonDTO;
+import com.finale.lesson.dto.LessonWithDateAndLocationDTO;
 import com.finale.lesson.dto.QILessonCoachDTO;
 import com.finale.lesson.dto.QILessonDTO;
+import com.finale.lesson.dto.QLessonWithDateAndLocationDTO;
 import com.querydsl.core.types.dsl.BooleanExpression;
-import com.querydsl.core.types.dsl.StringPath;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import jakarta.persistence.EntityManager;
 import org.springframework.stereotype.Repository;
@@ -112,6 +112,7 @@ public class LessonCustomRepository {
                         lessonDateEq(dto.date()),
                         studentNameEq(dto.studentName()),
                         locationEq(dto.location()),
+                        lessonIdEq(dto.lessonId()),
                         lessonStudent.deposit.eq(isDeposit),
                         lessonStudent.restLesson.eq(false)
                 )
@@ -128,5 +129,22 @@ public class LessonCustomRepository {
 
     private BooleanExpression locationEq(String location) {
         return StringUtils.hasText(location) ? lesson.timetable.location.eq(location) : null;
+    }
+
+    private BooleanExpression lessonIdEq(Long lessonId) {
+        return lessonId != null ? lesson.id.eq(lessonId) : null;
+    }
+
+    public List<LessonWithDateAndLocationDTO> getLessonWithDateAndLocation(String date, String location) {
+        return query.select(new QLessonWithDateAndLocationDTO(
+                    lesson.id,
+                    lesson.title,
+                    lesson.timetable.days,
+                    lesson.timetable.startTime,
+                    lesson.timetable.endTime
+                ))
+                .from(lesson)
+                .where(lesson.timetable.location.eq(location), lesson.lessonDate.eq(date))
+                .fetch();
     }
 }

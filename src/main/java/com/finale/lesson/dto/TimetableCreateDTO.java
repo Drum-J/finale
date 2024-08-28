@@ -7,8 +7,6 @@ import java.util.List;
 
 @Data
 public class TimetableCreateDTO {
-    @Schema(description = "수업 제목", example = "고려대학교(월요일)")
-    private String title;
 
     @Schema(description = "장소", example = "고려대학교")
     private String location;
@@ -27,8 +25,19 @@ public class TimetableCreateDTO {
     private int classSize;
 
     public Timetable convertToEntity() {
+        String title = this.location;
+        switch (days) {
+            case 1 -> title += " (월요일)";
+            case 2 -> title += " (화요일)";
+            case 3 -> title += " (수요일)";
+            case 4 -> title += " (목요일)";
+            case 5 -> title += " (금요일)";
+            case 6 -> title += " (토요일)";
+            case 7 -> title += " (일요일)";
+        }
+
         Timetable timetable = Timetable.builder()
-                .title(this.title)
+                .title(title)
                 .location(this.location)
                 .days(this.days)
                 .date(this.lessonDates.get(0).date())

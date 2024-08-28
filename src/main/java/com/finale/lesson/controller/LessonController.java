@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @Slf4j
@@ -47,5 +48,12 @@ public class LessonController {
     @GetMapping("/timetable")
     public ApiResponse getTimetable() {
         return lessonService.getTimetable();
+    }
+
+    @Operation(summary = "레슨 분반별 조회 API")
+    @GetMapping("/withDateAndLocation")
+    public ApiResponse getLessonWithDateAndLocation(@RequestParam("date") String date,
+                                                    @RequestParam("location") String location) {
+        return lessonService.getLessonWithDateAndLocation(date,location);
     }
 }

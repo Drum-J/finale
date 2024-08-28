@@ -9,6 +9,7 @@ import com.finale.entity.TimetableImage;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.dto.ILessonDTO;
 import com.finale.lesson.dto.ILocationDTO;
+import com.finale.lesson.dto.LessonWithDateAndLocationDTO;
 import com.finale.lesson.repository.LessonCustomRepository;
 import com.finale.lesson.repository.LessonRepository;
 import com.finale.lesson.repository.NoticeRepository;
@@ -70,5 +71,11 @@ public class LessonService {
                 .orElseThrow(() -> new ResourceNotFoundException("아직 시간표를 등록하지 않았습니다."));
 
         return ApiResponse.successResponse(timetableImage.getUrl());
+    }
+
+    public ApiResponse getLessonWithDateAndLocation(String date, String location) {
+        List<LessonWithDateAndLocationDTO> result = lessonCustomRepository.getLessonWithDateAndLocation(date, location);
+
+        return ApiResponse.successResponse(result);
     }
 }

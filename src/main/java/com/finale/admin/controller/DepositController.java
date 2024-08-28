@@ -23,8 +23,9 @@ public class DepositController {
     @GetMapping("/trueList")
     public ApiResponse getDepositTrueList(@RequestParam(value = "date",required = false) String date,
                                           @RequestParam(value = "location",required = false) String location,
-                                          @RequestParam(value = "studentName",required = false) String studentName) {
-        DepositRequestDTO dto = new DepositRequestDTO(date, location, studentName);
+                                          @RequestParam(value = "studentName",required = false) String studentName,
+                                          @RequestParam(value = "lessonId",required = false) Long lessonId) {
+        DepositRequestDTO dto = new DepositRequestDTO(date, location, studentName,lessonId);
         return depositService.getDepositTrueList(dto,true);
     }
 
@@ -32,8 +33,9 @@ public class DepositController {
     @GetMapping("/falseList")
     public ApiResponse getDepositFalseList(@RequestParam(value = "date",required = false) String date,
                                            @RequestParam(value = "location",required = false) String location,
-                                           @RequestParam(value = "studentName",required = false) String studentName) {
-        DepositRequestDTO dto = new DepositRequestDTO(date, location, studentName);
+                                           @RequestParam(value = "studentName",required = false) String studentName,
+                                           @RequestParam(value = "lessonId",required = false) Long lessonId) {
+        DepositRequestDTO dto = new DepositRequestDTO(date, location, studentName,lessonId);
         return depositService.getDepositTrueList(dto,false);
     }
 }

@@ -1,5 +1,5 @@
 package com.finale.admin.dto;
 
-public record DepositRequestDTO(String date, String location, String studentName) {
+public record DepositRequestDTO(String date, String location, String studentName, Long lessonId) {
 
 }
