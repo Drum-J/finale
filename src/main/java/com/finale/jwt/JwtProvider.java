@@ -27,7 +27,7 @@ import static org.springframework.http.HttpHeaders.AUTHORIZATION;
 public class JwtProvider {
 
     //private static final Long EXPIRATION = 1000L * 60 * 60 * 6;
-    private static final Long EXPIRATION = 1000L * 60 * 30;
+    private static final Long EXPIRATION = 1000L * 60 * 60 * 24 * 7;
     private static final Long REFRESH_EXPIRATION = 1000L * 60 * 60 * 24;
     private static final String BEARER = "Bearer ";
     private final SecretKey SECRET_KEY;
