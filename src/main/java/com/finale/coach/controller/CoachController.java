@@ -147,7 +147,7 @@ public class CoachController {
 
     @Operation(summary = "[코치용] 수강변경 API")
     @PostMapping("/lessonChange")
-    public ApiResponse lessonChange(LessonChangeDTO dto) {
+    public ApiResponse lessonChange(@RequestBody LessonChangeDTO dto) {
         return coachService.lessonChange(dto);
     }
 
