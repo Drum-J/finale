@@ -32,9 +32,12 @@ public class LessonStudent extends TimeStamped {
 
     private boolean restLesson = false; // 휴식 유무
 
+    private boolean newbie; // 신청 당시 회원 신규/기존 상태 (true 뉴비, false 기존)
+
     public LessonStudent(Lesson lesson, Student student) {
         this.lesson = lesson;
         this.student = student;
+        this.newbie = student.isNewbie();
     }
 
     public void depositConfirm() throws IllegalStateException {
@@ -50,5 +53,9 @@ public class LessonStudent extends TimeStamped {
         }
         this.restLesson = true;
         this.lesson.enrolmentMinus();
+    }
+
+    public void notNewbie() {
+        this.newbie = false;
     }
 }

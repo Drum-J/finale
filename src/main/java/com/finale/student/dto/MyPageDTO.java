@@ -18,7 +18,7 @@ public class MyPageDTO {
 
     public MyPageDTO(LessonStudent lessonStudent) {
         this.lessonStudentId = lessonStudent.getId();
-        this.month = lessonStudent.getLesson().getTimetable().getDate().substring(0,7);
+        this.month = lessonStudent.getLesson().getLessonDate();
         this.location = lessonStudent.getLesson().getTimetable().getLocation();
         this.days = lessonStudent.getLesson().getTimetable().getDays();
         this.startTime = lessonStudent.getLesson().getTimetable().getStartTime();

@@ -19,6 +19,8 @@ public class Student extends TimeStamped {
     private String email;
     private String phoneNumber;
 
+    private final boolean newbie = true;
+
     @Builder
     public Student(String name, String email, String phoneNumber) {
         this.name = name;

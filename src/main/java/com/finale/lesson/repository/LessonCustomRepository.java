@@ -105,7 +105,8 @@ public class LessonCustomRepository {
                         lessonStudent.lesson.timetable.endTime,
                         lessonStudent.student.name,
                         lessonStudent.student.phoneNumber,
-                        lessonStudent.createAt.stringValue()
+                        lessonStudent.createAt.stringValue(),
+                        lessonStudent.newbie
                 ))
                 .from(lessonStudent)
                 .where(
