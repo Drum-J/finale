@@ -43,7 +43,7 @@ public class ScheduleService {
     @Scheduled(cron = "0 0 0 15 * ?")
     public void updateNewbie() {
         log.info("매월 15일 실행! 신규 -> 기존 회원으로 변경");
-        List<Long> studentId = lessonStudentRepository.existsByStudentId();
+        List<Long> studentId = lessonStudentRepository.findStudentIdByDepositTrue();
         studentRepository.updateNewbie(studentId);
     }
 

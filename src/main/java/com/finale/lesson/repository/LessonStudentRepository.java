@@ -11,5 +11,5 @@ public interface LessonStudentRepository extends JpaRepository<LessonStudent,Lon
     List<LessonStudent> findByStudentId(Long studentId);
 
     @Query("SELECT DISTINCT l.student.id FROM LessonStudent l WHERE l.deposit = true")
-    List<Long> existsByStudentId();
+    List<Long> findStudentIdByDepositTrue();
 }
