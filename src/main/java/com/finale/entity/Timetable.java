@@ -116,7 +116,18 @@ public class Timetable extends TimeStamped {
     }
 
     public void update(LessonUpdateDTO dto) {
-        this.title = dto.title();
+        String title = dto.locationName();
+        switch (dto.days()) {
+            case 1 -> title += " (월요일)";
+            case 2 -> title += " (화요일)";
+            case 3 -> title += " (수요일)";
+            case 4 -> title += " (목요일)";
+            case 5 -> title += " (금요일)";
+            case 6 -> title += " (토요일)";
+            case 7 -> title += " (일요일)";
+        }
+
+        this.title = title;
         this.location = dto.locationName();
         this.days = dto.days();
 
@@ -124,17 +135,23 @@ public class Timetable extends TimeStamped {
         this.startTime = dto.lessonDates().get(0).startTime();
         this.endTime = dto.lessonDates().get(0).endTime();
 
-        this.secondDate = dto.lessonDates().get(1).date();
-        this.secondStartTime = dto.lessonDates().get(1).startTime();
-        this.secondEndTime = dto.lessonDates().get(1).endTime();
+        if (dto.lessonDates().size() > 1) {
+            this.secondDate = dto.lessonDates().get(1).date();
+            this.secondStartTime = dto.lessonDates().get(1).startTime();
+            this.secondEndTime = dto.lessonDates().get(1).endTime();
+        }
 
-        this.thirdDate = dto.lessonDates().get(2).date();
-        this.thirdStartTime = dto.lessonDates().get(2).startTime();
-        this.thirdEndTime = dto.lessonDates().get(2).endTime();
+        if (dto.lessonDates().size() > 2) {
+            this.thirdDate = dto.lessonDates().get(2).date();
+            this.thirdStartTime = dto.lessonDates().get(2).startTime();
+            this.thirdEndTime = dto.lessonDates().get(2).endTime();
+        }
 
-        this.fourthDate = dto.lessonDates().get(3).date();
-        this.fourthStartTime = dto.lessonDates().get(3).startTime();
-        this.fourthEndTime = dto.lessonDates().get(3).endTime();
+        if (dto.lessonDates().size() > 3) {
+            this.fourthDate = dto.lessonDates().get(3).date();
+            this.fourthStartTime = dto.lessonDates().get(3).startTime();
+            this.fourthEndTime = dto.lessonDates().get(3).endTime();
+        }
 
         this.cost = dto.cost();
         this.classSize = dto.studentsPerCoach();
