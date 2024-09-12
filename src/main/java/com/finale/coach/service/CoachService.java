@@ -111,7 +111,7 @@ public class CoachService {
         log.info("=== 레슨 생성 Service 진입 ===");
         log.info("레슨 데이터 = {}",dto);
 
-        Location findLocation = locationRepository.findByName(dto.getLocation());
+        Location findLocation = locationRepository.findByName(dto.getLocationName());
         if (findLocation == null) {
             throw new ResourceNotFoundException("해당 장소를 찾을 수 없습니다.");
         }
@@ -123,7 +123,7 @@ public class CoachService {
         timetableRepository.save(timetable);
         lessonRepository.save(lesson);
 
-        List<Long> coachId = dto.getCoaches();
+        /*List<Long> coachId = dto.getCoaches();
         coachId.stream().map(id -> coachRepository.findById(id)
                         .orElseThrow(() -> new IllegalArgumentException("해당 코치를 찾을 수 없습니다.")))
                 .map(coach -> {
@@ -132,7 +132,7 @@ public class CoachService {
 
                             return lessonCoach;
                         }
-                ).forEach(lesson::addCoaches);
+                ).forEach(lesson::addCoaches);*/
 
         return ApiResponse.successResponse("레슨 생성을 완료했습니다.");
     }
@@ -218,12 +218,12 @@ public class CoachService {
         Timetable timetable = lesson.getTimetable();
         timetable.update(dto);
 
-        List<Long> coaches = dto.coaches();
+        /*List<Long> coaches = dto.coaches();*/
 
         //lessonCoach 엔티티 삭제
         lesson.getCoaches().clear();
 
-        for (Long coach : coaches) {
+        /*for (Long coach : coaches) {
             Coach findCoach = coachRepository.findById(coach)
                     .orElseThrow(() -> new ResourceNotFoundException("해당 코치를 찾을 수 없습니다."));
 
@@ -231,7 +231,7 @@ public class CoachService {
             lesson.addCoaches(lessonCoach);
 
             lessonCoachRepository.save(lessonCoach);
-        }
+        }*/
 
         lesson.update(timetable);
 

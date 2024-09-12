@@ -9,10 +9,10 @@ import java.util.List;
 public class TimetableCreateDTO {
 
     @Schema(description = "장소", example = "고려대학교")
-    private String location;
+    private String locationName;
 
-    @Schema(description = "코치 ID List", example = "[1,2]")
-    private List<Long> coaches;
+    /*@Schema(description = "코치 ID List", example = "[1,2]")
+    private List<Long> coaches;*/
 
     @Schema(description = "레슨 요일", example = "월요일")
     private int days;
@@ -22,10 +22,12 @@ public class TimetableCreateDTO {
     @Schema(description = "수업 횟수 및 비용", example = "4회 18만원")
     private String cost;
     @Schema(description = "(코치 1명 당) 수업 정원", example = "8")
-    private int classSize;
+    private int studentsPerCoach;
+    @Schema(description = "총 정원", example = "24")
+    private int maxStudents;
 
     public Timetable convertToEntity() {
-        String title = this.location;
+        String title = this.locationName;
         switch (days) {
             case 1 -> title += " (월요일)";
             case 2 -> title += " (화요일)";
@@ -38,14 +40,14 @@ public class TimetableCreateDTO {
 
         Timetable timetable = Timetable.builder()
                 .title(title)
-                .location(this.location)
+                .location(this.locationName)
                 .days(this.days)
                 .date(this.lessonDates.get(0).date())
                 .startTime(this.lessonDates.get(0).startTime())
                 .endTime(this.lessonDates.get(0).endTime())
                 .cost(this.cost)
-                .classSize(this.classSize)
-                .totalClassSize(this.classSize * this.coaches.size())
+                .classSize(this.studentsPerCoach)
+                .totalClassSize(this.maxStudents)
                 .build();
 
         if (this.lessonDates.size() > 1) {

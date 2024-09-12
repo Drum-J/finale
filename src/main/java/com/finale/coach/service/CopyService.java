@@ -54,7 +54,7 @@ public class CopyService {
 
     private void makeCopyLesson(Lesson lesson) {
         Timetable timetable = lesson.getTimetable();
-        List<Coach> coaches = lesson.getCoaches().stream().map(LessonCoach::getCoach).toList();
+        /*List<Coach> coaches = lesson.getCoaches().stream().map(LessonCoach::getCoach).toList();*/
         List<Student> students = lesson.getStudents().stream()
                 .filter(lessonStudent -> !lessonStudent.isRestLesson())
                 .map(LessonStudent::getStudent).toList();
@@ -68,12 +68,12 @@ public class CopyService {
         lessonRepository.save(copyLesson);
         log.info("새로운 Lesson = {}",copyLesson.getId());
 
-        coaches.forEach(coach -> {
+        /*coaches.forEach(coach -> {
             LessonCoach lessonCoach = new LessonCoach(copyLesson, coach);
             lessonCoachRepository.save(lessonCoach);
             log.info("새로운 LessonCoach = {} / {}", lessonCoach.getId(), lessonCoach.getCoach().getId());
             copyLesson.addCoaches(lessonCoach);
-        });
+        });*/
 
         students.forEach(student -> {
             LessonStudent lessonStudent = new LessonStudent(copyLesson, student);

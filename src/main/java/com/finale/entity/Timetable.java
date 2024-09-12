@@ -155,6 +155,6 @@ public class Timetable extends TimeStamped {
 
         this.cost = dto.cost();
         this.classSize = dto.studentsPerCoach();
-        this.totalClassSize = dto.coaches().size() * dto.studentsPerCoach();
+        this.totalClassSize = dto.maxStudents();
     }
 }

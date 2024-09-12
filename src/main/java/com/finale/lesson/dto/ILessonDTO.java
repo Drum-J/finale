@@ -16,7 +16,7 @@ public class ILessonDTO {
     private final int maxStudents;
     private final int currentEnrollment;
     private final int studentsPerCoach;
-    private final List<String> coaches;
+    /*private final List<String> coaches;*/
     private final List<LessonDateDTO> lessonDates = new ArrayList<>();
 
     @QueryProjection
@@ -29,8 +29,8 @@ public class ILessonDTO {
         this.currentEnrollment = lesson.getCurrentEnrolment();
         this.studentsPerCoach = lesson.getTimetable().getClassSize();
 
-        this.coaches = lesson.getCoaches().stream()
-                .map(lessonCoach -> lessonCoach.getCoach().getName()).toList();
+        /*this.coaches = lesson.getCoaches().stream()
+                .map(lessonCoach -> lessonCoach.getCoach().getName()).toList();*/
 
         lessonDates.add(new LessonDateDTO(lesson.getTimetable().getDate(), lesson.getTimetable().getStartTime(), lesson.getTimetable().getEndTime()));
         lessonDates.add(new LessonDateDTO(lesson.getTimetable().getSecondDate(), lesson.getTimetable().getSecondStartTime(), lesson.getTimetable().getSecondEndTime()));
