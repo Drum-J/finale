@@ -56,7 +56,8 @@ public class WebSecurityConfig {
                                 "/api/schedule/enrollment/**",
                                 "/api/schedule/restLesson/**",
                                 "/api/upload/**",
-                                "/api/deposit/**").hasAnyAuthority("MASTER", "SUB")
+                                "/api/deposit/**",
+                                "/api/sms/**").hasAnyAuthority("MASTER", "SUB")
                         .requestMatchers("/api/student/**").hasAnyAuthority("STUDENT")
                         .anyRequest().permitAll() // 우선 모든 접근 허용으로 설정
                 )

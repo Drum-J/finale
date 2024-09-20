@@ -19,7 +19,7 @@ spring:
 
 app:
   swagger:
-    version : "V 1.1.04"
+    version : "V 1.1.08"
     description : "피날레 백엔드 API 문서 입니다."
 
 # Kakao Login Properties
@@ -54,3 +54,35 @@ cloud:
     credentials:
       accessKey: ${S3-BUCKET-ACCESS-KEY}
       secretKey: ${S3-BUCKET-SECRET-KEY}
+
+# cool sms
+coolsms:
+  api:
+    key: NCSXWQQBNLHV88OM
+    secret: 9VDETZIGA1KJJVZKIWCD3JLPK7R7ZQSC
+    phoneNumber: 01029425627
+
+# message template
+sms:
+  templates:
+    apply: |
+      {name}님, 피겨 레슨 신청이 완료되었습니다.
+      ▶ 위치 : {location}
+      ▶ 시간 : {days} {startTime}~{endTime}
+      
+      레슨비는 아래 계좌로 1시간 이내로 송금해주시면 됩니다!
+      (대관수업이라 대관비를 내야하기 때문에 계좌이체로 해주셔야하는 점 이해부탁드릴게요)
+      ▶ 계좌 : 카카오뱅크 3333153079017 우송원
+      ▶ 레슨비 : {cost}
+    cancel: |
+      {name}님, 피겨 레슨 등록이 취소되었습니다. 확인이 필요하시면 연락주세요.
+      ▶ 위치 : {location}
+      ▶ 시간 : {days} {startTime}~{endTime}
+    remind: |
+      수강료를 어서 입금해주세요!
+      
+      신규 수강생의 경우 수강료를 입금하시지 않으면 신청이 취소될 수 있습니다.
+      ---------------
+      ▶ 계좌 정보 : 카카오뱅크 3333153079017 우송원
+      ▶ 수강료는 아래 링크를 확인해주세요. (반마다 상이)
+      https://finale-web.vercel.app

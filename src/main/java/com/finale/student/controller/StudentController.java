@@ -6,6 +6,7 @@ import com.finale.student.service.StudentService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,7 +25,7 @@ public class StudentController {
 
     @PostMapping("/enrolment")
     @Operation(summary = "수강생 레슨 신청 API", description = "enrolment()")
-    public ApiResponse enrolment(@RequestBody EnrolmentDTO dto) {
+    public ApiResponse enrolment(@RequestBody EnrolmentDTO dto) throws CoolsmsException {
         log.info("=== 수강 신청 Controller 진입 ===");
         Object id = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         log.info("로그인한 수강생 ID = {}", id);
@@ -57,7 +58,7 @@ public class StudentController {
 
     @Operation(summary = "[수강생용] 수강 취소 API")
     @PostMapping("/cancel/{id}")
-    public ApiResponse lessonCancel(@PathVariable("id") Long id) {
+    public ApiResponse lessonCancel(@PathVariable("id") Long id) throws CoolsmsException {
         String userId = SecurityContextHolder.getContext().getAuthentication().getPrincipal().toString();
         return studentService.lessonCancel(id,Long.parseLong(userId));
     }

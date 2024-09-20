@@ -6,7 +6,7 @@ public record DepositResponseDTO(Long lessonStudentId, Long studentId,
                                  String lessonTitle, String startTime,
                                  String endTime ,String studentName,
                                  String phoneNumber, String enrollmentDate,
-                                 boolean newbie) {
+                                 boolean newbie, boolean remind) {
 
     @QueryProjection
     public DepositResponseDTO {

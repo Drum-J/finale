@@ -106,7 +106,8 @@ public class LessonCustomRepository {
                         lessonStudent.student.name,
                         lessonStudent.student.phoneNumber,
                         lessonStudent.createAt.stringValue(),
-                        lessonStudent.newbie
+                        lessonStudent.newbie,
+                        lessonStudent.remind
                 ))
                 .from(lessonStudent)
                 .where(

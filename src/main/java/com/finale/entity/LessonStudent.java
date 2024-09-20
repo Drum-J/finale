@@ -34,6 +34,8 @@ public class LessonStudent extends TimeStamped {
 
     private boolean newbie; // 신청 당시 회원 신규/기존 상태 (true 뉴비, false 기존)
 
+    private boolean remind; // 독촉문자 발송 여부 (true 발송, false 미발송)
+
     public LessonStudent(Lesson lesson, Student student) {
         this.lesson = lesson;
         this.student = student;
@@ -57,5 +59,9 @@ public class LessonStudent extends TimeStamped {
 
     public void notNewbie() {
         this.newbie = false;
+    }
+
+    public void sendRemind() {
+        this.remind = true;
     }
 }

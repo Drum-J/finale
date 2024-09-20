@@ -4,9 +4,11 @@ import com.finale.common.ApiResponse;
 import com.finale.entity.EnrollmentStatus;
 import com.finale.entity.Lesson;
 import com.finale.entity.LessonStudent;
+import com.finale.entity.Timetable;
 import com.finale.exception.ResourceNotFoundException;
 import com.finale.lesson.repository.LessonStudentRepository;
 import com.finale.scheduler.ScheduleRepository;
+import com.finale.sms.SmsService;
 import com.finale.student.dto.EnrolmentDTO;
 import com.finale.entity.Student;
 import com.finale.student.dto.MyPageDTO;
@@ -14,6 +16,7 @@ import com.finale.student.repository.StudentRepository;
 import com.finale.lesson.repository.LessonRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,9 +32,10 @@ public class StudentService {
     private final LessonRepository lessonRepository;
     private final LessonStudentRepository lessonStudentRepository;
     private final ScheduleRepository scheduleRepository;
+    private final SmsService smsService;
 
     @Transactional
-    public ApiResponse enrolment(EnrolmentDTO dto) {
+    public ApiResponse enrolment(EnrolmentDTO dto) throws CoolsmsException {
         log.info("=== 수강 신청 Service 진입 ===");
         log.info("수강 신청 데이터 = {}",dto);
 
@@ -50,6 +54,8 @@ public class StudentService {
             LessonStudent lessonStudent = new LessonStudent(lesson, student);
 
             lesson.addStudent(lessonStudent);
+
+            smsService.applySend(lesson.getTimetable(),student);
 
             return ApiResponse.successResponse("수강신청이 정상적으로 완료 되었습니다.");
         } else {
@@ -94,7 +100,7 @@ public class StudentService {
     }
 
     @Transactional
-    public ApiResponse lessonCancel(Long id, Long userId) {
+    public ApiResponse lessonCancel(Long id, Long userId) throws CoolsmsException {
         LessonStudent lessonStudent = lessonStudentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
@@ -103,6 +109,11 @@ public class StudentService {
         }
 
         lessonStudent.getLesson().enrolmentMinus();
+
+        Timetable timetable = lessonStudent.getLesson().getTimetable();
+        Student student = lessonStudent.getStudent();
+
+        smsService.cancelSend(timetable, student);
 
         lessonStudentRepository.delete(lessonStudent);
 
