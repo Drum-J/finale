@@ -3,6 +3,7 @@ package com.finale.location.service;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Location;
 import com.finale.location.dto.LocationCreateDTO;
+import com.finale.location.dto.LocationDeleteDTO;
 import com.finale.location.dto.LocationResponseDTO;
 import com.finale.location.repository.LocationRepository;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,14 @@ public class LocationService {
     public ApiResponse getLocationList() {
         return ApiResponse.successResponse(locationRepository.findAll().stream()
                 .map(LocationResponseDTO::new).toList());
+    }
+
+    @Transactional
+    public ApiResponse deleteLocation(LocationDeleteDTO dto) {
+        Location location = locationRepository.findByName(dto.name());
+        String name = location.getName();
+
+        locationRepository.delete(location);
+        return ApiResponse.successResponse("레슨 장소를 삭제했습니다. 삭제 장소 = " + name);
     }
 }

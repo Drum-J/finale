@@ -2,6 +2,7 @@ package com.finale.location.controller;
 
 import com.finale.common.ApiResponse;
 import com.finale.location.dto.LocationCreateDTO;
+import com.finale.location.dto.LocationDeleteDTO;
 import com.finale.location.service.LocationService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,12 @@ public class LocationController {
     @Operation(summary = "레슨 장소 생성 API", description = "createLocation()")
     public ApiResponse createLocation(@RequestBody LocationCreateDTO dto) {
         return locationService.createLocation(dto);
+    }
+
+    @PostMapping("/delete")
+    @Operation(summary = "[코치용] 레슨 장소 삭제 API")
+    public ApiResponse deleteLocation(@RequestBody LocationDeleteDTO dto) {
+        return locationService.deleteLocation(dto);
     }
 
     @GetMapping("/list")
