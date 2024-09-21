@@ -16,6 +16,7 @@ import com.finale.lesson.dto.TimetableCreateDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -60,7 +61,7 @@ public class CoachController {
 
     @Operation(summary = "[MASTER] 수강생 입금 확인 API", description = "코치 권한이 [MASTER]인 경우만 가능합니다.")
     @PostMapping("/depositConfirm/{id}")
-    public ApiResponse depositConfirm(@PathVariable("id") Long id) {
+    public ApiResponse depositConfirm(@PathVariable("id") Long id) throws CoolsmsException {
         return coachService.updateDeposit(id);
     }
 

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter @Setter @ToString
+@Getter @ToString
 public class RemindDTO {
 
     private Long lessonStudentId;

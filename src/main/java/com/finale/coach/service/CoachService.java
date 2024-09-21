@@ -11,7 +11,6 @@ import com.finale.coach.repository.CoachRepository;
 import com.finale.common.ApiResponse;
 import com.finale.entity.Coach;
 import com.finale.entity.Lesson;
-import com.finale.entity.LessonCoach;
 import com.finale.entity.LessonStudent;
 import com.finale.entity.Location;
 import com.finale.entity.Notice;
@@ -28,10 +27,12 @@ import com.finale.lesson.repository.LessonStudentRepository;
 import com.finale.lesson.repository.NoticeRepository;
 import com.finale.lesson.repository.TimetableRepository;
 import com.finale.location.repository.LocationRepository;
+import com.finale.sms.SmsService;
 import com.finale.student.dto.StudentDTO;
 import com.finale.student.repository.StudentRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.nurigo.java_sdk.exceptions.CoolsmsException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -52,6 +53,7 @@ public class CoachService {
     private final TimetableRepository timetableRepository;
     private final NoticeRepository noticeRepository;
     private final StudentRepository studentRepository;
+    private final SmsService smsService;
 
     public ApiResponse getCoachList() {
         return ApiResponse.successResponse(coachRepository.findAll().stream()
@@ -95,13 +97,18 @@ public class CoachService {
      * @return
      */
     @Transactional
-    public ApiResponse updateDeposit(Long id) {
+    public ApiResponse updateDeposit(Long id) throws CoolsmsException {
         log.info("=== 수강생 입금 확인 Service 진입 ===");
         log.info("=== LessonStudent Id = {} ===",id);
 
         LessonStudent findStudent = lessonStudentRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 수강생을 찾을 수 없습니다."));
         findStudent.depositConfirm();
+
+        Timetable timetable = findStudent.getLesson().getTimetable();
+        Student student = findStudent.getStudent();
+
+        smsService.depositSend(timetable, student);
 
         return ApiResponse.successResponse("입금 확인이 완료 되었습니다.");
     }

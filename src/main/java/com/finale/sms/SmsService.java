@@ -58,8 +58,10 @@ public class SmsService {
     /**
      * 입금 확인 문자 발송
      */
-    public void depositSend() {
-
+    public void depositSend(Timetable timetable, Student student) throws CoolsmsException {
+        SmsTemplate smsTemplate = smsTemplateRepository.findTopByOrderByCreateAtDesc()
+                .orElseThrow(() -> new ResourceNotFoundException("저장된 문자 형식이 없습니다."));
+        sendSms(smsTemplate.getText(), student, timetable);
     }
 
     /**
@@ -78,7 +80,7 @@ public class SmsService {
         params.put("to", formatPhoneNumber(dto.getPhoneNumber()));
         params.put("from", phoneNumber);
         params.put("type", "LMS");
-        params.put("title", "[피겨 피날레]");
+        params.put("subject", "[피겨 피날레]");
         params.put("text", remindTemplate);
 
         remindMessage.send(params);
@@ -93,7 +95,7 @@ public class SmsService {
         params.put("to", formatPhoneNumber(student.getPhoneNumber()));
         params.put("from", phoneNumber);
         params.put("type", "LMS");
-        params.put("title", "[피겨 피날레]");
+        params.put("subject", "[피겨 피날레]");
         params.put("text", smsFormatter(smsTemplate, timetable, student));
 
         message.send(params);
@@ -136,4 +138,11 @@ public class SmsService {
 
         return ApiResponse.successResponse("문자 문구를 저장했습니다.");
     }
+
+    public ApiResponse getDetail() {
+        SmsTemplate smsTemplate = smsTemplateRepository.findTopByOrderByCreateAtDesc()
+                .orElseThrow(() -> new ResourceNotFoundException("저장된 문자 형식이 없습니다."));
+        return ApiResponse.successResponse(smsTemplate.getText());
+    }
+
 }

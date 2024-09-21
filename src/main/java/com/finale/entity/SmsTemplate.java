@@ -13,7 +13,7 @@ import static lombok.AccessLevel.PROTECTED;
 @Entity
 @Getter
 @NoArgsConstructor(access = PROTECTED)
-public class SmsTemplate {
+public class SmsTemplate extends TimeStamped {
 
     @Id @GeneratedValue(strategy = IDENTITY)
     private Long id;

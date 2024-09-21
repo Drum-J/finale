@@ -4,6 +4,7 @@ import com.finale.common.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import net.nurigo.java_sdk.exceptions.CoolsmsException;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,7 +24,12 @@ public class SmsController {
     }
 
     @PostMapping("/createTemplate")
-    public ApiResponse create(@RequestBody String content) {
-        return smsService.create(content);
+    public ApiResponse create(@RequestBody TemplateDTO dto) {
+        return smsService.create(dto.text());
+    }
+
+    @GetMapping("/detail")
+    public ApiResponse detail() {
+        return smsService.getDetail();
     }
 }
