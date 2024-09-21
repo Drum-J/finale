@@ -69,7 +69,7 @@ public class SmsService {
      */
     @Transactional
     public ApiResponse remindSend(RemindDTO dto) throws CoolsmsException {
-        LessonStudent lessonStudent = lessonStudentRepository.findById(dto.getLessonStudentId())
+        LessonStudent lessonStudent = lessonStudentRepository.findById(dto.lessonStudentId())
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨 내역을 찾을 수 없습니다."));
 
         lessonStudent.sendRemind();
@@ -77,7 +77,7 @@ public class SmsService {
         Message remindMessage = new Message(apiKey, apiSecretKey);
 
         HashMap<String, String> params = new HashMap<>();
-        params.put("to", formatPhoneNumber(dto.getPhoneNumber()));
+        params.put("to", formatPhoneNumber(dto.phoneNumber()));
         params.put("from", phoneNumber);
         params.put("type", "LMS");
         params.put("subject", "[피겨 피날레]");
