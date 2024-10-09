@@ -30,7 +30,7 @@ public class LoginService {
                     .name(coachInfo.name())
                     .email(coachInfo.email())
                     .phoneNumber(coachInfo.phoneNumber())
-                    .coachRole(CoachRole.SUB)
+                    .coachRole(CoachRole.NEW)
                     .build();
 
             coach = coachRepository.save(saveCoach);

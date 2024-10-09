@@ -247,4 +247,14 @@ public class CoachService {
 
         return ApiResponse.successResponse("레슨 변경을 완료했습니다.");
     }
+
+    @Transactional
+    public ApiResponse updateNewCoachRole(Long coachId) {
+        Coach find = coachRepository.findById(coachId)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 코치를 찾을 수 없습니다."));
+
+        find.updateNewCoach();
+
+        return ApiResponse.successResponse("코치 권한이 변경되었습니다. 현재 권한 : " + find.getCoachRole());
+    }
 }

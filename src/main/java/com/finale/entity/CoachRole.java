@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum CoachRole {
-    MASTER("master"), SUB("sub");
+    MASTER("master"), SUB("sub"), NEW("new");
 
     private final String role;
 

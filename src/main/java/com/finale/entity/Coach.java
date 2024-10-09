@@ -59,4 +59,12 @@ public class Coach extends TimeStamped {
     public void updateResume(String resume) {
         this.resume = resume;
     }
+
+    public void updateNewCoach() {
+        if (this.coachRole == CoachRole.NEW) {
+            this.coachRole = CoachRole.SUB;
+        } else {
+            throw new IllegalStateException("신규코치가 아닙니다.");
+        }
+    }
 }

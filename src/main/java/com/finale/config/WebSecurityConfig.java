@@ -50,7 +50,8 @@ public class WebSecurityConfig {
                 .authorizeHttpRequests(request -> request
                         .requestMatchers(
                                 "/api/coach/depositConfirm/**",
-                                "/api/coach/updateRole/**").hasAnyAuthority("MASTER")
+                                "/api/coach/updateRole/**",
+                                "/api/coach/updateNewCoachRole/**").hasAnyAuthority("MASTER")
                         .requestMatchers(
                                 "/api/coach/**",
                                 "/api/schedule/enrollment/**",

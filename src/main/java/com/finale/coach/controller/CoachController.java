@@ -53,6 +53,13 @@ public class CoachController {
         return coachService.updateRole(id);
     }
 
+    @Operation(summary = "[MASTER] 신규 코치 권한 변경 API")
+    @PostMapping("/updateNewCoachRole/{coachId}")
+    public ApiResponse updateNewCoachRole(@PathVariable("coachId") Long coachId) {
+        return coachService.updateNewCoachRole(coachId);
+    }
+
+
     @Operation(summary = "레슨 생성 API", description = "createTimetable()")
     @PostMapping("/createLesson")
     public ApiResponse createTimetable(@RequestBody TimetableCreateDTO dto) {
