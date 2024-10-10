@@ -164,4 +164,10 @@ public class CoachController {
     public ApiResponse updateLesson(@RequestBody LessonUpdateDTO dto) {
         return coachService.updateLesson(dto);
     }
+
+    @Operation(summary = "[코치용] 레슨 삭제 API")
+    @PostMapping("/deleteLesson/{lessonId}")
+    public ApiResponse deleteLesson(@PathVariable("lessonId") Long lessonId) {
+        return coachService.deleteLesson(lessonId);
+    }
 }

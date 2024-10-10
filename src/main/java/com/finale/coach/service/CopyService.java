@@ -39,7 +39,7 @@ public class CopyService {
 
     public ApiResponse lessonCopy(CopyRequestDTO dto) {
         log.info("=== lessonCopy 메서드 진입 ===");
-        List<Lesson> byLessonDate = lessonRepository.findByLessonDate(dto.lessonDate());
+        List<Lesson> byLessonDate = lessonRepository.findByLessonDateAndDelYnIsFalse(dto.lessonDate());
 
         if (byLessonDate.isEmpty()) {
             throw new ResourceNotFoundException("해당 년월에는 레슨이 없습니다.");

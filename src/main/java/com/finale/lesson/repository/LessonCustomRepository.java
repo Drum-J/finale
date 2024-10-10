@@ -44,7 +44,7 @@ public class LessonCustomRepository {
                 .join(lesson.timetable, timetable).fetchJoin()
                 .join(location)
                 .on(location.name.eq(timetable.location)).fetchJoin()
-                .where(location.name.eq(name),lesson.lessonDate.eq(searchDate()))
+                .where(location.name.eq(name),lesson.lessonDate.eq(searchDate()), lesson.delYn.eq(false))
                 .fetch();
     }
 
@@ -55,7 +55,7 @@ public class LessonCustomRepository {
                 .join(lesson.timetable, timetable).fetchJoin()
                 .join(location)
                 .on(location.name.eq(timetable.location)).fetchJoin()
-                .where(location.name.eq(name),lesson.lessonDate.eq(searchDate()))
+                .where(location.name.eq(name),lesson.lessonDate.eq(searchDate()),lesson.delYn.eq(false))
                 .fetch();
     }
 
@@ -89,7 +89,7 @@ public class LessonCustomRepository {
                         ))
                 .from(lessonStudent)
                 .where(
-                        lessonDateEq(dto.lessonDate())
+                        lessonDateEq(dto.lessonDate()), lessonStudent.lesson.delYn.eq(false)
                 )
                 .orderBy(lessonStudent.lesson.id.asc(),lessonStudent.student.id.asc())
                 .fetch();
@@ -116,7 +116,8 @@ public class LessonCustomRepository {
                         locationEq(dto.location()),
                         lessonIdEq(dto.lessonId()),
                         lessonStudent.deposit.eq(isDeposit),
-                        lessonStudent.restLesson.eq(false)
+                        lessonStudent.restLesson.eq(false),
+                        lessonStudent.lesson.delYn.eq(false)
                 )
                 .fetch();
     }
@@ -146,7 +147,7 @@ public class LessonCustomRepository {
                     lesson.timetable.endTime
                 ))
                 .from(lesson)
-                .where(locationEq(location), lessonDateEq(date))
+                .where(locationEq(location), lessonDateEq(date), lesson.delYn.eq(false))
                 .fetch();
     }
 }

@@ -39,6 +39,8 @@ public class Lesson extends TimeStamped{
 
     private String lessonDate; // 복사용 lesson Date
 
+    private boolean delYn; // 삭제 여부
+
     public Lesson(Timetable timetable) {
         this.timetable = timetable;
         this.enrolment = timetable.getTotalClassSize(); //dto 사용시 자동 설정 됨
@@ -80,5 +82,9 @@ public class Lesson extends TimeStamped{
         this.title = timetable.getTitle();
         this.enrolment = timetable.getTotalClassSize();
         this.lessonDate = timetable.getDate().substring(0,7);
+    }
+
+    public void delete() {
+        this.delYn = true;
     }
 }

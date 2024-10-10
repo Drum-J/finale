@@ -73,7 +73,7 @@ public class CoachService {
     }
 
     public ApiResponse getAllLessonForCoach() {
-        List<Lesson> all = lessonRepository.findAll();
+        List<Lesson> all = lessonRepository.findAllByDelYnIsFalse();
         return ApiResponse.successResponse(all.stream().map(ILessonCoachDTO::new).toList());
     }
 
@@ -85,7 +85,7 @@ public class CoachService {
     }
 
     public ApiResponse getLessonDetailsForCoach(Long id) {
-        Lesson lesson = lessonRepository.findById(id)
+        Lesson lesson = lessonRepository.findByIdAndDelYnIsFalse(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
         return ApiResponse.successResponse(new ILessonCoachDTO(lesson));
@@ -189,7 +189,7 @@ public class CoachService {
     public ApiResponse lessonChange(LessonChangeDTO dto) {
         cancel(dto.lessonStudentId());
 
-        Lesson lesson = lessonRepository.findById(dto.lessonId())
+        Lesson lesson = lessonRepository.findByIdAndDelYnIsFalse(dto.lessonId())
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
         Student student = studentRepository.findById(dto.studentId())
@@ -214,7 +214,7 @@ public class CoachService {
     @Transactional
     public ApiResponse updateLesson(LessonUpdateDTO dto) {
 
-        Lesson lesson = lessonRepository.findById(dto.lessonId())
+        Lesson lesson = lessonRepository.findByIdAndDelYnIsFalse(dto.lessonId())
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
         Location findLocation = locationRepository.findByName(dto.locationName());
@@ -256,5 +256,14 @@ public class CoachService {
         find.updateNewCoach();
 
         return ApiResponse.successResponse("코치 권한이 변경되었습니다. 현재 권한 : " + find.getCoachRole());
+    }
+
+    @Transactional
+    public ApiResponse deleteLesson(Long lessonId) {
+        Lesson lesson = lessonRepository.findByIdAndDelYnIsFalse(lessonId)
+                .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
+        lesson.delete();
+
+        return ApiResponse.successResponse("해당 레슨을 삭제했습니다. 삭제 레슨 ID = " + lessonId);
     }
 }

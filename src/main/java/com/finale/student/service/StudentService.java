@@ -45,7 +45,7 @@ public class StudentService {
         log.info("수강신청 가능 여부 = {}",status.isEnrollmentStatus());
 
         if (status.isEnrollmentStatus()) {
-            Lesson lesson = lessonRepository.findById(dto.getLessonId())
+            Lesson lesson = lessonRepository.findByIdAndDelYnIsFalse(dto.getLessonId())
                     .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
             Student student = studentRepository.findById(dto.getStudentId())

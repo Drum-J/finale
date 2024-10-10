@@ -34,7 +34,7 @@ public class LessonService {
     private final TimetableImageRepository timetableImageRepository;
 
     public ApiResponse getLessonDetails(Long id) {
-        Lesson lesson = lessonRepository.findById(id)
+        Lesson lesson = lessonRepository.findByIdAndDelYnIsFalse(id)
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨을 찾을 수 없습니다."));
 
         return ApiResponse.successResponse(new ILessonDTO(lesson));
@@ -42,7 +42,7 @@ public class LessonService {
     }
 
     public ApiResponse getAllLesson() {
-        List<Lesson> all = lessonRepository.findAll();
+        List<Lesson> all = lessonRepository.findAllByDelYnIsFalse();
         return ApiResponse.successResponse(all.stream().map(ILessonDTO::new).toList());
     }
 

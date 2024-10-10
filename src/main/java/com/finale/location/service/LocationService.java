@@ -2,6 +2,7 @@ package com.finale.location.service;
 
 import com.finale.common.ApiResponse;
 import com.finale.entity.Location;
+import com.finale.lesson.repository.LessonRepository;
 import com.finale.location.dto.LocationCreateDTO;
 import com.finale.location.dto.LocationDeleteDTO;
 import com.finale.location.dto.LocationResponseDTO;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LocationService {
 
     private final LocationRepository locationRepository;
+    private final LessonRepository lessonRepository;
 
     @Transactional
     public ApiResponse createLocation(LocationCreateDTO dto) {
@@ -38,6 +40,7 @@ public class LocationService {
     public ApiResponse deleteLocation(LocationDeleteDTO dto) {
         Location location = locationRepository.findByName(dto.name());
         String name = location.getName();
+        lessonRepository.deleteLessonByLocationName(name);
 
         locationRepository.delete(location);
         return ApiResponse.successResponse("레슨 장소를 삭제했습니다. 삭제 장소 = " + name);
