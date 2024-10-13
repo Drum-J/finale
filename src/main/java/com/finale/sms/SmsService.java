@@ -3,6 +3,7 @@ package com.finale.sms;
 import com.finale.common.ApiResponse;
 import com.finale.entity.LessonStudent;
 import com.finale.entity.SmsTemplate;
+import com.finale.entity.SmsType;
 import com.finale.entity.Student;
 import com.finale.entity.Timetable;
 import com.finale.exception.ResourceNotFoundException;
@@ -34,9 +35,6 @@ public class SmsService {
 
     @Value("${sms.templates.cancel}")
     private String cancelTemplate;
-
-    @Value("${sms.templates.remind}")
-    private String remindTemplate;
 
     private final LessonStudentRepository lessonStudentRepository;
     private final SmsTemplateRepository smsTemplateRepository;
@@ -72,7 +70,13 @@ public class SmsService {
         LessonStudent lessonStudent = lessonStudentRepository.findById(dto.lessonStudentId())
                 .orElseThrow(() -> new ResourceNotFoundException("해당 레슨 내역을 찾을 수 없습니다."));
 
+        SmsTemplate remindTemplate = smsTemplateRepository.findBySmsType(SmsType.REMIND)
+                .orElseThrow(() -> new ResourceNotFoundException("독촉 문자 설정을 먼저 해주세요."));
+
         lessonStudent.sendRemind();
+
+        Timetable timetable = lessonStudent.getLesson().getTimetable();
+        Student student = lessonStudent.getStudent();
 
         Message remindMessage = new Message(apiKey, apiSecretKey);
 
@@ -81,7 +85,7 @@ public class SmsService {
         params.put("from", phoneNumber);
         params.put("type", "LMS");
         params.put("subject", "[피겨 피날레]");
-        params.put("text", remindTemplate);
+        params.put("text", smsFormatter(remindTemplate.getText(),timetable,student));
 
         remindMessage.send(params);
 
@@ -132,15 +136,21 @@ public class SmsService {
     }
 
     @Transactional
-    public ApiResponse create(String content) {
-        SmsTemplate smsTemplate = new SmsTemplate(content);
-        smsTemplateRepository.save(smsTemplate);
+    public ApiResponse createByType(SmsType type, String content) {
+        SmsTemplate findTemplate = smsTemplateRepository.findBySmsType(type).orElse(null);
 
-        return ApiResponse.successResponse("문자 문구를 저장했습니다.");
+        if (findTemplate == null) {
+            SmsTemplate smsTemplate = new SmsTemplate(content, type);
+            smsTemplateRepository.save(smsTemplate);
+        } else {
+            findTemplate.update(content);
+        }
+
+        return ApiResponse.successResponse(type.toString() + " 문자 문구를 저장했습니다.");
     }
 
-    public ApiResponse getDetail() {
-        SmsTemplate smsTemplate = smsTemplateRepository.findTopByOrderByCreateAtDesc()
+    public ApiResponse getTypeDetail(SmsType type) {
+        SmsTemplate smsTemplate = smsTemplateRepository.findBySmsType(type)
                 .orElseThrow(() -> new ResourceNotFoundException("저장된 문자 형식이 없습니다."));
         return ApiResponse.successResponse(smsTemplate.getText());
     }
