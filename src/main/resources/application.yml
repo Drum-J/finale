@@ -42,7 +42,7 @@ kakao:
 
 custom:
   jwt:
-    secretKey: ${JWT-SECRET-KEY}
+    secretKey: ${JWT_SECRET_KEY}
 
 # AWS S3
 cloud:
@@ -58,9 +58,9 @@ cloud:
 # cool sms
 coolsms:
   api:
-    key: ${SMS-KEY}
-    secret: ${SMS-PASSWORD}
-    phoneNumber: ${SMS-PHONE-NUMBER}
+    key: ${SMS_KEY}
+    secret: ${SMS_PASSWORD}
+    phoneNumber: ${SMS_PHONE_NUMBER}
 
 # message template
 sms:
