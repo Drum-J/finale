@@ -45,6 +45,10 @@ jobs:
         cloud.aws.s3.bucket : ${{secrets.S3_BUCKET_NAME}}
         cloud.aws.credentials.accessKey : ${{secrets.S3_BUCKET_ACCESS_KEY}}
         cloud.aws.credentials.secretKey : ${{secrets.S3_BUCKET_SECRET_KEY}}
+        coolsms.api.key : ${{secrets.SMS_KEY}}
+        coolsms.api.secret : ${{secrets.SMS_SECRET}}
+        coolsms.api.phoneNumber : ${{secrets.SMS_PHONE_NUMBER}}
+        custom.jwt.secretKey : ${{secrets.JWT_SECRET_KEY}}
 
     - name: Gradle 명령 실행을 위한 권한을 부여합니다
       run: chmod +x gradlew
